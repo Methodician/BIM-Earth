@@ -3,7 +3,7 @@ import * as mbox from 'mapbox-gl';
 import * as mboxDraw from '@mapbox/mapbox-gl-draw';
 import { MapService } from '../../services/map.service';
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
-import { FeatureCollection } from '../../models/map';
+import { FeatureCollection, LayerClass } from '../../models/map';
 import { Map } from 'mapbox-gl/dist/mapbox-gl';
 
 
@@ -55,16 +55,39 @@ export class MapComponent implements OnInit {
     this.map.addControl(this.draw);
     this.map.addControl(new mbox.NavigationControl());
 
+
+
     this.map.on('load', e => {
       console.log('map load:', e);
 
+
       this.polyCollection.valueChanges().subscribe(encodedPolygons => {
         let polygons = encodedPolygons.map(poly => {
-          let geometry = JSON.parse(poly.geometry);
-          return geometry;
+          let feature = JSON.parse(poly.geometry || poly.feature);
+          //  Changing structure, this should be adjusted later
+          if (feature.id)
+            feature.properties.id = feature.id;
+          if (feature.properties.id)
+            feature.id = feature.properties.id;
+          // delete feature.id;
+          console.log(feature);
+          return feature;
         });
+        // console.log(polygons);
         let features = new FeatureCollection(polygons);
-        console.log(features);
+        // console.log(features);
+        // this.map.addLayer({
+        //   id: 'boundaries',
+        //   type: 'fill',
+        //   source: {
+        //     type: 'geojson',
+        //     data: features as any
+        //   },
+        //   paint: {
+        //     'fill-color': 'rgba(200, 100, 240, 0.4)',
+        //     'fill-outline-color': 'rgba(200, 100, 240, 1)'
+        //   }
+        // });
         let featureIds = this.draw.add(features);
         console.log(featureIds);
       });
@@ -72,7 +95,7 @@ export class MapComponent implements OnInit {
     });
 
     this.map.on('draw.create', e => {
-      this.saveGeoPoly(e.features);
+      this.createGeoPoly(e.features);
     });
     this.map.on('draw.delete', e => {
       console.log('draw delete:', e);
@@ -81,7 +104,7 @@ export class MapComponent implements OnInit {
       this.updateGeoPoly(e.features);
     });
 
-    this.map.on('click', e => {
+    this.map.on('click', 'boundaries', e => {
       console.log('clicked:', e);
     });
 
@@ -96,13 +119,18 @@ export class MapComponent implements OnInit {
     }
   }
 
-  saveGeoPoly(features) {
-    console.log(features[0]);
+  createGeoPoly(features) {
+    console.log('creating feature', features[0]);
     this.mapSvc.addPolygon(features[0]);
   }
 
   updateGeoPoly(features) {
-    console.log(features[0]);
+    console.log('updating feature', features[0]);
     this.mapSvc.updatePolygon(features[0]);
+  }
+
+  decodePolygon(encodedPolygon) {
+    let feature = JSON.parse(encodedPolygon.geometry);
+    return feature;
   }
 }
