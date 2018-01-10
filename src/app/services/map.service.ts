@@ -24,16 +24,14 @@ export class MapService {
 
   addPolygon(polygon) {
     let id = this.db.createId();
-    polygon.id = id;
     polygon.properties.id = id;
     console.log('adding to db', polygon);
     return this.getPolygonById(id).set({ id: id, feature: JSON.stringify(polygon) });
   }
 
   updatePolygon(polygon) {
-    console.log(polygon);
-    // should probably remove polygon.id later
-    return this.getPolygonById(polygon.properties.id || polygon.id).update({ feature: JSON.stringify(polygon) });
+    console.log('updating', polygon);
+    return this.getPolygonById(polygon.properties.id).update({ feature: JSON.stringify(polygon) });
   }
 
   deletePolygon(id: string) {

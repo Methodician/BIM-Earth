@@ -63,19 +63,15 @@ export class MapComponent implements OnInit {
 
       this.polyCollection.valueChanges().subscribe(encodedPolygons => {
         let polygons = encodedPolygons.map(poly => {
-          let feature = JSON.parse(poly.geometry || poly.feature);
-          //  Changing structure, this should be adjusted later
-          if (feature.id)
-            feature.properties.id = feature.id;
+          let feature = JSON.parse(poly.feature);
           if (feature.properties.id)
             feature.id = feature.properties.id;
-          // delete feature.id;
+          delete feature.id;
           console.log(feature);
           return feature;
         });
-        // console.log(polygons);
         let features = new FeatureCollection(polygons);
-        // console.log(features);
+        ////  adds clickable layer -- frustrating that click event does not seem to include coords...
         // this.map.addLayer({
         //   id: 'boundaries',
         //   type: 'fill',
@@ -88,8 +84,9 @@ export class MapComponent implements OnInit {
         //     'fill-outline-color': 'rgba(200, 100, 240, 1)'
         //   }
         // });
-        let featureIds = this.draw.add(features);
-        console.log(featureIds);
+        //// adds editable layer
+        // let featureIds = this.draw.add(features);
+        // console.log(featureIds);
       });
 
     });
@@ -105,7 +102,7 @@ export class MapComponent implements OnInit {
     });
 
     this.map.on('click', 'boundaries', e => {
-      console.log('clicked:', e);
+      console.log('clicked:', e.features[0]);
     });
 
     if (navigator.geolocation) {
