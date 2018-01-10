@@ -19,6 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "bim",
       "styles": [
+        "../node_modules/mapbox-gl/dist/mapbox-gl.css",
+        "../node_modules/@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css",
         "styles.scss"
       ],
       "scripts": [],
