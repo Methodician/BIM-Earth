@@ -113,13 +113,14 @@ export class MapComponent implements OnInit {
   }
 
   boundaryClick(e) {
-    console.log('clicked', e.features[0]);
+    console.log('clicked', e.features);
     const featureId = e.features[0].properties.id;
     console.log(featureId);
     let clickedFeature = this.source.data.features.filter(feature => {
       return feature.id == featureId;
     })[0];
     console.log(clickedFeature);
+    this.draw.add(clickedFeature);
   }
 
 
