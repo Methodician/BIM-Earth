@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
 import { NavComponent } from './components/nav/nav.component';
 
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 
 import { MapService } from './services/map.service';
 
@@ -27,6 +28,7 @@ import { MapService } from './services/map.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgxMapboxGLModule.forRoot(environment.mapbox),
     AngularFireModule.initializeApp(environment.firebaseConfig, 'bim-earth'),
     AngularFirestoreModule,
     AngularFireAuthModule,
