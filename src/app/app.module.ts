@@ -16,6 +16,7 @@ import { NavComponent } from './components/nav/nav.component';
 
 
 import { MapService } from './services/map.service';
+import { RtdbMapService } from './services/rtdb-map.service';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { MapService } from './services/map.service';
     AngularFireDatabaseModule
   ],
   providers: [
-    MapService
+    MapService,
+    RtdbMapService
   ],
   bootstrap: [AppComponent]
 })
