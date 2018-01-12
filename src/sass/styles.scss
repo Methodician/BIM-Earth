@@ -1,3 +1,6 @@
+// import for themeing through angular material, using a default one until I make a custom one for the sites colors
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 @import "./vars";
 @import "./mixins";
 
