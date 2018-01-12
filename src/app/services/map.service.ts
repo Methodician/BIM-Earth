@@ -13,6 +13,17 @@ export class MapService {
     (mapboxgl as any).accessToken = environment.mapbox.accessToken;
   }
 
+  getFeatures() {
+    return this.db.collection('geoPolygons').stateChanges().map(actions => {
+      return actions.map(action => {
+        const data = action.payload.doc.data()
+        let feature = JSON.parse(data.feature);
+        if(feature.properties.id) feature.id = feature.properties.id;
+        return feature; 
+      })
+    })
+  }
+
   getPolygons() {
     return this.db.collection('geoPolygons');
     // return this.db.collection('polygons');

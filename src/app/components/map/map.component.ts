@@ -34,7 +34,6 @@ export class MapComponent implements OnInit {
   }
 
   private mapLoaded(map) {
-    console.log(map);
     this.map = map;
     this.flyToMe();
     this.initializeMap(map);
@@ -43,18 +42,26 @@ export class MapComponent implements OnInit {
 
 
   initializeMap(map) {
-    this.polyCollection.valueChanges().subscribe(encodedPolygons => {
-      let polygons = encodedPolygons.map(poly => {
-        let feature = JSON.parse(poly.feature);
-        if (feature.properties.id)
-          feature.id = feature.properties.id;
-        return feature;
-      });
-      let features = new FeatureCollection(polygons);
+    this.mapSvc.getFeatures().subscribe(features => {
+      const collection = new FeatureCollection(features);
       this.source = {
         type: 'geojson',
-        data: features
+        data: collection
       };
+    })
+
+    // this.polyCollection.valueChanges().subscribe(encodedPolygons => {
+    //   let polygons = encodedPolygons.map(poly => {
+    //     let feature = JSON.parse(poly.feature);
+    //     if (feature.properties.id)
+    //       feature.id = feature.properties.id;
+    //     return feature;
+    //   });
+    //   let features = new FeatureCollection(polygons);
+    //   this.source = {
+    //     type: 'geojson',
+    //     data: features
+    //   };
       ////  adds clickable layer -- frustrating that click event does not seem to include coords...
       // map.addLayer({
       //   id: 'boundaries',
@@ -71,7 +78,7 @@ export class MapComponent implements OnInit {
       //// adds editable layer
       // let featureIds = this.draw.add(features);
       // console.log(featureIds);
-    });
+    // });
 
     this.map.on('draw.create', e => {
       this.createGeoPoly(e.features);
