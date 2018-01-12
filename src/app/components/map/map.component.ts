@@ -15,97 +15,49 @@ import { Map } from 'mapbox-gl/dist/mapbox-gl';
 export class MapComponent implements OnInit {
   map: Map;
   draw: Draw;
-
-  bounds: any;
-  center = [-122.41, 37.75];
-  // style = 'mapbox://styles/mapbox/streets-v10';
   style = 'mapbox://styles/mapbox/outdoors-v9';
-
-  polyCollection: AngularFirestoreCollection<any>;
+  center = [-122.41, 37.75];
+  bounds: any;
   source: any = null;
 
+  constructor(private mapSvc: MapService) {}
 
-  constructor(private mapSvc: MapService) {
-  }
-
-  ngOnInit() {
-    // this.initializeMap();
-    this.polyCollection = this.mapSvc.getPolygons();
-  }
+  ngOnInit() {}
 
   private mapLoaded(map) {
     this.map = map;
+    this.initializeMap();
+    this.initializeDrawing();
     this.flyToMe();
-    this.initializeMap(map);
-    this.addDrawControls(map);
   }
 
-
-  initializeMap(map) {
+  initializeMap() {
     this.mapSvc.getFeatures().subscribe(features => {
       const collection = new FeatureCollection(features);
       this.source = {
         type: 'geojson',
         data: collection
       };
-    })
+    });
 
-    // this.polyCollection.valueChanges().subscribe(encodedPolygons => {
-    //   let polygons = encodedPolygons.map(poly => {
-    //     let feature = JSON.parse(poly.feature);
-    //     if (feature.properties.id)
-    //       feature.id = feature.properties.id;
-    //     return feature;
-    //   });
-    //   let features = new FeatureCollection(polygons);
-    //   this.source = {
-    //     type: 'geojson',
-    //     data: features
-    //   };
-      ////  adds clickable layer -- frustrating that click event does not seem to include coords...
-      // map.addLayer({
-      //   id: 'boundaries',
-      //   type: 'fill',
-      //   source: {
-      //     type: 'geojson',
-      //     data: features as any
-      //   },
-      //   paint: {
-      //     'fill-color': 'rgba(200, 100, 240, 0.4)',
-      //     'fill-outline-color': 'rgba(200, 100, 240, 1)'
-      //   }
-      // });
-      //// adds editable layer
-      // let featureIds = this.draw.add(features);
-      // console.log(featureIds);
-    // });
+    this.map.addControl(new Mapbox.NavigationControl());
+  }
+
+  initializeDrawing() {
+    this.draw = new Draw({
+      displayControlsDefault: false,
+      controls: { polygon: true }
+    });
+
+    this.map.addControl(this.draw);
 
     this.map.on('draw.create', e => {
       this.createGeoPoly(e.features);
     });
-    this.map.on('draw.delete', e => {
-      console.log('draw delete:', e);
-    });
+
     this.map.on('draw.update', e => {
       this.updateGeoPoly(e.features);
     });
-
-    // this.map.on('click', 'boundaries', e => {
-    //   console.log('scripty click:', e.features[0]);
-    // });
-  }
-
-  addDrawControls(map) {
-    this.draw = new Draw({
-      displayControlsDefault: false,
-      controls: {
-        polygon: true,
-        trash: true
-      }
-    });
-
-    map.addControl(this.draw);
-    map.addControl(new Mapbox.NavigationControl());
   }
 
   flyToMe() {
@@ -129,7 +81,6 @@ export class MapComponent implements OnInit {
     console.log(clickedFeature);
     this.draw.add(clickedFeature);
   }
-
 
   createGeoPoly(features) {
     console.log('creating feature', features[0]);
