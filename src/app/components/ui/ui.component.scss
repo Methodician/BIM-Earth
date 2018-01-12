@@ -1,0 +1,8 @@
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+
+#ui-container {
+	#logo {
+		@include position(fixed, top 20px left 20px);
+	}
+} 

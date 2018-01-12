@@ -16,13 +16,15 @@ import { NavComponent } from './components/nav/nav.component';
 
 
 import { MapService } from './services/map.service';
+import { UiComponent } from './components/ui/ui.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    NavComponent
+    NavComponent,
+    UiComponent
   ],
   imports: [
     BrowserModule,
