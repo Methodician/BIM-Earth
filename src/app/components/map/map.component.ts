@@ -28,6 +28,7 @@ export class MapComponent implements OnInit {
     this.map = map;
     this.initializeMap();
     this.initializeDrawing();
+    this.addEventHandlers()
     this.flyToMe();
   }
 
@@ -50,7 +51,9 @@ export class MapComponent implements OnInit {
     });
 
     this.map.addControl(this.draw);
+  }
 
+  addEventHandlers() {
     this.map.on('draw.create', e => {
       this.createGeoPoly(e.features);
     });
@@ -58,6 +61,14 @@ export class MapComponent implements OnInit {
     this.map.on('draw.update', e => {
       this.updateGeoPoly(e.features);
     });
+
+    this.map.on('contextmenu', 'boundaries', e => {
+      let feature = e.features[0];
+      feature.id = feature.properties.id;
+      this.draw.add(feature);
+      this.draw.changeMode('direct_select', { featureId: feature.id });
+      this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]])
+    })
   }
 
   flyToMe() {
