@@ -1,6 +1,7 @@
-.map{
-    height: 100vh; width: 100vw;
-    position: absolute;
-    top: 0;
-    left: 0;
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+
+.map {
+    height: 100%;
+    width: 100%;
 }
