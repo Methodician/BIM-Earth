@@ -9,6 +9,9 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+// test import module to make sure that angular material is working
+import {MatButtonModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
@@ -16,13 +19,15 @@ import { NavComponent } from './components/nav/nav.component';
 
 
 import { MapService } from './services/map.service';
+import { UiComponent } from './components/ui/ui.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    NavComponent
+    NavComponent,
+    UiComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +35,9 @@ import { MapService } from './services/map.service';
     AngularFireModule.initializeApp(environment.firebaseConfig, 'bim-earth'),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
   ],
   providers: [
     MapService

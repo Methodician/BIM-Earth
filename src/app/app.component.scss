@@ -1,0 +1,9 @@
+@import "../sass/vars";
+@import "../sass/mixins";
+
+#main-container {
+	height: 100vh;
+	width: 100vw;
+	@include position(absolute, top 0 left 0);
+	overflow: hidden;
+}
