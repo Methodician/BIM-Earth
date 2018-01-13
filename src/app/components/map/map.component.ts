@@ -86,17 +86,16 @@ export class MapComponent implements OnInit {
       feature.id = feature.properties.id;
       this.draw.add(feature);
       this.draw.changeMode('direct_select', { featureId: feature.id });
-      this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]])
+      this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]]);
     })
   }
 
   saveDrawBuffer() {
     let feature = this.draw.getAll().features[0];
     if (feature.properties.newFeature) {
-      delete feature.properties.newFeature
-      this.mapSvc.saveFeature(feature)
-    }
-    // else this.mapSvc.updateFeature(feature)
+      delete feature.properties.newFeature;
+      this.mapSvc.createFeature(feature);
+    } else this.mapSvc.saveFeature(feature)
     this.draw.delete(feature.id);
     this.map.setFilter('boundaries', null);
   }
@@ -112,29 +111,29 @@ export class MapComponent implements OnInit {
     }
   }
 
-  boundaryClick(e) {
-    console.log('clicked', e.features);
-    const featureId = e.features[0].properties.id;
-    console.log(featureId);
-    let clickedFeature = this.source.data.features.filter(feature => {
-      return feature.id == featureId;
-    })[0];
-    console.log(clickedFeature);
-    this.draw.add(clickedFeature);
-  }
+  // boundaryClick(e) {
+  //   console.log('clicked', e.features);
+  //   const featureId = e.features[0].properties.id;
+  //   console.log(featureId);
+  //   let clickedFeature = this.source.data.features.filter(feature => {
+  //     return feature.id == featureId;
+  //   })[0];
+  //   console.log(clickedFeature);
+  //   this.draw.add(clickedFeature);
+  // }
 
-  createGeoPoly(features) {
-    console.log('creating feature', features[0]);
-    this.mapSvc.addPolygon(features[0]);
-  }
+  // createGeoPoly(features) {
+  //   console.log('creating feature', features[0]);
+  //   this.mapSvc.addPolygon(features[0]);
+  // }
 
-  updateGeoPoly(features) {
-    console.log('updating feature', features[0]);
-    this.mapSvc.updatePolygon(features[0]);
-  }
+  // updateGeoPoly(features) {
+  //   console.log('updating feature', features[0]);
+  //   this.mapSvc.updatePolygon(features[0]);
+  // }
 
-  decodePolygon(encodedPolygon) {
-    let feature = JSON.parse(encodedPolygon.geometry);
-    return feature;
-  }
+  // decodePolygon(encodedPolygon) {
+  //   let feature = JSON.parse(encodedPolygon.geometry);
+  //   return feature;
+  // }
 }

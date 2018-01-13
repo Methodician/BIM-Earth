@@ -13,6 +13,24 @@ export class MapService {
     (mapboxgl as any).accessToken = environment.mapbox.accessToken;
   }
 
+  getFeatures() {
+    return this.rtdb.list('/features');
+  }
+
+  createFeature(feature: GeoJson) {
+    feature.properties.id = this.db.createId();
+    this.saveFeature(feature);
+  }
+
+  saveFeature(feature: GeoJson) {
+    this.rtdb.list(`/features`).set(`${feature.properties.id}`, {
+      id: feature.properties.id,
+      type: feature.type,
+      geometry: feature.geometry,
+      properties: feature.properties
+    });
+  }
+
   getFirestoreFeatures() {
     return this.db.collection('geoPolygons').stateChanges().map(actions => {
       return actions.map(action => {
@@ -24,48 +42,34 @@ export class MapService {
     })
   }
 
-  saveFeature(feature: GeoJson) {
-    feature.properties.id = this.db.createId();
-    this.rtdb.list(`/features`).set(`${feature.properties.id}`, {
-      id: feature.properties.id,
-      type: feature.type,
-      geometry: feature.geometry,
-      properties: feature.properties
-    });
-  }
+  // getPolygons() {
+  //   return this.db.collection('geoPolygons');
+  //   // return this.db.collection('polygons');
+  // }
 
-  getFeatures() {
-    return this.rtdb.list('/features');
-  }
+  // getPolygonById(id: string) {
+  //   return this.getPolygons().doc(id);
+  // }
 
-  getPolygons() {
-    return this.db.collection('geoPolygons');
-    // return this.db.collection('polygons');
-  }
+  // addPolygon(polygon) {
+  //   let id = this.db.createId();
+  //   polygon.properties.id = id;
+  //   console.log('adding to db', polygon);
+  //   return this.getPolygonById(id).set({ id: id, feature: JSON.stringify(polygon) });
+  // }
 
-  getPolygonById(id: string) {
-    return this.getPolygons().doc(id);
-  }
+  // updatePolygon(polygon) {
+  //   console.log('updating', polygon);
+  //   return this.getPolygonById(polygon.properties.id).update({ feature: JSON.stringify(polygon) });
+  // }
 
-  addPolygon(polygon) {
-    let id = this.db.createId();
-    polygon.properties.id = id;
-    console.log('adding to db', polygon);
-    return this.getPolygonById(id).set({ id: id, feature: JSON.stringify(polygon) });
-  }
+  // deletePolygon(id: string) {
+  //   return this.getPolygonById(id).delete();
+  // }
 
-  updatePolygon(polygon) {
-    console.log('updating', polygon);
-    return this.getPolygonById(polygon.properties.id).update({ feature: JSON.stringify(polygon) });
-  }
-
-  deletePolygon(id: string) {
-    return this.getPolygonById(id).delete();
-  }
-
-  fixPolygon(polygon) {
-    let batch = this.db.firestore.batch();
-    let ref = this.getPolygonById(polygon.id)
-  }
+  // fixPolygon(polygon) {
+  //   let batch = this.db.firestore.batch();
+  //   let ref = this.getPolygonById(polygon.id)
+  // }
 
 }
