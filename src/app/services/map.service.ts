@@ -19,7 +19,16 @@ export class MapService {
 
   createFeature(feature: GeoJson) {
     feature.properties.id = this.db.createId();
+    feature.properties.accessLevel = this.randomAccess()
     this.saveFeature(feature);
+  }
+
+  randomAccess() {
+    switch (Math.floor(Math.random() * 3)) {
+      case 0: return "public";
+      case 1: return "private";
+      case 2: return "locked";
+    }
   }
 
   saveFeature(feature: GeoJson) {

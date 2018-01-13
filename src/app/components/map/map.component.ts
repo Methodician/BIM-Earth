@@ -53,8 +53,15 @@ export class MapComponent implements OnInit {
       source: 'firebase',
       type: 'fill',
       paint: {
-        'fill-color': 'rgba(200, 100, 240, 0.4)',
-        'fill-outline-color': 'rgba(200, 100, 240, 1)'
+        'fill-color': [
+          'match',
+          ['get', 'accessLevel'],
+          'public', 'rgb(0, 215, 239)',
+          'private', 'rgb(255, 220, 0)',
+          'locked', 'rgb(255, 65, 54)',
+          'rgb(200, 100, 240)'
+        ], 
+        'fill-opacity': 0.6,
       }
     })
 
