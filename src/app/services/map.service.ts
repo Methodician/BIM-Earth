@@ -29,6 +29,18 @@ export class MapService {
       geometry: feature.geometry,
       properties: feature.properties
     });
+    this.updateHistory(feature);
+  }
+
+  updateHistory(feature: GeoJson) {
+    this.db.collection('features')
+      .doc(feature.properties.id)
+      .collection('history')
+      .doc(this.db.createId())
+      .set({
+        timestamp: fb.firestore.FieldValue.serverTimestamp(),
+        geometry: JSON.stringify(feature.geometry)
+      })  
   }
 
   getFirestoreFeatures() {
