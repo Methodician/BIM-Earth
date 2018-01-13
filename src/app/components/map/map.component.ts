@@ -5,7 +5,7 @@ import { MapService } from '../../services/map.service';
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { FeatureCollection, LayerClass } from '../../models/map';
 import { Map } from 'mapbox-gl/dist/mapbox-gl';
-
+import { GeoJson } from '../../models/map';
 
 @Component({
   selector: 'bim-map',
@@ -16,9 +16,9 @@ export class MapComponent implements OnInit {
   map: Map;
   draw: Draw;
   style = 'mapbox://styles/mapbox/outdoors-v9';
-  center = [-122.41, 37.75];
+  center = [-122.6781, 45.4928];
   bounds: any;
-  source: any = null;
+  source: any; 
 
   constructor(private mapSvc: MapService) {}
 
@@ -33,13 +33,30 @@ export class MapComponent implements OnInit {
   }
 
   initializeMap() {
-    this.mapSvc.getFeatures().subscribe(features => {
-      const collection = new FeatureCollection(features);
-      this.source = {
-        type: 'geojson',
-        data: collection
-      };
+    this.map.addSource('firebase', {
+      type: 'geojson', 
+      data: {
+        type: 'FeatureCollection',
+        features: []
+      }
+    })
+
+    this.source = this.map.getSource('firebase');
+    
+    this.mapSvc.getFeatures().valueChanges().subscribe(features => {
+      const collection = new FeatureCollection((features as GeoJson[]));
+      this.source.setData(collection);
     });
+
+    this.map.addLayer({
+      id: 'boundaries',
+      source: 'firebase',
+      type: 'fill',
+      paint: {
+        'fill-color': 'rgba(200, 100, 240, 0.4)',
+        'fill-outline-color': 'rgba(200, 100, 240, 1)'
+      }
+    })
 
     this.map.addControl(new Mapbox.NavigationControl());
   }
@@ -55,11 +72,13 @@ export class MapComponent implements OnInit {
 
   addEventHandlers() {
     this.map.on('draw.create', e => {
-      this.createGeoPoly(e.features);
+      this.draw.setFeatureProperty(e.features[0].id, 'newFeature', true);
     });
 
-    this.map.on('draw.update', e => {
-      this.updateGeoPoly(e.features);
+    this.map.on('draw.modechange', e => {
+      if(e.mode == 'simple_select') {
+        this.saveDrawBuffer();
+      }
     });
 
     this.map.on('contextmenu', 'boundaries', e => {
@@ -69,6 +88,17 @@ export class MapComponent implements OnInit {
       this.draw.changeMode('direct_select', { featureId: feature.id });
       this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]])
     })
+  }
+
+  saveDrawBuffer() {
+    let feature = this.draw.getAll().features[0];
+    if (feature.properties.newFeature) {
+      delete feature.properties.newFeature
+      this.mapSvc.saveFeature(feature)
+    }
+    // else this.mapSvc.updateFeature(feature)
+    this.draw.delete(feature.id);
+    this.map.setFilter('boundaries', null);
   }
 
   flyToMe() {

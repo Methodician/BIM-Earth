@@ -3,17 +3,17 @@ import { environment } from '../../environments/environment';
 import * as mapboxgl from 'mapbox-gl';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as fb from 'firebase';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { GeoJson } from '../models/map';
 
 @Injectable()
 export class MapService {
 
-  constructor(
-    private db: AngularFirestore
-  ) {
+  constructor(private db: AngularFirestore, private rtdb: AngularFireDatabase) {
     (mapboxgl as any).accessToken = environment.mapbox.accessToken;
   }
 
-  getFeatures() {
+  getFirestoreFeatures() {
     return this.db.collection('geoPolygons').stateChanges().map(actions => {
       return actions.map(action => {
         const data = action.payload.doc.data()
@@ -22,6 +22,20 @@ export class MapService {
         return feature; 
       })
     })
+  }
+
+  saveFeature(feature: GeoJson) {
+    feature.properties.id = this.db.createId();
+    this.rtdb.list(`/features`).set(`${feature.properties.id}`, {
+      id: feature.properties.id,
+      type: feature.type,
+      geometry: feature.geometry,
+      properties: feature.properties
+    });
+  }
+
+  getFeatures() {
+    return this.rtdb.list('/features');
   }
 
   getPolygons() {
