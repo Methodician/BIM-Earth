@@ -85,8 +85,8 @@ export class MapComponent implements OnInit {
         //   }
         // });
         //// adds editable layer
-        // let featureIds = this.draw.add(features);
-        // console.log(featureIds);
+        let featureIds = this.draw.add(features);
+        console.log(featureIds);
       });
 
     });
