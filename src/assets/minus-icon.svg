@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="7px" viewBox="0 0 30 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="new-user-hompage" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1380.000000, -976.000000)">
+        <g id="map-zoom-btns" transform="translate(1370.000000, 884.000000)" fill="#FAFAFA">
+            <g id="zoom-out-btn" transform="translate(0.000000, 70.000000)">
+                <rect id="Rectangle-3" x="10" y="22" width="30" height="7" rx="3.5"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

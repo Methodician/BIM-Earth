@@ -1,0 +1,19 @@
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+
+
+.nav-container {
+	// @include size(100px, 300px);
+	// border: $tb-red;
+
+	input {
+		@include size(35px, 600px);
+		font-family: 'Ubuntu', sans-serif;
+		text-decoration: none;
+		font-size: 16px;
+
+		&:focus {
+			border: none;
+		}
+	}
+}

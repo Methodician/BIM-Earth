@@ -23,6 +23,7 @@ time, mark, audio, video {
 	border: 0;
 	font-size: 100%;
 	font: inherit;
+	font-family: 'Ubuntu', sans-serif;
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -47,4 +48,74 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+
+// CSS to manipulate the Mapbox ui that gets rendered in the div
+// This div holds two divs at the moment. The first(1) one being the boundary create and delete buttons, the second(2) being zoom-in/zoom-out and direction functions.
+.mapboxgl-ctrl-top-right {
+	
+	div:nth-child(1) {
+		width: 55px;
+		background-color: rgba(0, 0, 0, 0);
+		box-shadow: none;
+		@include position(fixed, top 164px left 20px);
+
+		button {
+			@include size(50px, 50px);
+			border-radius: 50%;
+			background-color: $primary;
+			transition: background-color ease-in-out .15s, border ease-in-out .15s;
+			margin-bottom: 20px;
+			box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.50);
+			border: none;
+			&:hover {
+				border: 3px solid #fafafa;
+				background-color: $secondary;
+			}
+		}
+
+		button:nth-of-type(1) {
+			background-image: url("../assets/boundary-icon.svg");
+		}
+
+		button:nth-of-type(2) {
+			background-image: url("../assets/trash-icon.svg");
+		}
+	}
+
+	div:nth-child(2) {
+		margin: 0;
+		width: 40px;
+		background-color: rgba(0, 0, 0, 0);
+		box-shadow: none;
+		@include position(fixed, bottom 20px right 15px);
+
+		button {
+			@include size(35px, 35px);
+			border-radius: 50%;
+			background-color: $primary;
+			transition: background-color ease-in-out .15s, border ease-in-out .15s;
+			margin-bottom: 20px;
+			box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.50);
+			border: none;
+			&:hover {
+				border: 3px solid #fafafa;
+				background-color: $secondary;
+			}
+		}
+
+		button:nth-of-type(1) {
+			background-image: url("../assets/plus1-icon.svg");
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+
+		button:nth-of-type(2) {
+			background-image: url("../assets/minus1-icon.svg");
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+
+		
+	}
 }

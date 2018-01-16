@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="31px" viewBox="0 0 30 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>plus icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="new-user-hompage" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1380.000000, -894.000000)">
+        <g id="map-zoom-btns" transform="translate(1370.000000, 884.000000)" fill="#FAFAFA">
+            <g id="zoom-in-btn">
+                <g id="plus-icon" transform="translate(10.000000, 10.000000)">
+                    <rect id="Rectangle-3-Copy" x="0" y="12" width="30" height="7" rx="3.5"></rect>
+                    <rect id="Rectangle-3-Copy-2" transform="translate(15.000000, 15.500000) rotate(90.000000) translate(-15.000000, -15.500000) " x="0" y="12" width="30" height="7" rx="3.5"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
