@@ -1,0 +1,82 @@
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+// Styles for container and buttons when no user is logged in
+.login-signup-container {
+	@include position(fixed, top 20px right 10px);
+	button {
+		height: 35px;
+		color: $light;
+		background-color: $secondary;
+		margin-right: 20px;
+		border-radius: 5px;
+		transition: ease-in-out background-color .15s, ease-in-out border .15s;
+		&:hover {
+			background-color: $primary;
+			border: 1px solid $light;
+		}
+	}
+	// media queries for login-signup container
+	@include screen(tablet) {
+		display: none;
+	}
+	@include screen(mobile) {
+		display: none;
+	}
+}
+
+// styles for tablet hamburger menu button and menu trigger container
+.tablet-menu {
+	display: none;
+	@include size(50px, 50px);
+	font-size: 24px;
+	color: $dark;
+	padding: 0;
+	transition: ease-in-out background-color .2s, ease-in-out color .2s, ease-in-out border .2s;
+	&:hover {
+		background-color: $primary;
+		color: $light;
+		border: 2px solid $light;
+	}
+	// media queries for tablet menu
+	@include screen(tablet) {
+		display: block;
+		@include position(fixed, top 14px right 20px);
+	}
+	@include screen(mobile) {
+		display: block;
+		@include position(fixed, top 16px right 10px);
+	}
+}
+
+// styles for logged in user button.
+.user-account-container {
+	@include size(75px, 200px);
+	@include position(fixed, top 0 right 0);
+	display: none;
+	.account-btn{
+		height: 100%;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		background-color: rgba(0 , 0, 0, .1);
+		border: none;
+		box-shadow: none;
+		align-items: center;
+		cursor: pointer;
+		border-radius: 0px 0px 0px 5px;
+		transition: ease-in-out background-color .2s, ease-in-out color .2s;
+		color: $dark;
+		img {
+			@include size(40px, 40px);
+			border-radius: 50%;
+			margin-left: 20px;
+		}
+		p {
+			margin-right: 20px;
+		}
+		&:hover {
+			background-color: $primary;
+			color: $light;
+		}
+	}
+}
