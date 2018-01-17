@@ -11,7 +11,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // test import module to make sure that angular material is working
-import {MatIconModule} from '@angular/material';
+import {MatIconModule, MatButtonModule, MatMenuModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
@@ -20,6 +20,7 @@ import { NavComponent } from './components/nav/nav.component';
 
 import { MapService } from './services/map.service';
 import { UiComponent } from './components/ui/ui.component';
+import { AccountBtnsComponent } from './components/account-btns/account-btns.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { UiComponent } from './components/ui/ui.component';
     AppComponent,
     MapComponent,
     NavComponent,
-    UiComponent
+    UiComponent,
+    AccountBtnsComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +40,8 @@ import { UiComponent } from './components/ui/ui.component';
     AngularFireDatabaseModule,
     BrowserAnimationsModule,
     MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
   ],
   providers: [
     MapService

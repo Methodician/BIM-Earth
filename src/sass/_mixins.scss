@@ -47,8 +47,9 @@
 // Mixin for MQ's, I need to make some modifcations to this one as I go but it should make scss files look ALOT cleaner.
 @mixin screen($size) {
   $desktop: "(min-width: 1024px)";
-  $tablet: "(min-width: 768px) and (max-width: 1023px)";
+  $tablet: "(min-width: 768px) and (max-width: 1200px)";
   $mobile: "(max-width: 767px)";
+  $mobile-xs: "(max-width: 467px)";
   @if $size == desktop {
     @media only screen and #{$desktop} {
       @content;
@@ -61,6 +62,11 @@
   }
   @else if $size == mobile {
     @media only screen and #{$mobile} {
+      @content;
+    }
+  }
+  @else if $size == mobile-xs {
+    @media only screen and #{$mobile-xs} {
       @content;
     }
   }
