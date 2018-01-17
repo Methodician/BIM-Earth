@@ -2,12 +2,19 @@
 @import "../../../sass/mixins.scss";
 
 #ui-container {
-
 	#logo {
 		@include position(fixed, top 20px left 20px);
 		box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.50);
 		cursor: pointer;
 		border-radius: 100%;
+		// media queries for the logo in top left corner of app
+		@include screen(tablet) {
+			@include size(70px,70px);
+		}
+		@include screen(mobile) {
+			@include size(60px, 60px);
+			@include position(fixed, top 10px left 10px);
+		}
 	}
 
 	#lock-filter-container {
@@ -17,7 +24,13 @@
 		flex-direction: column;
 		justify-content: center;
 		align-content: center;
-
+		// media queries for the locl-filter container
+		@include screen(tablet) {
+			@include position(fixed, top 292px left 20px);
+		}
+		@include screen(mobile) {
+			@include position(fixed, top 292px left 10px);
+		}
 		button {
 			@include size(50px, 50px);
 			border-radius: 50%;
@@ -33,15 +46,20 @@
 				border: 3px solid #fafafa;
 				background-color: $secondary;
 			}
+			// Media queries for mapbox buttons
+			@include screen(tablet) {
+				@include size(40px, 40px);
+				font-size: 14px;
+			}
+			@include screen(mobile) {
+				@include size(40px, 40px);
+			}
 		}
 	}
-
-
-.navbar-container {
-	@include position(fixed, top 0px right 50%);
-}
-
-
-
-
+	.navbar-container {
+		@include position(fixed, top 10px left 0);
+		width: 100%;
+		display: flex; 
+		justify-content: center;
+	}
 } 
