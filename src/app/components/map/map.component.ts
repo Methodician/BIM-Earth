@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import * as mbox from 'mapbox-gl';
-import * as mboxDraw from '@mapbox/mapbox-gl-draw';
+import * as Mapbox from 'mapbox-gl';
+import * as Draw from '@mapbox/mapbox-gl-draw';
 import { MapService } from '../../services/map.service';
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { FeatureCollection, LayerClass } from '../../models/map';
 import { Map } from 'mapbox-gl/dist/mapbox-gl';
-
+import { GeoJson } from '../../models/map';
 
 @Component({
   selector: 'bim-map',
@@ -14,120 +14,131 @@ import { Map } from 'mapbox-gl/dist/mapbox-gl';
 })
 export class MapComponent implements OnInit {
   map: Map;
-  draw: any;
-
-  lat = 37.75
-  lng = -122.41;
-  // style = 'mapbox://styles/mapbox/streets-v10';
+  draw: Draw;
   style = 'mapbox://styles/mapbox/outdoors-v9';
+  center = [-122.6781, 45.4928];
+  bounds: any;
+  source: any; 
 
-  polyCollection: AngularFirestoreCollection<any>;
+  constructor(private mapSvc: MapService) {}
 
-  constructor(private mapSvc: MapService) {
-  }
+  ngOnInit() {}
 
-  ngOnInit() {
+  private mapLoaded(map) {
+    this.map = map;
     this.initializeMap();
-    this.polyCollection = this.mapSvc.getPolygons();
+    this.initializeDrawing();
+    this.addEventHandlers()
+    this.flyToMe();
   }
 
-  private initializeMap() {
-    this.buildMap();
-  }
+  initializeMap() {
+    this.map.addSource('firebase', {
+      type: 'geojson', 
+      data: {
+        type: 'FeatureCollection',
+        features: []
+      }
+    })
 
-  buildMap() {
-
-    this.map = new mbox.Map({
-      container: 'map',
-      style: this.style,
-      zoom: 13,
-      center: [this.lng, this.lat]
+    this.source = this.map.getSource('firebase');
+    
+    this.mapSvc.getFeatures().valueChanges().subscribe(features => {
+      const collection = new FeatureCollection((features as GeoJson[]));
+      this.source.setData(collection);
     });
 
-    this.draw = new mboxDraw({
-      displayControlsDefault: false,
-      controls: {
-        polygon: true,
-        trash: true
+    this.map.addLayer({
+      id: 'boundaries',
+      source: 'firebase',
+      type: 'fill',
+      paint: {
+        'fill-color': [
+          'match',
+          ['get', 'accessLevel'],
+          'public', 'rgb(0, 215, 239)',
+          'private', 'rgb(255, 220, 0)',
+          'locked', 'rgb(255, 65, 54)',
+          'rgb(200, 100, 240)'
+        ], 
+        'fill-opacity': 0.6,
       }
+    })
+
+  initializeDrawing() {
+    this.draw = new Draw({
+      displayControlsDefault: false,
+      controls: { polygon: true, trash: true }
     });
 
     this.map.addControl(this.draw);
-    this.map.addControl(new mbox.NavigationControl());
+    this.map.addControl(new Mapbox.NavigationControl());
+  }
 
-
-
-    this.map.on('load', e => {
-      console.log('map load:', e);
-
-
-      this.polyCollection.valueChanges().subscribe(encodedPolygons => {
-        let polygons = encodedPolygons.map(poly => {
-          let feature = JSON.parse(poly.feature);
-          if (feature.properties.id)
-            feature.id = feature.properties.id;
-          delete feature.id;
-          console.log(feature);
-          return feature;
-        });
-        let features = new FeatureCollection(polygons);
-        ////  adds clickable layer -- frustrating that click event does not seem to include coords...
-        // this.map.addLayer({
-        //   id: 'boundaries',
-        //   type: 'fill',
-        //   source: {
-        //     type: 'geojson',
-        //     data: features as any
-        //   },
-        //   paint: {
-        //     'fill-color': 'rgba(200, 100, 240, 0.4)',
-        //     'fill-outline-color': 'rgba(200, 100, 240, 1)'
-        //   }
-        // });
-        //// adds editable layer
-        let featureIds = this.draw.add(features);
-        console.log(featureIds);
-      });
-
-    });
-
+  addEventHandlers() {
     this.map.on('draw.create', e => {
-      this.createGeoPoly(e.features);
-    });
-    this.map.on('draw.delete', e => {
-      console.log('draw delete:', e);
-    });
-    this.map.on('draw.update', e => {
-      this.updateGeoPoly(e.features);
+      this.draw.setFeatureProperty(e.features[0].id, 'newFeature', true);
     });
 
-    this.map.on('click', 'boundaries', e => {
-      console.log('clicked:', e.features[0]);
+    this.map.on('draw.modechange', e => {
+      if(e.mode == 'simple_select') {
+        this.saveDrawBuffer();
+      }
     });
 
+    this.map.on('contextmenu', 'boundaries', e => {
+      let feature = e.features[0];
+      feature.id = feature.properties.id;
+      this.draw.add(feature);
+      this.draw.changeMode('direct_select', { featureId: feature.id });
+      this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]]);
+    })
+  }
+
+  saveDrawBuffer() {
+    let feature = this.draw.getAll().features[0];
+    if (feature.properties.newFeature) {
+      delete feature.properties.newFeature;
+      this.mapSvc.createFeature(feature);
+    } else this.mapSvc.saveFeature(feature)
+    this.draw.delete(feature.id);
+    this.map.setFilter('boundaries', null);
+  }
+
+  flyToMe() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(pos => {
-        this.lat = pos.coords.latitude;
-        this.lng = pos.coords.longitude;
+        this.center = [pos.coords.longitude, pos.coords.latitude];
         this.map.flyTo({
-          center: [this.lng, this.lat]
+          center: this.center
         });
       })
     }
   }
 
-  createGeoPoly(features) {
-    console.log('creating feature', features[0]);
-    this.mapSvc.addPolygon(features[0]);
-  }
+  // boundaryClick(e) {
+  //   console.log('clicked', e.features);
+  //   const featureId = e.features[0].properties.id;
+  //   console.log(featureId);
+  //   let clickedFeature = this.source.data.features.filter(feature => {
+  //     return feature.id == featureId;
+  //   })[0];
+  //   console.log(clickedFeature);
+  //   this.draw.add(clickedFeature);
+  // }
 
-  updateGeoPoly(features) {
-    console.log('updating feature', features[0]);
-    this.mapSvc.updatePolygon(features[0]);
-  }
+  // createGeoPoly(features) {
+  //   console.log('creating feature', features[0]);
+  //   this.mapSvc.addPolygon(features[0]);
+  // }
 
-  decodePolygon(encodedPolygon) {
-    let feature = JSON.parse(encodedPolygon.geometry);
-    return feature;
-  }
+  // updateGeoPoly(features) {
+  //   console.log('updating feature', features[0]);
+  //   this.mapSvc.updatePolygon(features[0]);
+  // }
+
+  // decodePolygon(encodedPolygon) {
+  //   let feature = JSON.parse(encodedPolygon.geometry);
+  //   return feature;
+  // }
 }
