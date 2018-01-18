@@ -22,21 +22,7 @@ export class MapComponent implements OnInit {
 
   constructor(private mapSvc: MapService) {}
 
-  ngOnInit() {
-    this.buildMap()
-  }
-
-  private buildMap() {
-    // this.map = new Mapbox.Map({
-    //   container: 'map',
-    //   style: this.style,
-    //   zoom: 9,
-    //   center: this.center
-    // })
-    // this.map.on('load', e => {
-    //   this.mapLoaded();
-    // })
-  }
+  ngOnInit() {}
 
   private mapLoaded(map) {
     this.map = map;
@@ -78,9 +64,6 @@ export class MapComponent implements OnInit {
         'fill-opacity': 0.6,
       }
     })
-
-    
-  }
 
   initializeDrawing() {
     this.draw = new Draw({
