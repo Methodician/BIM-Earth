@@ -18,13 +18,13 @@ export class MapComponent implements OnInit {
   style = 'mapbox://styles/mapbox/outdoors-v9';
   center = [-122.6781, 45.4928];
   bounds: any;
-  source: any; 
+  source: any;
 
-  constructor(private mapSvc: MapService) {}
+  constructor(private mapSvc: MapService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  private mapLoaded(map) {
+  mapLoaded(map) {
     this.map = map;
     this.initializeMap();
     this.initializeDrawing();
@@ -34,7 +34,7 @@ export class MapComponent implements OnInit {
 
   initializeMap() {
     this.map.addSource('firebase', {
-      type: 'geojson', 
+      type: 'geojson',
       data: {
         type: 'FeatureCollection',
         features: []
@@ -42,7 +42,7 @@ export class MapComponent implements OnInit {
     })
 
     this.source = this.map.getSource('firebase');
-    
+
     this.mapSvc.getFeatures().valueChanges().subscribe(features => {
       const collection = new FeatureCollection((features as GeoJson[]));
       this.source.setData(collection);
@@ -60,10 +60,12 @@ export class MapComponent implements OnInit {
           'private', 'rgb(255, 220, 0)',
           'locked', 'rgb(255, 65, 54)',
           'rgb(200, 100, 240)'
-        ], 
+        ],
         'fill-opacity': 0.6,
       }
-    })
+    });
+
+  }
 
   initializeDrawing() {
     this.draw = new Draw({
@@ -81,7 +83,7 @@ export class MapComponent implements OnInit {
     });
 
     this.map.on('draw.modechange', e => {
-      if(e.mode == 'simple_select') {
+      if (e.mode == 'simple_select') {
         this.saveDrawBuffer();
       }
     });
