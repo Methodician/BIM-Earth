@@ -1,0 +1,128 @@
+// import for themeing through angular material, using a default one until I make a custom one for the sites colors
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+@import "./vars";
+@import "./mixins";
+
+// CSS Reset
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	font-family: 'Ubuntu', sans-serif;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+// For inputs and text areas
+input:focus, textarea:focus {
+	outline: none;
+}
+
+// CSS to manipulate the Mapbox ui that gets rendered in the div
+// This div holds two divs at the moment. The first(1) one being the boundary create and delete buttons, the second(2) being zoom-in/zoom-out and direction functions.
+.mapboxgl-ctrl-top-right {	
+	div:nth-child(1) {
+		width: 55px;
+		background-color: rgba(0, 0, 0, 0);
+		box-shadow: none;
+		@include position(fixed, top 164px left 20px);
+		// media querie for mapbox control container
+		@include screen(mobile) {
+			@include position(fixed, top 164px left 10px);
+		}
+		button {
+			@include size(50px, 50px);
+			border-radius: 50%;
+			background-color: $primary;
+			transition: background-color ease-in-out .15s, border ease-in-out .15s;
+			margin-bottom: 20px;
+			box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.50);
+			border: none;
+			&:hover {
+				border: 3px solid #fafafa;
+				background-color: $secondary;
+			}
+			// media queries for the bottomr right zoom-in/zoom-out and directional buttons
+			@include screen(tablet) {
+				@include size(40px, 40px);
+			}
+			@include screen(mobile) {
+				@include size(40px, 40px);
+			}
+		}
+		button:nth-of-type(1) {
+			background-image: url("../assets/boundary-icon.svg");
+		}
+		button:nth-of-type(2) {
+			background-image: url("../assets/trash-icon.svg");
+		}
+	}
+
+	div:nth-child(2) {
+		margin: 0;
+		width: 40px;
+		background-color: rgba(0, 0, 0, 0);
+		box-shadow: none;
+		@include position(fixed, bottom 20px right 15px);
+		button {
+			@include size(35px, 35px);
+			border-radius: 50%;
+			background-color: $primary;
+			transition: background-color ease-in-out .15s, border ease-in-out .15s;
+			margin-bottom: 20px;
+			box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.50);
+			border: none;
+			&:hover {
+				border: 3px solid #fafafa;
+				background-color: $secondary;
+			}
+		}
+		button:nth-of-type(1) {
+			background-image: url("../assets/plus1-icon.svg");
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+		button:nth-of-type(2) {
+			background-image: url("../assets/minus1-icon.svg");
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+	}
+}

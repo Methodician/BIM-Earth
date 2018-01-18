@@ -1,0 +1,73 @@
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+.nav-container {
+	height: 55px;
+	display: flex;
+	.search-btn {
+		@include size(37px, 37px);
+		background-color: $light;
+		border-radius: 5px 0px 0px 5px;
+		font-size: 26px;
+		cursor: pointer;
+		align-self: center;
+		transition: background-color ease-in-out .15s, color ease-in-out .15s;
+		.search-icon {
+			color: $dark;
+		}
+		&:hover {
+			background-color: $primary;
+			.search-icon {
+				color: $light;
+			}
+		}
+	}
+
+	.search-input {
+		@include size(35px, 600px);
+		font-family: 'Ubuntu', sans-serif;
+		text-decoration: none;
+		background-color: $light;
+		font-size: 18px;
+		border-radius: 0px 5px 5px 0px; 
+		border: none;
+		box-shadow: 1px 1px 2px 0 rgba(0,0,0,0.50);
+		padding: 0;
+		align-self: center;
+		color: $dark;
+		padding-left: 10px;
+		&:focus {
+			border: none;
+		}
+		// media queries for search-input
+		@include screen(tablet) {
+			@include size(35px, 300px);
+		}
+		@include screen(mobile) {
+			@include size(35px, 250px);
+		}
+		@include screen(mobile-xs) {
+			@include size(35px, 150px);
+		}
+	}
+
+	.search-cog {
+		align-self: center;
+		margin-left: 20px;
+		font-size: 28px;
+		color: $dark;
+		cursor: pointer;
+		transition: color ease-in-out .15s;
+		&:hover {
+			color: $primary;
+		}
+		// media queries for search cog
+		@include screen(mobile) {
+			font-size: 22px;
+			margin-left: 10px;
+		}
+	}
+	// media queries for nav container
+	@include screen(mobile) {
+		margin-left: 20px;
+	}
+}

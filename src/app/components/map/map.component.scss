@@ -1,3 +1,6 @@
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+
 mgl-map {
     height: 100vh;
     width: 100vw;
@@ -5,4 +8,9 @@ mgl-map {
     position: absolute;
     top: 0;
     left: 0;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
 }
