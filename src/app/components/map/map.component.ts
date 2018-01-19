@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as Mapbox from 'mapbox-gl';
 import * as Draw from '@mapbox/mapbox-gl-draw';
-import { MapService } from '../../services/map.service';
+import { MapService } from '@services/map.service';
 import { AngularFirestoreCollection } from 'angularfire2/firestore';
-import { FeatureCollection, LayerClass } from '../../models/map';
+import { FeatureCollection, LayerClass } from '@models/map';
 import { Map } from 'mapbox-gl/dist/mapbox-gl';
-import { GeoJson } from '../../models/map';
+import { GeoJson } from '@models/map';
+import { Channels } from '@enums/channels.enum';
 
 @Component({
   selector: 'bim-map',
@@ -53,19 +54,29 @@ export class MapComponent implements OnInit {
       id: 'boundaries',
       source: 'firebase',
       type: 'fill',
-      paint: {
-        'fill-color': [
-          'match',
-          ['get', 'accessLevel'],
-          'public', 'rgb(0, 215, 239)',
-          'private', 'rgb(255, 220, 0)',
-          'locked', 'rgb(255, 65, 54)',
-          'rgb(200, 100, 240)'
-        ],
-        'fill-opacity': 0.6,
-      }
+      paint: this.layerPaint
     });
 
+  }
+
+  layerPaint = {
+    'fill-color': [
+      'match',
+      ['get', 'accessLevel'],
+      'public', 'rgba(0, 215, 239, 0.3)',
+      'private', 'rgba(255, 220, 0, 0.3)',
+      'locked', 'rgba(255, 65, 54, 0.3)',
+      'rgba(200, 100, 240, 0.3)'
+    ],
+    'fill-outline-color': [
+      'match',
+      ['get', 'accessLevel'],
+      'public', 'rgba(0, 215, 239, 1)',
+      'private', 'rgba(255, 220, 0, 1)',
+      'locked', 'rgba(255, 65, 54, 1)',
+      'rgba(200, 100, 240, 1)'
+
+    ]
   }
 
   initializeDrawing() {

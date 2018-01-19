@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
-import { MapService } from '../../services/map.service';
-import { GeoJson } from '../../models/map';
+import { MapService } from '@services/map.service';
+import { GeoJson } from '@models/map';
 
 @Component({
   selector: 'bim-boundary-details-menu',
@@ -17,7 +17,7 @@ export class BoundaryDetailsMenuComponent implements OnInit {
     private ref: ChangeDetectorRef
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   saveFeature(properties) {
     console.log('saving feature with properties: ', properties)
