@@ -20,6 +20,7 @@ export class MapComponent implements OnInit {
   bounds: any;
   source: any;
   newFeatureId: string = "";
+  selectedFeature: GeoJson = null;
 
   constructor(private mapSvc: MapService, private ref: ChangeDetectorRef) { }
 
@@ -81,7 +82,7 @@ export class MapComponent implements OnInit {
   addEventHandlers() {
     this.map.on('draw.create', e => {
       this.newFeatureId = e.features[0].id;
-      this.ref.detectChanges()
+      this.ref.detectChanges();
     });
 
     this.map.on('draw.modechange', e => {
@@ -89,6 +90,11 @@ export class MapComponent implements OnInit {
         // this.saveDrawBuffer();
       }
     });
+
+    this.map.on('click', 'boundaries', e => {
+      this.selectedFeature = e.features[0];
+      this.ref.detectChanges();
+    })
 
     this.map.on('contextmenu', 'boundaries', e => {
       let feature = e.features[0];

@@ -9,6 +9,7 @@ import { GeoJson } from '../../models/map';
 })
 export class BoundaryDetailsMenuComponent implements OnInit {
   @Input() newFeatureId;
+  @Input() selectedFeature;
   @Input() draw;
   @Input() map;
 
@@ -20,7 +21,6 @@ export class BoundaryDetailsMenuComponent implements OnInit {
   ngOnInit() {}
 
   saveFeature(properties) {
-    console.log('saving feature with properties: ', properties)
     this.draw.setFeatureProperty(this.newFeatureId, 'accessLevel', properties.accessLevel);
     this.draw.setFeatureProperty(this.newFeatureId, 'zapId', properties.zapId)
     let feature = this.draw.getAll().features[0];

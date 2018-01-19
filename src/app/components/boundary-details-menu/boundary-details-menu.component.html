@@ -3,3 +3,9 @@
   <bim-boundary-form #form></bim-boundary-form>
   <button [disabled]="form.invalid" (click)="saveFeature(form.value); form.clear()">Save Boundary</button>
 </div>
+<div class="boundary-details" *ngIf="selectedFeature">
+  <p>Boundary Details</p>
+  <p>Zap ID: {{ selectedFeature.properties.zapId }}</p>
+  <p>Channel: {{selectedFeature.properties.channel}}</p>
+  <button>Edit Boundary</button>
+</div>

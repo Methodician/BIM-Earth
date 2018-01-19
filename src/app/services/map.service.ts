@@ -22,8 +22,7 @@ export class MapService {
 
   createFeature(feature: GeoJson) {
     feature.properties.id = this.db.createId();
-    // feature.properties.accessLevel = feature.properties.accessLevel;
-    // feature.zapId = 
+    feature.properties.channel = 0;
     this.saveFeature(feature);
   }
 
