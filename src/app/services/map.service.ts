@@ -5,9 +5,12 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import * as fb from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { GeoJson } from '../models/map';
+import { BehaviorSubject } from 'rxjs/Rx';
 
 @Injectable()
 export class MapService {
+  selectedBoundary: GeoJson = null;
+  selectedBoundary$: BehaviorSubject<GeoJson> = new BehaviorSubject(null);
 
   constructor(private db: AngularFirestore, private rtdb: AngularFireDatabase) {
     (mapboxgl as any).accessToken = environment.mapbox.accessToken;
@@ -61,6 +64,11 @@ export class MapService {
         return feature; 
       })
     })
+  }
+
+  setSelectedBoundary(boundary: GeoJson) {
+    this.selectedBoundary = boundary;
+    this.selectedBoundary$.next(boundary);
   }
 
   // getPolygons() {

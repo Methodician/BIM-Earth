@@ -88,6 +88,10 @@ export class MapComponent implements OnInit {
       }
     });
 
+    this.map.on('click', 'boundaries', e => {
+      this.mapSvc.setSelectedBoundary(e.features[0]);
+    });
+
     this.map.on('contextmenu', 'boundaries', e => {
       let feature = e.features[0];
       feature.id = feature.properties.id;
