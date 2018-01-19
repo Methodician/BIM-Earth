@@ -1,8 +1,8 @@
 <form [formGroup]="form">
-  <label>Zap ID: </label>
-  <input type="text" formControlName="zapId">
-  <label>Access Level:</label>
-  <select formControlName="accessLevel">
+  <label for="zap-id-input">Zap ID: </label>
+  <input class="input-styles" type="text" formControlName="zapId" name="zap-id-input">
+  <label for="boundary-select">Access Level:</label>
+  <select class="input-styles" formControlName="accessLevel" name="boundary-select">
     <option *ngFor="let level of accessLevels" [value]="level">{{level}}</option>
   </select>
 </form>
