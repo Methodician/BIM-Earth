@@ -1,8 +1,11 @@
 <form [formGroup]="form">
   <label>Zap ID: </label>
-  <input type="text" formControlName="zapId">
-  <label>Access Level:</label>
-  <select formControlName="accessLevel">
-    <option *ngFor="let level of accessLevels" [value]="level">{{level}}</option>
+  <input type="text"
+         formControlName="zapId">
+  <label>Channel:</label>
+  <select formControlName="accessLevel"
+          (change)="channelSelect($event.target.value)">
+    <option *ngFor="let channel of channels"
+            [value]="channel">{{channelName(channel)}}</option>
   </select>
 </form>
