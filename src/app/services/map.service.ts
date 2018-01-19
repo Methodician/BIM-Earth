@@ -22,8 +22,8 @@ export class MapService {
 
   createFeature(feature: GeoJson) {
     feature.properties.id = this.db.createId();
-    // feature.properties.accessLevel = feature.properties.accessLevel;
-    // feature.zapId = 
+    //  Placeholder so our fill color expression doesn't break with test data
+    feature.properties.accessLevel = '';
     this.saveFeature(feature);
   }
 

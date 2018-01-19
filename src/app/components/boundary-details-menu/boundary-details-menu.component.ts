@@ -21,7 +21,7 @@ export class BoundaryDetailsMenuComponent implements OnInit {
 
   saveFeature(properties) {
     console.log('saving feature with properties: ', properties)
-    this.draw.setFeatureProperty(this.newFeatureId, 'accessLevel', properties.accessLevel);
+    this.draw.setFeatureProperty(this.newFeatureId, 'channel', properties.channel);
     this.draw.setFeatureProperty(this.newFeatureId, 'zapId', properties.zapId)
     let feature = this.draw.getAll().features[0];
     this.mapSvc.createFeature(feature);

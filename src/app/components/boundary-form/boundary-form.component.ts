@@ -14,7 +14,7 @@ export class BoundaryFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       zapId: ['US-OR-MLT-00-' + this.randomString(), Validators.required],
-      accessLevel: ['', Validators.required]
+      channel: [0, Validators.required]
     })
   }
 
@@ -24,9 +24,12 @@ export class BoundaryFormComponent implements OnInit {
   }
 
   channelSelect(channelKey: number) {
+    let key = channelKey.toString();
+    if (key.length < 2)
+      key = '0'.concat(key);
     let zapId = this.form.controls.zapId.value;
     let zapArray = zapId.split('');
-    zapArray.splice(10, 2, channelKey);
+    zapArray.splice(10, 2, key);
     zapId = zapArray.join('');
     this.form.controls.zapId.setValue(zapId);
   }
@@ -48,6 +51,6 @@ export class BoundaryFormComponent implements OnInit {
   }
 
   clear() {
-    this.form.setValue({ zapId: "", accessLevel: "" })
+    this.form.setValue({ zapId: "", channel: 0 })
   }
 }

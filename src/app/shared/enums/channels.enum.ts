@@ -1,4 +1,7 @@
 export enum Channels {
+    //  Grays, whites, and blacks
+    Open = 0,
+    Transport = 1,
     //  Reds
     Camp = 10,
     Climb = 11,

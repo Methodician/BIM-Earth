@@ -62,20 +62,20 @@ export class MapComponent implements OnInit {
   layerPaint = {
     'fill-color': [
       'match',
-      ['get', 'accessLevel'],
-      'public', 'rgba(0, 215, 239, 0.3)',
-      'private', 'rgba(255, 220, 0, 0.3)',
-      'locked', 'rgba(255, 65, 54, 0.3)',
+      ['get', 'channel'],
+      0, 'rgba(0, 215, 239, 0.3)',
+      1, 'rgba(255, 220, 0, 0.3)',
+      2, 'rgba(255, 65, 54, 0.3)',
       'rgba(200, 100, 240, 0.3)'
-    ],
+    ]
+    ,
     'fill-outline-color': [
       'match',
-      ['get', 'accessLevel'],
-      'public', 'rgba(0, 215, 239, 1)',
-      'private', 'rgba(255, 220, 0, 1)',
-      'locked', 'rgba(255, 65, 54, 1)',
+      ['get', 'channel'],
+      0, 'rgba(0, 215, 239, 1)',
+      1, 'rgba(255, 220, 0, 1)',
+      2, 'rgba(255, 65, 54, 1)',
       'rgba(200, 100, 240, 1)'
-
     ]
   }
 
@@ -90,6 +90,19 @@ export class MapComponent implements OnInit {
   }
 
   addEventHandlers() {
+
+    this.map.on('click', 'boundaries', e => {
+      console.log(e);
+      let features = this.source._data.features;
+      for (let f of features) {
+        // if (!f.properties.channel) {
+        f.properties.channel = 1;
+        this.mapSvc.saveFeature(f);
+        // }
+      }
+      console.log(this.source._data.features);
+    });
+
     this.map.on('draw.create', e => {
       this.newFeatureId = e.features[0].id;
       this.ref.detectChanges()

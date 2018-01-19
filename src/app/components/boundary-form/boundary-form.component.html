@@ -3,7 +3,7 @@
   <input type="text"
          formControlName="zapId">
   <label>Channel:</label>
-  <select formControlName="accessLevel"
+  <select formControlName="channel"
           (change)="channelSelect($event.target.value)">
     <option *ngFor="let channel of channels"
             [value]="channel">{{channelName(channel)}}</option>
