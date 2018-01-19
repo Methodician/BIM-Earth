@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as Mapbox from 'mapbox-gl';
 import * as Draw from '@mapbox/mapbox-gl-draw';
 import { MapService } from '../../services/map.service';
@@ -19,8 +19,9 @@ export class MapComponent implements OnInit {
   center = [-122.6781, 45.4928];
   bounds: any;
   source: any;
+  newFeatureId: string = "";
 
-  constructor(private mapSvc: MapService) { }
+  constructor(private mapSvc: MapService, private ref: ChangeDetectorRef) { }
 
   ngOnInit() { }
 
@@ -79,17 +80,14 @@ export class MapComponent implements OnInit {
 
   addEventHandlers() {
     this.map.on('draw.create', e => {
-      this.draw.setFeatureProperty(e.features[0].id, 'newFeature', true);
+      this.newFeatureId = e.features[0].id;
+      this.ref.detectChanges()
     });
 
     this.map.on('draw.modechange', e => {
       if (e.mode == 'simple_select') {
-        this.saveDrawBuffer();
+        // this.saveDrawBuffer();
       }
-    });
-
-    this.map.on('click', 'boundaries', e => {
-      this.mapSvc.setSelectedBoundary(e.features[0]);
     });
 
     this.map.on('contextmenu', 'boundaries', e => {

@@ -2,6 +2,7 @@ import { environment } from '../environments/environment';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -22,6 +23,8 @@ import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { MapService } from './services/map.service';
 import { UiComponent } from './components/ui/ui.component';
 import { AccountBtnsComponent } from './components/account-btns/account-btns.component';
+import { BoundaryDetailsMenuComponent } from './components/boundary-details-menu/boundary-details-menu.component';
+import { BoundaryFormComponent } from './components/boundary-form/boundary-form.component';
 
 
 @NgModule({
@@ -30,10 +33,14 @@ import { AccountBtnsComponent } from './components/account-btns/account-btns.com
     MapComponent,
     NavComponent,
     UiComponent,
-    AccountBtnsComponent
+    AccountBtnsComponent,
+    BoundaryDetailsMenuComponent,
+    BoundaryFormComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     NgxMapboxGLModule.forRoot(environment.mapbox),
     AngularFireModule.initializeApp(environment.firebaseConfig, 'bim-earth'),

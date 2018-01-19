@@ -1,0 +1,5 @@
+<div class="boundary-details" *ngIf="newFeatureId" >
+  <p>Create Boundary</p>
+  <bim-boundary-form #form></bim-boundary-form>
+  <button [disabled]="form.invalid" (click)="saveFeature(form.value); form.clear()">Save Boundary</button>
+</div>
