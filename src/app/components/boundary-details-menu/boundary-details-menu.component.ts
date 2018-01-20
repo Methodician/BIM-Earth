@@ -13,6 +13,8 @@ export class BoundaryDetailsMenuComponent implements OnInit {
   @Input() draw;
   @Input() map;
   @Output() hideMenuRequest = new EventEmitter<null>();
+  @Output() editFeatureRequest = new EventEmitter();
+  editingFeature: boolean = false;
 
   constructor(
     private mapSvc: MapService,
@@ -29,6 +31,25 @@ export class BoundaryDetailsMenuComponent implements OnInit {
     this.draw.delete(this.newFeatureId);
     this.map.setFilter('boundaries', null);
     this.requestHideMenu();
+  }
+
+  updateFeature(properties) {
+    this.editingFeature = false;
+    let featureId = this.selectedFeature.properties.id
+    this.draw.setFeatureProperty(featureId, 'accessLevel', properties.accessLevel);
+    this.draw.setFeatureProperty(featureId, 'zapId', properties.zapId)
+    let feature = this.draw.getAll().features[0];
+    this.mapSvc.saveFeature(feature);
+    this.draw.delete(featureId);
+    this.map.setFilter('boundaries', null);
+    this.requestHideMenu();
+  }
+
+  editFeature() {
+    this.editFeatureRequest.emit(this.selectedFeature);
+    this.editingFeature = true;
+    this.ref.detectChanges()
+    // console.log('not yet enabled');
   }
 
   requestHideMenu() {

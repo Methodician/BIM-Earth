@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./boundary-form.component.scss']
 })
 export class BoundaryFormComponent implements OnInit {
+  @Input() initialValue;
   form: FormGroup;
   accessLevels: string[] = ['public', 'private', 'locked'];
 
@@ -17,7 +18,15 @@ export class BoundaryFormComponent implements OnInit {
     })
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.setInitialValue()
+  }
+
+  setInitialValue() {
+    if(this.initialValue) {
+      this.form.patchValue(this.initialValue)
+    }
+  }
 
   get invalid() {
     return !this.form.valid;

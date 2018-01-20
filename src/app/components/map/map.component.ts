@@ -101,7 +101,13 @@ export class MapComponent implements OnInit {
       }
     })
   }
-
+ 
+  editFeature(feature) {
+    feature.id = feature.properties.id;
+    this.draw.add(feature);
+    this.draw.changeMode('direct_select', { featureId: feature.id });
+    this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]]);
+  }
 
   saveDrawBuffer() {
     let feature = this.draw.getAll().features[0];
