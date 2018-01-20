@@ -37,7 +37,7 @@ export class MapService {
   // }
 
   saveFeature(feature: GeoJson) {
-    feature.properties.channel = feature.properties.channel ? Number(feature.properties.channel) : 0;
+    feature.properties.channel = Number(feature.properties.channel) | 0;
     this.rtdb.list(`/features`).set(`${feature.properties.id}`, {
       id: feature.properties.id,
       type: feature.type,
