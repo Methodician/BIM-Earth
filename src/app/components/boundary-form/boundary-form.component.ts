@@ -23,13 +23,12 @@ export class BoundaryFormComponent implements OnInit {
     this.channels = this.channels.slice(0, this.channels.length / 2);
   }
 
-  channelSelect(channelKey: number) {
-    let key = channelKey.toString();
-    if (key.length < 2)
-      key = '0'.concat(key);
+  channelSelect(channelKey: string) {
+    if (channelKey.length < 2)
+      channelKey = '0'.concat(channelKey);
     let zapId = this.form.controls.zapId.value;
     let zapArray = zapId.split('');
-    zapArray.splice(10, 2, key);
+    zapArray.splice(10, 2, channelKey);
     zapId = zapArray.join('');
     this.form.controls.zapId.setValue(zapId);
   }

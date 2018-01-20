@@ -23,19 +23,21 @@ export class MapService {
   createFeature(feature: GeoJson) {
     feature.properties.id = this.db.createId();
     //  Placeholder so our fill color expression doesn't break with test data
-    feature.properties.accessLevel = '';
+    // feature.properties.accessLevel = '';
+    feature.properties.channel = Number(feature.properties.channel);
     this.saveFeature(feature);
   }
 
-  randomAccess() {
-    switch (Math.floor(Math.random() * 3)) {
-      case 0: return "public";
-      case 1: return "private";
-      case 2: return "locked";
-    }
-  }
+  // randomAccess() {
+  //   switch (Math.floor(Math.random() * 3)) {
+  //     case 0: return "public";
+  //     case 1: return "private";
+  //     case 2: return "locked";
+  //   }
+  // }
 
   saveFeature(feature: GeoJson) {
+    feature.properties.channel = feature.properties.channel ? Number(feature.properties.channel) : 0;
     this.rtdb.list(`/features`).set(`${feature.properties.id}`, {
       id: feature.properties.id,
       type: feature.type,

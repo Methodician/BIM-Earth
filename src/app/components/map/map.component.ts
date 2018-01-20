@@ -16,7 +16,7 @@ import { Channels } from '@enums/channels.enum';
 export class MapComponent implements OnInit {
   map: Map;
   draw: Draw;
-  style = 'mapbox://styles/mapbox/outdoors-v9';
+  style = 'mapbox://styles/mapbox/satellite-v9';
   center = [-122.6781, 45.4928];
   bounds: any;
   source: any;
@@ -63,20 +63,44 @@ export class MapComponent implements OnInit {
     'fill-color': [
       'match',
       ['get', 'channel'],
-      0, 'rgba(0, 215, 239, 0.3)',
-      1, 'rgba(255, 220, 0, 0.3)',
-      2, 'rgba(255, 65, 54, 0.3)',
-      'rgba(200, 100, 240, 0.3)'
+      Channels.Open, 'rgba(81, 66, 81, 0.5)',
+      Channels.Transport, 'rgba(47, 40, 76, 0.5)',
+      Channels.Camp, 'rgba(224, 11, 11, 0.5)',
+      Channels.Climb, 'rgba(186, 35, 57, 0.5)',
+      Channels.Dive, 'rgba(255, 17, 65, 0.5)',
+      Channels.Vote, 'rgba(229, 43, 2, 0.5)',
+      Channels.Protect, 'rgba(204, 60, 16, 0.5)',
+      Channels.Rescue, 'rgba(219, 110, 37, 0.5)',
+      Channels.Educate, 'rgba(170, 105, 0, 0.5)',
+      Channels.Clean, 'rgba(175, 167, 5, 0.5)',
+      Channels.Hydrate, 'rgba(176, 191, 9, 0.5)',
+      Channels.Flood, 'rgba(195, 224, 8, 0.5)',
+      Channels.Energize, 'rgba(195, 224, 8, 0.5)',
+      Channels.Grow, 'rgba(58, 224, 7, 0.5)',
+      Channels.Harvest, 'rgba(7, 224, 129, 0.5)',
+      Channels.Heard, 'rgba(7, 224, 173, 0.5)',
+      Channels.Conserve, 'rgba(7, 144, 224, 0.5)',
+      Channels.Plat, 'rgba(86, 7, 224, 0.5)',
+      Channels.Zone, 'rgba(86, 7, 224, 0.5)',
+      Channels.Permit, 'rgba(86, 7, 224, 0.5)',
+      Channels.Drill, 'rgba(86, 7, 224, 0.5)',
+      Channels.Mine, 'rgba(86, 7, 224, 0.5)',
+      Channels.Abate, 'rgba(86, 7, 224, 0.5)',
+      Channels.Preserve, 'rgba(86, 7, 224, 0.5)',
+      'rgba(81, 66, 81, 0.5)'
     ]
-    ,
-    'fill-outline-color': [
-      'match',
-      ['get', 'channel'],
-      0, 'rgba(0, 215, 239, 1)',
-      1, 'rgba(255, 220, 0, 1)',
-      2, 'rgba(255, 65, 54, 1)',
-      'rgba(200, 100, 240, 1)'
-    ]
+    //  Breaks matching with terrifying "cannot read property 'r' of null" errors...
+    // ,
+    // 'fill-outline-color': [
+    //   'match',
+    //   ['get', 'channel'],
+    //   0, 'rgba(0, 215, 239, 1)',
+    //   1, 'rgba(255, 220, 0, 1)',
+    //   2, 'rgba(255, 65, 54, 1)',
+    //   31, 'rgba(200, 100, 240, 1)',
+    //   11, 'rgba(200, 100, 240, 0.5)',
+    //   'rgba(155, 65, 54, 0.5)'
+    // ]
   }
 
   initializeDrawing() {
@@ -93,14 +117,14 @@ export class MapComponent implements OnInit {
 
     this.map.on('click', 'boundaries', e => {
       console.log(e);
-      let features = this.source._data.features;
-      for (let f of features) {
-        // if (!f.properties.channel) {
-        f.properties.channel = 1;
-        this.mapSvc.saveFeature(f);
-        // }
-      }
-      console.log(this.source._data.features);
+      // let features = this.source._data.features;
+      // for (let f of features) {
+      //   // if (!f.properties.channel) {
+      //   f.properties.channel = 1;
+      //   this.mapSvc.saveFeature(f);
+      //   // }
+      // }
+      // console.log(this.source._data.features);
     });
 
     this.map.on('draw.create', e => {
