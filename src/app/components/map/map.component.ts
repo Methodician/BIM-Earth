@@ -116,10 +116,6 @@ export class MapComponent implements OnInit {
 
   addEventHandlers() {
 
-    this.map.on('click', 'boundaries', e => {
-      console.log(e);
-    });
-
     this.map.on('draw.create', e => {
       this.newFeatureId = e.features[0].id;
       this.ref.detectChanges();
@@ -133,6 +129,13 @@ export class MapComponent implements OnInit {
         this.ref.detectChanges();
       }
     });
+
+    this.map.on('touchend', 'boundaries', e => {
+      if (!this.newFeatureId) {
+        this.selectedFeature = e.features[0];
+        this.ref.detectChanges();
+      }
+    })
 
     this.map.on('click', 'boundaries', e => {
       if (!this.newFeatureId) {
