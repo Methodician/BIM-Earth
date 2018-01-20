@@ -46,7 +46,7 @@
 			@include size(35px, 250px);
 		}
 		@include screen(mobile-xs) {
-			@include size(35px, 150px);
+			@include size(35px, 120px);
 		}
 	}
 
@@ -64,6 +64,11 @@
 		@include screen(mobile) {
 			font-size: 22px;
 			margin-left: 10px;
+		}
+		@include screen(mobile-xs) {
+			font-size: 22px;
+			margin-left: 10px;
+			display: none;
 		}
 	}
 	// media queries for nav container
