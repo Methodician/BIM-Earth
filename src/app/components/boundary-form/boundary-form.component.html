@@ -1,8 +1,16 @@
 <form [formGroup]="form">
   <label for="zap-id-input">Zap ID: </label>
-  <input class="input-styles" type="text" formControlName="zapId" name="zap-id-input" autocapitalize="characters">
-  <label for="boundary-select">Access Level:</label>
-  <select class="input-styles" formControlName="accessLevel" name="boundary-select">
-    <option *ngFor="let level of accessLevels" [value]="level">{{level}}</option>
+  <input class="input-styles"
+         type="text"
+         formControlName="zapId"
+         name="zap-id-input"
+         autocapitalize="characters">
+  <label for="boundary-select">Channel:</label>
+  <select class="input-styles"
+          formControlName="channel"
+          name="boundary-select"
+          (change)="channelSelect($event.target.value)">
+    <option *ngFor="let channel of channels"
+            [value]="channel">{{channelName(channel)}}</option>
   </select>
 </form>

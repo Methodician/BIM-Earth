@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '@environments/environment';
 import * as mapboxgl from 'mapbox-gl';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as fb from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { GeoJson } from '../models/map';
+import { GeoJson } from '@models/map';
 import { BehaviorSubject } from 'rxjs/Rx';
 
 @Injectable()
@@ -22,19 +22,22 @@ export class MapService {
 
   createFeature(feature: GeoJson) {
     feature.properties.id = this.db.createId();
-    feature.properties.channel = 0;
+    //  Placeholder:
+    feature.properties.accessLevel = 0; // will later make enum to translate int and word)
+    feature.properties.channel = Number(feature.properties.channel);
     this.saveFeature(feature);
   }
 
-  randomAccess() {
-    switch (Math.floor(Math.random() * 3)) {
-      case 0: return "public";
-      case 1: return "private";
-      case 2: return "locked";
-    }
-  }
+  // randomAccess() {
+  //   switch (Math.floor(Math.random() * 3)) {
+  //     case 0: return "public";
+  //     case 1: return "private";
+  //     case 2: return "locked";
+  //   }
+  // }
 
   saveFeature(feature: GeoJson) {
+    feature.properties.channel = feature.properties.channel ? Number(feature.properties.channel) : 0;
     this.rtdb.list(`/features`).set(`${feature.properties.id}`, {
       id: feature.properties.id,
       type: feature.type,
@@ -52,7 +55,7 @@ export class MapService {
       .set({
         timestamp: fb.firestore.FieldValue.serverTimestamp(),
         geometry: JSON.stringify(feature.geometry)
-      })  
+      })
   }
 
   getFirestoreFeatures() {
@@ -60,8 +63,8 @@ export class MapService {
       return actions.map(action => {
         const data = action.payload.doc.data()
         let feature = JSON.parse(data.feature);
-        if(feature.properties.id) feature.id = feature.properties.id;
-        return feature; 
+        if (feature.properties.id) feature.id = feature.properties.id;
+        return feature;
       })
     })
   }
