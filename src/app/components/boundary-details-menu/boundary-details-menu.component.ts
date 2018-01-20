@@ -24,7 +24,7 @@ export class BoundaryDetailsMenuComponent implements OnInit {
   ngOnInit() { }
 
   saveFeature(properties) {
-    this.draw.setFeatureProperty(this.newFeatureId, 'accessLevel', properties.accessLevel);
+    this.draw.setFeatureProperty(this.newFeatureId, 'channel', properties.channel);
     this.draw.setFeatureProperty(this.newFeatureId, 'zapId', properties.zapId)
     let feature = this.draw.getAll().features[0];
     this.mapSvc.createFeature(feature);
@@ -36,7 +36,7 @@ export class BoundaryDetailsMenuComponent implements OnInit {
   updateFeature(properties) {
     this.editingFeature = false;
     let featureId = this.selectedFeature.properties.id
-    this.draw.setFeatureProperty(featureId, 'accessLevel', properties.accessLevel);
+    this.draw.setFeatureProperty(featureId, 'channel', properties.channel);
     this.draw.setFeatureProperty(featureId, 'zapId', properties.zapId)
     let feature = this.draw.getAll().features[0];
     this.mapSvc.saveFeature(feature);
