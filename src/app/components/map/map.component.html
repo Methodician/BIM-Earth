@@ -13,4 +13,10 @@
                 }">
     </mgl-layer> -->
 </mgl-map>
-<bim-boundary-details-menu [draw]="draw" [newFeatureId]="newFeatureId" [map]="map" [selectedFeature]="selectedFeature"></bim-boundary-details-menu>
+<bim-boundary-details-menu
+    [draw]="draw"
+    [newFeatureId]="newFeatureId"
+    [map]="map"
+    [selectedFeature]="selectedFeature"
+    (hideMenuRequest)="hideMenu()"
+></bim-boundary-details-menu>

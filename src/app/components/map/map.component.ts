@@ -88,22 +88,20 @@ export class MapComponent implements OnInit {
     this.map.on('draw.modechange', e => {
       if (e.mode == 'simple_select') {
         // this.saveDrawBuffer();
+      } else if (e.mode == 'draw_polygon') {
+        this.selectedFeature = null;
+        this.ref.detectChanges();
       }
     });
 
     this.map.on('click', 'boundaries', e => {
-      this.selectedFeature = e.features[0];
-      this.ref.detectChanges();
-    })
-
-    this.map.on('contextmenu', 'boundaries', e => {
-      let feature = e.features[0];
-      feature.id = feature.properties.id;
-      this.draw.add(feature);
-      this.draw.changeMode('direct_select', { featureId: feature.id });
-      this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]]);
+      if(!this.newFeatureId){
+        this.selectedFeature = e.features[0];
+        this.ref.detectChanges();
+      }
     })
   }
+
 
   saveDrawBuffer() {
     let feature = this.draw.getAll().features[0];
@@ -124,6 +122,12 @@ export class MapComponent implements OnInit {
         });
       })
     }
+  }
+
+  hideMenu() {
+    this.selectedFeature = null;
+    this.newFeatureId = "";
+    this.ref.detectChanges()
   }
 
   // boundaryClick(e) {

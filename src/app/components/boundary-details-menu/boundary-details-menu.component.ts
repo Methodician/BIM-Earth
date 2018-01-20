@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
 import { MapService } from '../../services/map.service';
 import { GeoJson } from '../../models/map';
 
@@ -12,6 +12,7 @@ export class BoundaryDetailsMenuComponent implements OnInit {
   @Input() selectedFeature;
   @Input() draw;
   @Input() map;
+  @Output() hideMenuRequest = new EventEmitter<null>();
 
   constructor(
     private mapSvc: MapService,
@@ -27,6 +28,10 @@ export class BoundaryDetailsMenuComponent implements OnInit {
     this.mapSvc.createFeature(feature);
     this.draw.delete(this.newFeatureId);
     this.map.setFilter('boundaries', null);
-    this.newFeatureId = "";
+    this.requestHideMenu();
+  }
+
+  requestHideMenu() {
+    this.hideMenuRequest.emit()
   }
 }
