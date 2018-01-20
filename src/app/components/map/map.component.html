@@ -3,15 +3,6 @@
          [center]="center"
          (load)="mapLoaded($event)"
          [fitBounds]="bounds">
-    <!-- <mgl-layer *ngIf="firebase"
-               id="boundaries"
-               type="fill"
-               [source]="firebase"
-               [paint]="{
-                    'fill-color': 'rgba(200, 100, 240, 0.4)',
-                    'fill-outline-color': 'rgba(200, 100, 240, 1)'
-                }">
-    </mgl-layer> -->
 </mgl-map>
 <bim-boundary-details-menu [draw]="draw"
                            [newFeatureId]="newFeatureId"

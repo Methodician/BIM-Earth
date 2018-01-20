@@ -74,34 +74,4 @@ export class MapService {
     this.selectedBoundary$.next(boundary);
   }
 
-  // getPolygons() {
-  //   return this.db.collection('geoPolygons');
-  //   // return this.db.collection('polygons');
-  // }
-
-  // getPolygonById(id: string) {
-  //   return this.getPolygons().doc(id);
-  // }
-
-  // addPolygon(polygon) {
-  //   let id = this.db.createId();
-  //   polygon.properties.id = id;
-  //   console.log('adding to db', polygon);
-  //   return this.getPolygonById(id).set({ id: id, feature: JSON.stringify(polygon) });
-  // }
-
-  // updatePolygon(polygon) {
-  //   console.log('updating', polygon);
-  //   return this.getPolygonById(polygon.properties.id).update({ feature: JSON.stringify(polygon) });
-  // }
-
-  // deletePolygon(id: string) {
-  //   return this.getPolygonById(id).delete();
-  // }
-
-  // fixPolygon(polygon) {
-  //   let batch = this.db.firestore.batch();
-  //   let ref = this.getPolygonById(polygon.id)
-  // }
-
 }

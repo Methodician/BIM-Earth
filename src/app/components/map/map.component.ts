@@ -118,14 +118,6 @@ export class MapComponent implements OnInit {
 
     this.map.on('click', 'boundaries', e => {
       console.log(e);
-      // let features = this.source._data.features;
-      // for (let f of features) {
-      //   // if (!f.properties.channel) {
-      //   f.properties.channel = 1;
-      //   this.mapSvc.saveFeature(f);
-      //   // }
-      // }
-      // console.log(this.source._data.features);
     });
 
     this.map.on('draw.create', e => {
@@ -143,13 +135,13 @@ export class MapComponent implements OnInit {
     });
 
     this.map.on('click', 'boundaries', e => {
-      if(!this.newFeatureId){
+      if (!this.newFeatureId) {
         this.selectedFeature = e.features[0];
         this.ref.detectChanges();
       }
     })
   }
- 
+
   editFeature(feature) {
     feature.id = feature.properties.id;
     this.draw.add(feature);
@@ -184,29 +176,4 @@ export class MapComponent implements OnInit {
     this.ref.detectChanges()
   }
 
-  // boundaryClick(e) {
-  //   console.log('clicked', e.features);
-  //   const featureId = e.features[0].properties.id;
-  //   console.log(featureId);
-  //   let clickedFeature = this.source.data.features.filter(feature => {
-  //     return feature.id == featureId;
-  //   })[0];
-  //   console.log(clickedFeature);
-  //   this.draw.add(clickedFeature);
-  // }
-
-  // createGeoPoly(features) {
-  //   console.log('creating feature', features[0]);
-  //   this.mapSvc.addPolygon(features[0]);
-  // }
-
-  // updateGeoPoly(features) {
-  //   console.log('updating feature', features[0]);
-  //   this.mapSvc.updatePolygon(features[0]);
-  // }
-
-  // decodePolygon(encodedPolygon) {
-  //   let feature = JSON.parse(encodedPolygon.geometry);
-  //   return feature;
-  // }
 }
