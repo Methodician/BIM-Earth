@@ -32,6 +32,9 @@
 	color: $dark;
 	padding: 0;
 	transition: ease-in-out background-color .2s, ease-in-out color .2s, ease-in-out border .2s;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	&:hover {
 		background-color: $primary;
 		color: $light;
@@ -44,7 +47,7 @@
 	}
 	@include screen(mobile) {
 		display: block;
-		@include position(fixed, top 16px right 10px);
+		@include position(fixed, top 12px right 10px);
 	}
 }
 
