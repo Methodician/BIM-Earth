@@ -1,0 +1,18 @@
+<div *ngIf="isRegistering"
+     class="auth-wrapper register-form">
+  <h3>Register</h3>
+  <bim-register #registerForm></bim-register>
+  <button mat-raised-button
+          (click)="register(registerForm.value); registerForm.clear()">
+    Register
+  </button>
+</div>
+<div *ngIf="isLoggingIn"
+     class="auth-wrapper login-form">
+  <h3>Log In</h3>
+  <bim-login #loginForm></bim-login>
+  <button mat-raised-button
+          (click)="login(loginForm.value); loginForm.clear()">
+    Log In
+  </button>
+</div>

@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // test import module to make sure that angular material is working
-import { MatIconModule, MatButtonModule, MatMenuModule } from '@angular/material';
+import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from '@components/map/map.component';
@@ -25,6 +25,10 @@ import { UiComponent } from '@components/ui/ui.component';
 import { AccountBtnsComponent } from '@components/account-btns/account-btns.component';
 import { BoundaryDetailsMenuComponent } from '@components/boundary-details-menu/boundary-details-menu.component';
 import { BoundaryFormComponent } from '@components/boundary-form/boundary-form.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AuthService } from '@services/auth.service';
+import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
@@ -35,7 +39,10 @@ import { BoundaryFormComponent } from '@components/boundary-form/boundary-form.c
     UiComponent,
     AccountBtnsComponent,
     BoundaryDetailsMenuComponent,
-    BoundaryFormComponent
+    BoundaryFormComponent,
+    RegisterComponent,
+    AuthMenuComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -51,9 +58,11 @@ import { BoundaryFormComponent } from '@components/boundary-form/boundary-form.c
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
+    MatInputModule
   ],
   providers: [
-    MapService
+    MapService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

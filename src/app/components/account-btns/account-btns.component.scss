@@ -55,7 +55,7 @@
 .user-account-container {
 	@include size(75px, 200px);
 	@include position(fixed, top 0 right 0);
-	display: none;
+	display: block;
 	.account-btn{
 		height: 100%;
 		width: 100%;

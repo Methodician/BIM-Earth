@@ -1,29 +1,44 @@
-<!-- login and signup button container that two buttons in it -->
-<div class="login-signup-container">
-  <button mat-raised-button>Log In</button>
-  <button mat-raised-button>Sign Up</button>
+<div *ngIf="!authInfo.$uid">
+  <!-- login and signup button container that two buttons in it -->
+  <div class="login-signup-container">
+    <button (click)="openLogin()"
+            mat-raised-button>Log In</button>
+    <button (click)="openSignup()"
+            mat-raised-button>Sign Up</button>
+  </div>
+
+  <!-- Table to mobile hamburger menu -->
+  <button class="tablet-menu"
+          mat-icon-button
+          [matMenuTriggerFor]="tabletMenu">
+    <i class="fas fa-bars"></i>
+  </button>
+  <mat-menu #tabletMenu="matMenu"
+            [overlapTrigger]="false">
+    <button (click)="openLogin()"
+            mat-menu-item>
+      <span>Login</span>
+    </button>
+    <button (click)="openSignup()"
+            mat-menu-item>
+      <span>Signup</span>
+    </button>
+  </mat-menu>
 </div>
 
-<!-- Table to mobile hamburger menu -->
-<button class="tablet-menu" mat-icon-button [matMenuTriggerFor]="tabletMenu">
-  <i class="fas fa-bars"></i>  
-</button>
-<mat-menu #tabletMenu="matMenu" [overlapTrigger]="false">
-  <button mat-menu-item>
-    <span>Login</span>
-  </button>
-  <button mat-menu-item>
-    <span>Signup</span>
-  </button>
-</mat-menu>
 
 <!-- account container for when the user is signed in, right now it is display none in the scss folder -->
-<div class="user-account-container">
-  <button class="account-btn" [matMenuTriggerFor]="menu">
-    <img src="http://fillmurray.com/300/300" alt="Phill Murray">
-    <p>Hello, Username</p>
+<div *ngIf="authInfo.$uid"
+     class="user-account-container">
+  <button class="account-btn"
+          [matMenuTriggerFor]="menu">
+    <img src="http://fillmurray.com/300/300"
+         alt="Phill Murray">
+    <p>Hello, {{authInfo.displayName || authInfo.email}}</p>
   </button>
-  <mat-menu class="account-menu" #menu="matMenu" [overlapTrigger]="false">
+  <mat-menu class="account-menu"
+            #menu="matMenu"
+            [overlapTrigger]="false">
     <button mat-menu-item>
       <i class="fas fa-user-circle"></i>
       <span>Account</span>
@@ -36,7 +51,8 @@
       <i class="far fa-bookmark"></i>
       <span>Bookmarks</span>
     </button>
-    <button mat-menu-item>
+    <button (click)="signout()"
+            mat-menu-item>
       <span>Sign Out</span>
     </button>
   </mat-menu>
