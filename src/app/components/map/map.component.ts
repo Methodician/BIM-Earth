@@ -25,7 +25,9 @@ export class MapComponent implements OnInit {
 
   constructor(private mapSvc: MapService, private ref: ChangeDetectorRef) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+
+  }
 
   mapLoaded(map) {
     this.map = map;
@@ -33,6 +35,7 @@ export class MapComponent implements OnInit {
     this.initializeDrawing();
     this.addEventHandlers()
     this.flyToMe();
+    this.exampleFunc();
   }
 
   initializeMap() {
@@ -58,6 +61,22 @@ export class MapComponent implements OnInit {
       paint: this.layerPaint
     });
 
+  }
+
+  exampleFunc() {
+    let selectedChannels = [
+      Channels.Camp, true,
+      Channels.Harvest, true,
+      false
+    ]
+    let filterExpression = [
+      "match",
+      ["get", "channel"]
+    ]
+
+    filterExpression.concat(selectedChannels as any)
+
+    this.map.setFilter('boundaries', filterExpression.concat(selectedChannels as any))
   }
 
   layerPaint = {
@@ -151,6 +170,8 @@ export class MapComponent implements OnInit {
     this.draw.changeMode('direct_select', { featureId: feature.id });
     this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]]);
   }
+
+
 
   saveDrawBuffer() {
     let feature = this.draw.getAll().features[0];

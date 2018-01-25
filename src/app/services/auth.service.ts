@@ -9,8 +9,10 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthService {
   static UNKNOWN_USER = new AuthInfo(null);
-  user$: BehaviorSubject<firebase.User> = new BehaviorSubject<firebase.User>(null);
-  authInfo$: BehaviorSubject<AuthInfo> = new BehaviorSubject<AuthInfo>(AuthService.UNKNOWN_USER);
+  user$ = new BehaviorSubject<firebase.User>(null);
+  // user$: BehaviorSubject<firebase.User> = new BehaviorSubject<firebase.User>(null);
+  authInfo$ = new BehaviorSubject<AuthInfo>(AuthService.UNKNOWN_USER);
+  // authInfo$: BehaviorSubject<AuthInfo> = new BehaviorSubject<AuthInfo>(AuthService.UNKNOWN_USER);
 
   currentlyRegistering$ = new BehaviorSubject<boolean>(false);
   currentlyLoggingIn$ = new BehaviorSubject<boolean>(false);
