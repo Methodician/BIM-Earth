@@ -29,7 +29,6 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.mapSvc.isDeleting$.subscribe(value => {
       this.isDeleting = value;
-      console.log('component state: ', value)
     })
   }
 

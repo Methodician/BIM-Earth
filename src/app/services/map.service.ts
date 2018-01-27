@@ -50,7 +50,13 @@ export class MapService {
   }
 
   deleteFeature(feature: GeoJson) {
-    console.log('delete request: ', feature);
+    this.rtdb.list(`/deletedFeatures`).set(`${feature.properties.id}`, {
+      id: feature.properties.id,
+      type: feature.type,
+      geometry: feature.geometry,
+      properties: feature.properties
+    });
+    this.rtdb.object(`/features/${feature.properties.id}`).set(null);
   }
 
   updateHistory(feature: GeoJson) {
