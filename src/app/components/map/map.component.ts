@@ -107,7 +107,7 @@ export class MapComponent implements OnInit {
   initializeDrawing() {
     this.draw = new Draw({
       displayControlsDefault: false,
-      controls: { polygon: true, trash: true }
+      controls: { polygon: true }
     });
 
     this.map.addControl(this.draw);
