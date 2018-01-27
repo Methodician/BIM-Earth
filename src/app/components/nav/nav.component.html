@@ -1,11 +1,9 @@
 <!-- nav component container that holds a button, unput and cog icon -->
 <div class="nav-container">
-<!-- button to the left of the input -->
-  <button class="search-btn">
-    <i class="fab fa-searchengin search-icon"></i>
-  </button>
-  <!-- main input -->
-  <input class="search-input"/>
-  <!-- Cog next to input -->
-  <i class="fas fa-cog search-cog"></i>
+  <div [ngClass]="{clicked: searchBarVisable}" class="searchbar">
+    <input type="text" class="btn-extended" placeholder="search" />
+    <div (click)="searchBarVisable = !searchBarVisable" class="btn-search">
+      <i class="fab fa-searchengin search-icon"></i>
+    </div>
+  </div>
 </div>
