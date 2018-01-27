@@ -31,11 +31,4 @@
         }
     }
 
-    // breakpoint for mobile 
-    @include screen(mobile) {
-        @include size(300px, 200px);
-    }
-    @include screen(mobile-xs) {
-        @include size(300px, 200px);
-    }
 }

@@ -3,36 +3,30 @@
 
 #ui-container {
 	#logo {
+		display: none;
 		@include position(fixed, top 20px left 20px);
 		box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.50);
 		cursor: pointer;
 		border-radius: 100%;
 		// media queries for the logo in top left corner of app
-		@include screen(tablet) {
+		@include respond-to($tablet-portrait-up) {
 			@include size(70px,70px);
-		}
-		@include screen(mobile) {
-			@include size(60px, 60px);
-			@include position(fixed, top 10px left 10px);
 		}
 	}
 
 	#lock-filter-container {
 		width: 55px;
-		@include position(fixed, top 314px left 20px);
+		@include position(fixed, top 220px left 10px);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-content: center;
 		// media queries for the locl-filter container
-		@include screen(tablet) {
-			@include position(fixed, top 292px left 20px);
-		}
-		@include screen(mobile) {
-			@include position(fixed, top 292px left 10px);
+		@include respond-to($tablet-portrait-up) {
+			@include position(fixed, top 260px left 20px);
 		}
 		button {
-			@include size(50px, 50px);
+			@include size(50px);
 			border-radius: 50%;
 			background-color: $primary;
 			transition: background-color ease-in-out .15s, border ease-in-out .15s;
@@ -47,19 +41,17 @@
 				background-color: $secondary;
 			}
 			// Media queries for mapbox buttons
-			@include screen(tablet) {
-				@include size(40px, 40px);
+			@include respond-to($tablet-portrait-up) {
+				@include size(60px);
 				font-size: 14px;
-			}
-			@include screen(mobile) {
-				@include size(40px, 40px);
 			}
 		}
 	}
 	.navbar-container {
-		@include position(fixed, top 10px left 0);
-		width: 100%;
-		display: flex; 
-		justify-content: center;
+		@include position(fixed, top 10px left 10px);
+
+		@include respond-to($tablet-portrait-up) {
+			@include position(fixed, top 20px left 20px);
+		}
 	}
 } 

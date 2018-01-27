@@ -59,16 +59,15 @@ input:focus, textarea:focus {
 // This div holds two divs at the moment. The first(1) one being the boundary create and delete buttons, the second(2) being zoom-in/zoom-out and direction functions.
 .mapboxgl-ctrl-top-right {	
 	div:nth-child(1) {
-		width: 55px;
 		background-color: rgba(0, 0, 0, 0);
 		box-shadow: none;
-		@include position(fixed, top 164px left 20px);
+		@include position(fixed, top 70px left 10px);
 		// media querie for mapbox control container
-		@include screen(mobile) {
-			@include position(fixed, top 164px left 10px);
+		@include respond-to($tablet-portrait-up) {
+			@include position(fixed, top 90px left 20px);
 		}
 		button {
-			@include size(50px, 50px);
+			@include size(50px);
 			border-radius: 50%;
 			background-color: $primary;
 			transition: background-color ease-in-out .15s, border ease-in-out .15s;
@@ -80,11 +79,8 @@ input:focus, textarea:focus {
 				background-color: $secondary;
 			}
 			// media queries for the bottomr right zoom-in/zoom-out and directional buttons
-			@include screen(tablet) {
-				@include size(40px, 40px);
-			}
-			@include screen(mobile) {
-				@include size(40px, 40px);
+			@include respond-to($tablet-portrait-up) {
+				@include size(60px);
 			}
 		}
 		button:nth-of-type(1) {
@@ -100,7 +96,10 @@ input:focus, textarea:focus {
 		width: 40px;
 		background-color: rgba(0, 0, 0, 0);
 		box-shadow: none;
-		@include position(fixed, bottom 20px right 15px);
+		@include position(fixed, bottom 10px right 10px);
+		@include respond-to($tablet-portrait-up) {
+			@include position(fixed, bottom 20px right 20px);
+		}
 		button {
 			@include size(35px, 35px);
 			border-radius: 50%;
