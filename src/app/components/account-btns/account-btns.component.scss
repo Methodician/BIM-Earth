@@ -2,6 +2,7 @@
 @import "../../../sass/mixins.scss";
 // Styles for container and buttons when no user is logged in
 .login-signup-container {
+	display: none;
 	@include position(fixed, top 20px right 10px);
 	button {
 		height: 35px;
@@ -9,25 +10,21 @@
 		background-color: $secondary;
 		margin-right: 20px;
 		border-radius: 5px;
-		transition: ease-in-out background-color .15s, ease-in-out border .15s;
+		transition: ease-in-out all .15s;
 		&:hover {
 			background-color: $primary;
 			border: 1px solid $light;
 		}
 	}
-	// media queries for login-signup container
-	@include screen(tablet) {
-		display: none;
-	}
-	@include screen(mobile) {
-		display: none;
+	@include respond-to($desktop-up) {
+		display: block;
 	}
 }
 
 // styles for tablet hamburger menu button and menu trigger container
 .tablet-menu {
-	display: none;
-	@include size(50px, 50px);
+	@include size(60px);
+	@include position(fixed, top 10px right 10px);
 	font-size: 24px;
 	color: $dark;
 	padding: 0;
@@ -35,19 +32,18 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border-radius: 50%;
 	&:hover {
 		background-color: $primary;
 		color: $light;
 		border: 2px solid $light;
 	}
 	// media queries for tablet menu
-	@include screen(tablet) {
-		display: block;
-		@include position(fixed, top 14px right 20px);
+	@include respond-to($tablet-portrait-up) {
+		@include position(fixed, top 20px right 20px);
 	}
-	@include screen(mobile) {
-		display: block;
-		@include position(fixed, top 12px right 10px);
+	@include respond-to($desktop-up) {
+		display: none;
 	}
 }
 

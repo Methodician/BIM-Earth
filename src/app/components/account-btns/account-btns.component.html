@@ -8,11 +8,11 @@
   </div>
 
   <!-- Table to mobile hamburger menu -->
-  <button class="tablet-menu"
+  <div class="tablet-menu"
           mat-icon-button
           [matMenuTriggerFor]="tabletMenu">
     <i class="fas fa-bars"></i>
-  </button>
+</div>
   <mat-menu #tabletMenu="matMenu"
             [overlapTrigger]="false">
     <button (click)="openLogin()"

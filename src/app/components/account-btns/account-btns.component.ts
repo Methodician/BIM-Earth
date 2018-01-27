@@ -9,6 +9,8 @@ import { AuthInfo } from '@models/auth-info';
 })
 export class AccountBtnsComponent implements OnInit {
 
+  public tabletNavDropdownVisable = false;
+
   authInfo: AuthInfo;
 
   constructor(
