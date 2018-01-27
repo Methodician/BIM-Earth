@@ -45,40 +45,24 @@
 }
 
 // Mixin for MQ's, I need to make some modifcations to this one as I go but it should make scss files look ALOT cleaner.
-@mixin screen($size) {
-  $desktop: "(min-width: 1024px)";
-  $tablet: "(min-width: 768px) and (max-width: 1200px)";
-  $mobile: "(max-width: 767px)";
-  $mobile-xs: "(max-width: 467px)";
-  @if $size == desktop {
-    @media only screen and #{$desktop} {
-      @content;
-    }
-  }
-  @else if $size == tablet {
-    @media only screen and #{$tablet} {
-      @content;
-    }
-  }
-  @else if $size == mobile {
-    @media only screen and #{$mobile} {
-      @content;
-    }
-  }
-  @else if $size == mobile-xs {
-    @media only screen and #{$mobile-xs} {
-      @content;
-    }
-  }
-  @else {
-    @media only screen and #{$size} {
-      @content;
-    }
-  }
+
+@mixin respond-to($breakpoint) {
+  @media only screen and (min-width: $breakpoint + px) { @content; }
 }
 
 // Mixin for height and width of containers
-@mixin size($height, $width) {
-  height: $height;
-  width: $width;
+@mixin size( $width, $height: $width) {
+  @if _is-size($height) {
+    height: $height;
+  } @else {
+    @error "`#{$height}` is not a valid length for the `$height` argument " +
+           "in the `size` mixin.";
+  }
+
+  @if _is-size($width) {
+    width: $width;
+  } @else {
+    @error "`#{$width}` is not a valid length for the `$width` argument " +
+           "in the `size` mixin.";
+  }
 }
