@@ -22,10 +22,16 @@ export class MapComponent implements OnInit {
   source: any;
   newFeatureId: string = "";
   selectedFeature: GeoJson = null;
+  isDeleting: boolean = false;
 
   constructor(private mapSvc: MapService, private ref: ChangeDetectorRef) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.mapSvc.isDeleting$.subscribe(value => {
+      this.isDeleting = value;
+      console.log('component state: ', value)
+    })
+  }
 
   mapLoaded(map) {
     this.map = map;
@@ -138,8 +144,12 @@ export class MapComponent implements OnInit {
     })
 
     this.map.on('click', 'boundaries', e => {
-      if (!this.newFeatureId) {
+      if (!this.newFeatureId && !this.isDeleting) {
         this.selectedFeature = e.features[0];
+        this.ref.detectChanges();
+      } else if(!this.newFeatureId && this.isDeleting) {
+        this.mapSvc.deleteFeature(e.features[0])
+        this.mapSvc.toggleDelete();
         this.ref.detectChanges();
       }
     })

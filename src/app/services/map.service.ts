@@ -11,6 +11,8 @@ import { BehaviorSubject } from 'rxjs/Rx';
 export class MapService {
   selectedBoundary: GeoJson = null;
   selectedBoundary$: BehaviorSubject<GeoJson> = new BehaviorSubject(null);
+  isDeleting: boolean = false;
+  isDeleting$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private db: AngularFirestore, private rtdb: AngularFireDatabase) {
     (mapboxgl as any).accessToken = environment.mapbox.accessToken;
@@ -47,6 +49,10 @@ export class MapService {
     this.updateHistory(feature);
   }
 
+  deleteFeature(feature: GeoJson) {
+    console.log('delete request: ', feature);
+  }
+
   updateHistory(feature: GeoJson) {
     this.db.collection('features')
       .doc(feature.properties.id)
@@ -72,6 +78,11 @@ export class MapService {
   setSelectedBoundary(boundary: GeoJson) {
     this.selectedBoundary = boundary;
     this.selectedBoundary$.next(boundary);
+  }
+
+  toggleDelete() {
+    this.isDeleting = !this.isDeleting;
+    this.isDeleting$.next(this.isDeleting);
   }
 
 }

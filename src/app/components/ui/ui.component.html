@@ -8,8 +8,10 @@
     <!-- Lock/Unlock Button -->
     <!-- TODO: once functionality is set in place have ui component toggle a close lock icon-->
     <button type="button"
-            name="lock">
-      <i class="fas fa-lock-open"></i>
+            name="trash"
+            (click)="toggleDelete()"
+            [class.active]="isDeleting">
+      <i class="fas fa-trash"></i>
     </button>
     <!-- Filter Button -->
     <button type="button"

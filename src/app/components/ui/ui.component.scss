@@ -16,14 +16,14 @@
 
 	#lock-filter-container {
 		width: 55px;
-		@include position(fixed, top 220px left 10px);
+		@include position(fixed, top 140px left 10px);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-content: center;
 		// media queries for the locl-filter container
 		@include respond-to($tablet-portrait-up) {
-			@include position(fixed, top 260px left 20px);
+			@include position(fixed, top 180px left 20px);
 		}
 		button {
 			@include size(50px);
@@ -36,7 +36,7 @@
 			color: $light;
 			font-size: 16px;
 			cursor: pointer;
-			&:hover {
+			&:hover, &.active {
 				border: 3px solid #fafafa;
 				background-color: $secondary;
 			}
