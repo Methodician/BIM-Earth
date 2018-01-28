@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Channels } from '@enums/channels.enum';
 
 @Component({
   selector: 'bim-channel-filter-menu',
@@ -6,8 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./channel-filter-menu.component.scss']
 })
 export class ChannelFilterMenuComponent implements OnInit {
+  channels: Object[];
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.buildChannels();
+    console.log('chanels', this.channels);
+  }
+  
+  buildChannels() {
+    let keys = Object.keys(Channels);
+    keys = keys.slice(0, keys.length / 2);
+    this.channels = keys.map(channel => {
+      return {name: Channels[channel], id: channel}
+    });
+  }
 }
