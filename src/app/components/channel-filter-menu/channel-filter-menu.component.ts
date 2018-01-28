@@ -8,8 +8,8 @@ import { Channels } from '@enums/channels.enum';
   styleUrls: ['./channel-filter-menu.component.scss']
 })
 export class ChannelFilterMenuComponent implements OnInit {
-  channels: Object[];
   form: FormGroup;
+  channels;
 
   constructor(private fb: FormBuilder) {}
 
@@ -19,6 +19,9 @@ export class ChannelFilterMenuComponent implements OnInit {
     this.form = this.fb.group({
       channels: this.buildChannelControls()
     });
+
+    this.form.get('channels').valueChanges
+      .subscribe(selectionStates => this.updateFilter(selectionStates))
   }
   
   buildChannels() {
@@ -35,5 +38,14 @@ export class ChannelFilterMenuComponent implements OnInit {
       controls[i] = this.fb.control(false)
     } 
     return this.fb.array(controls)
+  }
+
+  updateFilter(selectionStates: string[]) {
+    let selected = selectionStates.reduce((selected, isSelected, i) => {
+      if(isSelected) {
+        return selected.concat(this.channels[i].id, true)
+      } else return selected
+    }, [])
+    console.log('selected: ', selected)
   }
 }
