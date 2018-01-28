@@ -15,10 +15,12 @@
     </button>
     <!-- Filter Button -->
     <button type="button"
-            name="filter">
+            name="filter"
+            (click)="toggleFilter()">
       <i class="fas fa-filter"></i>
     </button>
   </div>
+  <bim-channel-filter-menu [hidden]="filterHidden"></bim-channel-filter-menu>
   <!-- This container holds the nav bar -->
   <div class="navbar-container">
     <bim-nav></bim-nav>

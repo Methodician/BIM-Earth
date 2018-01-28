@@ -8,6 +8,7 @@ import { MapService } from '@services/map.service';
 })
 export class UiComponent implements OnInit {
   isDeleting: boolean = false;
+  filterHidden: boolean = true;
 
   constructor(private mapSvc: MapService, private ref: ChangeDetectorRef) { }
 
@@ -24,4 +25,7 @@ export class UiComponent implements OnInit {
     this.ref.detectChanges()
   }
 
+  toggleFilter() {
+    this.filterHidden = !this.filterHidden;
+  }
 }
