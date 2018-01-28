@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Channels } from '@enums/channels.enum';
 
 @Component({
@@ -8,12 +9,16 @@ import { Channels } from '@enums/channels.enum';
 })
 export class ChannelFilterMenuComponent implements OnInit {
   channels: Object[];
+  form: FormGroup;
 
-  constructor() {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.buildChannels();
-    console.log('chanels', this.channels);
+
+    this.form = this.fb.group({
+      channels: this.buildChannelControls()
+    });
   }
   
   buildChannels() {
@@ -22,5 +27,13 @@ export class ChannelFilterMenuComponent implements OnInit {
     this.channels = keys.map(channel => {
       return {name: Channels[channel], id: channel}
     });
+  }
+
+  buildChannelControls() {
+    let controls = [];
+    for(let i = 0; i < this.channels.length; i++) {
+      controls[i] = this.fb.control(false)
+    } 
+    return this.fb.array(controls)
   }
 }
