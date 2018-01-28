@@ -16,7 +16,7 @@
 
 	#lock-filter-container {
 		width: 55px;
-		@include position(fixed, top 140px left 10px);
+		@include position(fixed, top 150px left 10px);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
