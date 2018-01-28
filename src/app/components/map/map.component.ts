@@ -182,6 +182,14 @@ export class MapComponent implements OnInit {
     }
   }
 
+  setChannelFilter(selectedChannels) {
+    let filterExpression = [
+      "match",
+      ["get", "channel"]
+    ].concat(selectedChannels);
+    this.map.setFilter('boundaries', filterExpression);
+  }
+
   hideMenu() {
     this.selectedFeature = null;
     this.newFeatureId = "";
