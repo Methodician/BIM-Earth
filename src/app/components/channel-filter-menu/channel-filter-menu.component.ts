@@ -50,4 +50,10 @@ export class ChannelFilterMenuComponent implements OnInit {
     }, [])
     this.mapSvc.setChannelFilterSelection(selected);
   }
+
+  resetFilter() {
+    this.form.reset({
+      channels: this.buildChannelControls()
+    })
+  }
 }
