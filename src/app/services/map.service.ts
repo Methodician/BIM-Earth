@@ -13,6 +13,8 @@ export class MapService {
   selectedBoundary$: BehaviorSubject<GeoJson> = new BehaviorSubject(null);
   isDeleting: boolean = false;
   isDeleting$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  channelFilterSelection: any[] = [];
+  channelFilterSelection$: BehaviorSubject<any[]> = new BehaviorSubject([]);
 
   constructor(private db: AngularFirestore, private rtdb: AngularFireDatabase) {
     (mapboxgl as any).accessToken = environment.mapbox.accessToken;
@@ -80,6 +82,11 @@ export class MapService {
   toggleDelete() {
     this.isDeleting = !this.isDeleting;
     this.isDeleting$.next(this.isDeleting);
+  }
+
+  setChannelFilterSelection(selection: any[]) {
+    this.channelFilterSelection = selection;
+    this.channelFilterSelection$.next(selection);
   }
 
 }

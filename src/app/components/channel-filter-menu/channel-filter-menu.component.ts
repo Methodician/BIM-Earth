@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Channels } from '@enums/channels.enum';
+import { MapService } from '@services/map.service';
 
 @Component({
   selector: 'bim-channel-filter-menu',
@@ -11,7 +12,7 @@ export class ChannelFilterMenuComponent implements OnInit {
   form: FormGroup;
   channels;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private mapSvc: MapService) {}
 
   ngOnInit() {
     this.buildChannels();
@@ -43,9 +44,10 @@ export class ChannelFilterMenuComponent implements OnInit {
   updateFilter(selectionStates: string[]) {
     let selected = selectionStates.reduce((selected, isSelected, i) => {
       if(isSelected) {
-        return selected.concat(this.channels[i].id, true)
+        //parseInt only necessary while channels are numerical
+        return selected.concat(parseInt(this.channels[i].id, 10), true)
       } else return selected
     }, [])
-    console.log('selected: ', selected)
+    this.mapSvc.setChannelFilterSelection(selected);
   }
 }

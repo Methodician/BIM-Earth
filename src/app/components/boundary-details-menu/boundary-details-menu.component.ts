@@ -29,7 +29,6 @@ export class BoundaryDetailsMenuComponent implements OnInit {
     let feature = this.draw.getAll().features[0];
     this.mapSvc.createFeature(feature);
     this.draw.delete(this.newFeatureId);
-    this.map.setFilter('boundaries', null);
     this.requestHideMenu();
   }
 

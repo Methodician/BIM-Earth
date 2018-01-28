@@ -29,6 +29,10 @@ export class MapComponent implements OnInit {
   ngOnInit() {
     this.mapSvc.isDeleting$.subscribe(value => {
       this.isDeleting = value;
+    });
+    
+    this.mapSvc.channelFilterSelection$.subscribe(selection => {
+      if(this.map && !this.selectedFeature) this.setChannelFilter(selection);
     })
   }
 
@@ -183,11 +187,11 @@ export class MapComponent implements OnInit {
   }
 
   setChannelFilter(selectedChannels) {
-    let filterExpression = [
-      "match",
-      ["get", "channel"]
-    ].concat(selectedChannels);
-    this.map.setFilter('boundaries', filterExpression);
+    if(selectedChannels.length > 0) {
+      let filterExpression = ["match", ["get", "channel"]].concat(selectedChannels, false as any);
+      this.map.setFilter('boundaries', filterExpression);
+    } else this.map.setFilter('boundaries', null);
+    this.ref.detectChanges();
   }
 
   hideMenu() {
