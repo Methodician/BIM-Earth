@@ -1,0 +1,8 @@
+<div>
+  <form [formGroup]="form">
+    <label *ngFor="let channel of form.get('channels').controls; let i = index">
+      <input type="checkbox" [formControl]="channel"/>{{ channels[i].name }}
+    </label>    
+  </form>
+  <button (click)="resetFilter()">reset</button>
+</div>

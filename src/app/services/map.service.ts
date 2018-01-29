@@ -11,6 +11,10 @@ import { BehaviorSubject } from 'rxjs/Rx';
 export class MapService {
   selectedBoundary: GeoJson = null;
   selectedBoundary$: BehaviorSubject<GeoJson> = new BehaviorSubject(null);
+  isDeleting: boolean = false;
+  isDeleting$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  channelFilterSelection: any[] = [];
+  channelFilterSelection$: BehaviorSubject<any[]> = new BehaviorSubject([]);
 
   constructor(private db: AngularFirestore, private rtdb: AngularFireDatabase) {
     (mapboxgl as any).accessToken = environment.mapbox.accessToken;
@@ -22,19 +26,10 @@ export class MapService {
 
   createFeature(feature: GeoJson) {
     feature.properties.id = this.db.createId();
-    //  Placeholder:
-    feature.properties.accessLevel = 0; // will later make enum to translate int and word)
     feature.properties.channel = Number(feature.properties.channel);
     this.saveFeature(feature);
   }
 
-  // randomAccess() {
-  //   switch (Math.floor(Math.random() * 3)) {
-  //     case 0: return "public";
-  //     case 1: return "private";
-  //     case 2: return "locked";
-  //   }
-  // }
 
   saveFeature(feature: GeoJson) {
     feature.properties.channel = Number(feature.properties.channel) | 0;
@@ -45,6 +40,16 @@ export class MapService {
       properties: feature.properties
     });
     this.updateHistory(feature);
+  }
+
+  deleteFeature(feature: GeoJson) {
+    this.rtdb.list(`/deletedFeatures`).set(`${feature.properties.id}`, {
+      id: feature.properties.id,
+      type: feature.type,
+      geometry: feature.geometry,
+      properties: feature.properties
+    });
+    this.rtdb.object(`/features/${feature.properties.id}`).set(null);
   }
 
   updateHistory(feature: GeoJson) {
@@ -72,6 +77,16 @@ export class MapService {
   setSelectedBoundary(boundary: GeoJson) {
     this.selectedBoundary = boundary;
     this.selectedBoundary$.next(boundary);
+  }
+
+  toggleDelete() {
+    this.isDeleting = !this.isDeleting;
+    this.isDeleting$.next(this.isDeleting);
+  }
+
+  setChannelFilterSelection(selection: any[]) {
+    this.channelFilterSelection = selection;
+    this.channelFilterSelection$.next(selection);
   }
 
 }

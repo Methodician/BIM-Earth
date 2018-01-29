@@ -6,13 +6,15 @@ export enum Channels {
     Camp = 10,
     Climb = 11,
     Dive = 12,
-    //  Oranges
+    //  Oranges (blues?)
+    //  JUDGE
     Vote = 20,
     Protect = 21,
     Rescue = 22,
     Educate = 23,
     //  Yellows
     Clean = 30,
+    //  HEAL
     Hydrate = 31,
     Flood = 32,
     Energize = 33,

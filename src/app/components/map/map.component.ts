@@ -22,10 +22,19 @@ export class MapComponent implements OnInit {
   source: any;
   newFeatureId: string = "";
   selectedFeature: GeoJson = null;
+  isDeleting: boolean = false;
 
   constructor(private mapSvc: MapService, private ref: ChangeDetectorRef) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.mapSvc.isDeleting$.subscribe(value => {
+      this.isDeleting = value;
+    });
+    
+    this.mapSvc.channelFilterSelection$.subscribe(selection => {
+      if(this.map && !this.selectedFeature) this.setChannelFilter(selection);
+    })
+  }
 
   mapLoaded(map) {
     this.map = map;
@@ -107,7 +116,7 @@ export class MapComponent implements OnInit {
   initializeDrawing() {
     this.draw = new Draw({
       displayControlsDefault: false,
-      controls: { polygon: true, trash: true }
+      controls: { polygon: true }
     });
 
     this.map.addControl(this.draw);
@@ -138,8 +147,12 @@ export class MapComponent implements OnInit {
     })
 
     this.map.on('click', 'boundaries', e => {
-      if (!this.newFeatureId) {
+      if (!this.newFeatureId && !this.isDeleting) {
         this.selectedFeature = e.features[0];
+        this.ref.detectChanges();
+      } else if(!this.newFeatureId && this.isDeleting) {
+        this.mapSvc.deleteFeature(e.features[0])
+        this.mapSvc.toggleDelete();
         this.ref.detectChanges();
       }
     })
@@ -171,6 +184,14 @@ export class MapComponent implements OnInit {
         });
       })
     }
+  }
+
+  setChannelFilter(selectedChannels) {
+    if(selectedChannels.length > 0) {
+      let filterExpression = ["match", ["get", "channel"]].concat(selectedChannels, false as any);
+      this.map.setFilter('boundaries', filterExpression);
+    } else this.map.setFilter('boundaries', null);
+    this.ref.detectChanges();
   }
 
   hideMenu() {

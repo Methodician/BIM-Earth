@@ -29,6 +29,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from '@services/auth.service';
 import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
 import { LoginComponent } from './components/login/login.component';
+import { ChannelFilterMenuComponent } from './components/channel-filter-menu/channel-filter-menu.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { LoginComponent } from './components/login/login.component';
     BoundaryFormComponent,
     RegisterComponent,
     AuthMenuComponent,
-    LoginComponent
+    LoginComponent,
+    ChannelFilterMenuComponent
   ],
   imports: [
     BrowserModule,
