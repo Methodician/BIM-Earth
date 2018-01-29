@@ -8,15 +8,19 @@
     <!-- Lock/Unlock Button -->
     <!-- TODO: once functionality is set in place have ui component toggle a close lock icon-->
     <button type="button"
-            name="lock">
-      <i class="fas fa-lock-open"></i>
+            name="trash"
+            (click)="toggleDelete()"
+            [class.active]="isDeleting">
+      <i class="fas fa-trash"></i>
     </button>
     <!-- Filter Button -->
     <button type="button"
-            name="filter">
+            name="filter"
+            (click)="toggleFilter()">
       <i class="fas fa-filter"></i>
     </button>
   </div>
+  <bim-channel-filter-menu [hidden]="filterHidden"></bim-channel-filter-menu>
   <!-- This container holds the nav bar -->
   <div class="navbar-container">
     <bim-nav></bim-nav>
