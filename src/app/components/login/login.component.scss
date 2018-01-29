@@ -12,7 +12,6 @@ form {
 		align-items: center;
 		justify-content: center;
 		width: 200px;
-		border: $tb-red;
 		padding: 0;
 		@include respond-to($tablet-portrait-up) {
 			width: 300px;
@@ -20,6 +19,5 @@ form {
 	}
 	mat-form-field {
 		width: 100%;
-		border: $tb-lime;
 	}
 }

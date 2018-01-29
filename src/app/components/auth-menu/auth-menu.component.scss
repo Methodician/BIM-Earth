@@ -3,10 +3,6 @@
 
 .login-form {
     @include size(225px, 350px);
-
-    // @include respond-to(400) {
-    //     @include size(225px, 350px);
-    // } 
     @include respond-to($tablet-portrait-up) {
         @include size(400px, 500px);
     } 
@@ -15,8 +11,13 @@
     } 
 }
 .register-form {
-    @include size(500px, 300px);
-    
+    @include size(250px, 550px);
+    @include respond-to($tablet-portrait-up) {
+        @include size(400px, 600px);
+    } 
+    @include respond-to($desktop-up) {
+        @include size(500px, 700px);
+    } 
 }
 .auth-wrapper {
     transform: translate(-50%, -50%);
@@ -38,7 +39,10 @@
        @include size(75px);
        margin: 10px 0;
        @include respond-to($tablet-portrait-up) {
-        margin: 20px 0;
+        @include size(100px);
+       }
+       @include respond-to($desktop-up) {
+           margin: 20px;
         @include size(125px);
        }
    }
@@ -47,9 +51,12 @@
     font-size: 24px;
     margin: 10px 0;
     @include respond-to($tablet-portrait-up) {
-        margin: 20px 0;
+        margin: 15px 0;
         font-size: 30px;
-       }
+    }
+       @include respond-to($desktop-up) {
+        margin: 20px 0;
+    }
    }
    button {
     margin: 10px 0;
@@ -66,10 +73,12 @@
             @include size(200px, 35px);
         }
         @include respond-to($tablet-portrait-up) {
+            margin: 15px 0;
+            @include size(300px, 55px);
+        }
+        @include respond-to($desktop-up) {
             margin: 20px 0;
             @include size(300px, 55px);
         }
     }
-
-    // breakpoint for mobile 
 }
