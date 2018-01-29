@@ -6,10 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
-  public searchBarVisable = false;
+  public searchBarVisible = false;
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

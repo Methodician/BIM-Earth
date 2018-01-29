@@ -40,6 +40,7 @@ export class MapService {
       properties: feature.properties
     });
     this.updateHistory(feature);
+    this.updateSearchTree(feature.properties.id, feature.properties.zapId);
   }
 
   deleteFeature(feature: GeoJson) {
@@ -60,7 +61,7 @@ export class MapService {
       .set({
         timestamp: fb.firestore.FieldValue.serverTimestamp(),
         geometry: JSON.stringify(feature.geometry)
-      })
+      });
   }
 
   getFirestoreFeatures() {
@@ -87,6 +88,24 @@ export class MapService {
   setChannelFilterSelection(selection: any[]) {
     this.channelFilterSelection = selection;
     this.channelFilterSelection$.next(selection);
+  }
+
+  getSearchTree() {
+    return this.rtdb.list('/searchTree');
+  }
+
+  updateSearchTree(id, zapId: string) {
+    const country = zapId.slice(0,2),
+          state = zapId.slice(3,5),
+          county = zapId.slice(6,9),
+          channel = zapId.slice(10,12),
+          uid = zapId.slice(13,18);
+    this.rtdb.object(`/searchTree/${country}/${state}/${county}/${channel}/${uid}`).set(id);
+  }
+
+  cameraSettings$ = new BehaviorSubject(null);
+  setCamera(cameraSettings) {
+    this.cameraSettings$.next(cameraSettings);
   }
 
 }

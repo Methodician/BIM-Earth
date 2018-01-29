@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // test import module to make sure that angular material is working
-import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule } from '@angular/material';
+import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatFormFieldModule, MatAutocompleteModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from '@components/map/map.component';
@@ -30,6 +30,7 @@ import { AuthService } from '@services/auth.service';
 import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
 import { LoginComponent } from './components/login/login.component';
 import { ChannelFilterMenuComponent } from './components/channel-filter-menu/channel-filter-menu.component';
+import { SearchComponent } from './components/search/search.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ChannelFilterMenuComponent } from './components/channel-filter-menu/cha
     RegisterComponent,
     AuthMenuComponent,
     LoginComponent,
-    ChannelFilterMenuComponent
+    ChannelFilterMenuComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +62,9 @@ import { ChannelFilterMenuComponent } from './components/channel-filter-menu/cha
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    MatInputModule
+    MatInputModule,
+    MatFormFieldModule,
+    MatAutocompleteModule
   ],
   providers: [
     MapService,
