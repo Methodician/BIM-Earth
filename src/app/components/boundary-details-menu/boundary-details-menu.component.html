@@ -3,7 +3,7 @@
   <bim-boundary-form #form></bim-boundary-form>
   <button mat-raised-button (click)="saveFeature(form.value); form.clear()">Save Boundary</button>
 </div>
-<div class="boundary-details" *ngIf="!editingFeature && selectedFeature">
+<div (bimClickOutside)="clickedOutside()" class="boundary-details" *ngIf="!editingFeature && selectedFeature">
   <p>Boundary Details</p>
   <p>Zap ID: {{ selectedFeature.properties.zapId }}</p>
   <p>Channel: {{selectedFeature.properties.channel}}</p>
