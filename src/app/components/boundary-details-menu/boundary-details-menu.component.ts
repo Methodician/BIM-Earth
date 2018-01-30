@@ -32,6 +32,11 @@ export class BoundaryDetailsMenuComponent implements OnInit {
     this.requestHideMenu();
   }
 
+  clickedOutside() {
+    console.log("woah this was clicked");
+    this.editingFeature = false;
+  }
+
   updateFeature(properties) {
     this.editingFeature = false;
     let featureId = this.selectedFeature.properties.id

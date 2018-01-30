@@ -30,6 +30,7 @@ import { AuthService } from '@services/auth.service';
 import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
 import { LoginComponent } from './components/login/login.component';
 import { ChannelFilterMenuComponent } from './components/channel-filter-menu/channel-filter-menu.component';
+import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ChannelFilterMenuComponent } from './components/channel-filter-menu/cha
     RegisterComponent,
     AuthMenuComponent,
     LoginComponent,
-    ChannelFilterMenuComponent
+    ChannelFilterMenuComponent,
+    ClickOutsideDirective
   ],
   imports: [
     BrowserModule,

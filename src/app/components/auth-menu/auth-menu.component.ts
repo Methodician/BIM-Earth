@@ -36,6 +36,12 @@ export class AuthMenuComponent implements OnInit {
     });
   }
 
+  outsideClicked(e) {
+    
+    console.log('outside was clicked', e);
+    this.authSvc.currentlyRegistering$.next(false);
+  }
+
   async registerAsync(formVal) {
     try {
       const registerResult = await this.authSvc.register(formVal.email, formVal.password);
