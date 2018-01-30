@@ -127,4 +127,33 @@ export class MapService {
     this.channelFilterSelection = selection;
     this.channelFilterSelection$.next(selection);
   }
+
+  startUpdateFeatures() {
+    this.rtdb.list('features').valueChanges().subscribe(features => {
+      features.forEach(feature => {
+        this.updateFeatures((feature as any).id)
+      })
+    })
+  }
+
+  updateFeatures(featureKey) {
+    var docRef = this.db.firestore.collection("features").doc(featureKey);
+
+     this.db.firestore.runTransaction(transaction => {
+        return transaction.get(docRef).then(doc => {
+            if (!doc.exists) {
+                let data = {
+                  author: "guest_user",
+                  deleted: false,
+                  editors: { "guest_user": true }
+                };
+                transaction.set(docRef, data)
+            } else { transaction.update(docRef, {}); }
+        });
+    }).then(function() {
+        console.log("Features updated.");
+    }).catch(function(error) {
+        console.log("Transaction failed: ", error);
+    });
+  }
 }
