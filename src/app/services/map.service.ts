@@ -6,6 +6,8 @@ import * as fb from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { GeoJson } from '@models/map';
 import { BehaviorSubject } from 'rxjs/Rx';
+import { AuthService } from '@services/auth.service';
+import { AuthInfo } from '@models/auth-info';
 
 @Injectable()
 export class MapService {
@@ -15,31 +17,21 @@ export class MapService {
   isDeleting$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   channelFilterSelection: any[] = [];
   channelFilterSelection$: BehaviorSubject<any[]> = new BehaviorSubject([]);
+  authInfo: AuthInfo = AuthService.UNKNOWN_USER;
 
-  constructor(private db: AngularFirestore, private rtdb: AngularFireDatabase) {
+  constructor(
+    private db: AngularFirestore,
+    private rtdb: AngularFireDatabase,
+    private authSvc: AuthService
+  ) {
     (mapboxgl as any).accessToken = environment.mapbox.accessToken;
+    this.authSvc.authInfo$.subscribe(authInfo => {
+      this.authInfo = authInfo;
+    })
   }
 
   getFeatures() {
     return this.rtdb.list('/features');
-  }
-
-  createFeature(feature: GeoJson) {
-    feature.properties.id = this.db.createId();
-    feature.properties.channel = Number(feature.properties.channel);
-    this.saveFeature(feature);
-  }
-
-
-  saveFeature(feature: GeoJson) {
-    feature.properties.channel = Number(feature.properties.channel) | 0;
-    this.rtdb.list(`/features`).set(`${feature.properties.id}`, {
-      id: feature.properties.id,
-      type: feature.type,
-      geometry: feature.geometry,
-      properties: feature.properties
-    });
-    this.updateHistory(feature);
   }
 
   deleteFeature(feature: GeoJson) {
@@ -50,6 +42,46 @@ export class MapService {
       properties: feature.properties
     });
     this.rtdb.object(`/features/${feature.properties.id}`).set(null);
+    this.db.doc(`features/${feature.properties.id}`).update({ deleted: fb.firestore.FieldValue.serverTimestamp() });
+    this.updateUserHistory(feature.properties.id, feature.properties.zapId, "delete");
+  }
+
+  createFeature(feature: GeoJson) {
+    feature.properties.id = this.db.createId();
+    feature.properties.channel = Number(feature.properties.channel);
+    feature.properties.author = this.authInfo.isLoggedIn() ? this.authInfo.$uid : "guest_user";
+    this.db.doc(`features/${feature.properties.id}`).set({
+      author: feature.properties.author,
+      deleted: false
+    });
+    this.updateUserHistory(feature.properties.id, feature.properties.zapId, "create");
+    this.saveFeature(feature, true);
+  }
+
+  saveFeature(feature: GeoJson, newFeature: boolean = false) {
+    feature.properties.channel = Number(feature.properties.channel) | 0;
+    this.rtdb.list(`/features`).set(`${feature.properties.id}`, {
+      id: feature.properties.id,
+      type: feature.type,
+      geometry: feature.geometry,
+      properties: feature.properties
+    });
+    if(!newFeature) this.updateUserHistory(feature.properties.id, feature.properties.zapId, "edit");
+    this.updateEditors(feature.properties.id);
+    this.updateHistory(feature);
+  }
+
+  updateUserHistory(featureId: string, zapId: string, action: string) {
+    if(this.authInfo.isLoggedIn()) {
+      this.db.collection(`users/${this.authInfo.$uid}/history`)
+        .doc(this.db.createId())
+        .set({
+          featureId: featureId,
+          zapId: zapId,
+          action: action,
+          timestamp: fb.firestore.FieldValue.serverTimestamp()
+        })
+    }
   }
 
   updateHistory(feature: GeoJson) {
@@ -61,6 +93,13 @@ export class MapService {
         timestamp: fb.firestore.FieldValue.serverTimestamp(),
         geometry: JSON.stringify(feature.geometry)
       })
+  }
+
+  updateEditors(featureId: string) {
+    let editors = {};
+    const author = this.authInfo.isLoggedIn() ? this.authInfo.$uid : "guest_user";
+    editors[`editors.${author}`] = true;
+    this.db.doc(`features/${featureId}`).update(editors);
   }
 
   getFirestoreFeatures() {
@@ -88,5 +127,4 @@ export class MapService {
     this.channelFilterSelection = selection;
     this.channelFilterSelection$.next(selection);
   }
-
 }
