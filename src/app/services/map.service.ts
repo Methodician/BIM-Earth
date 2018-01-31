@@ -156,4 +156,12 @@ export class MapService {
         console.log("Transaction failed: ", error);
     });
   }
+
+  getUserBoundaries(userKey: string) {
+    return this.db.collection(`features`, ref => ref.where(`editors.${userKey}`, '==', true).limit(20))
+  }
+
+  getUserHistory(userKey: string) {
+    return this.db.collection(`users/${userKey}/history`, ref => ref.limit(20));
+  }
 }
