@@ -32,6 +32,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ChannelFilterMenuComponent } from './components/channel-filter-menu/channel-filter-menu.component';
 import { AccountComponent } from './components/account/account.component';
 import { UserHistoryComponent } from './components/user-history/user-history.component';
+import { UserBoundariesComponent } from './components/user-boundaries/user-boundaries.component';
 
 
 
@@ -49,7 +50,8 @@ import { UserHistoryComponent } from './components/user-history/user-history.com
     LoginComponent,
     ChannelFilterMenuComponent,
     AccountComponent,
-    UserHistoryComponent
+    UserHistoryComponent,
+    UserBoundariesComponent
   ],
   imports: [
     BrowserModule,

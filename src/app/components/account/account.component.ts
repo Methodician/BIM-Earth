@@ -9,7 +9,8 @@ import { MapService } from '@services/map.service';
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-  userHistory: any;
+  userBoundaries: {}[];
+  userHistory: {}[];
   authInfo: AuthInfo = null;
   accountShowing: boolean = false;
 
@@ -24,10 +25,9 @@ export class AccountComponent implements OnInit {
       });
       if(info.$uid) {
         this.mapSvc.getUserBoundaries(info.$uid).valueChanges().subscribe(boundaries => {
-          console.log('boundaries: ', boundaries)
+          this.userBoundaries = boundaries;
         });
         this.mapSvc.getUserHistory(info.$uid).valueChanges().subscribe(history => {
-          console.log('history: ', history)
           this.userHistory = history;
         });
       }
