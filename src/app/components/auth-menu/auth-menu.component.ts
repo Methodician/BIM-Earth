@@ -28,18 +28,21 @@ export class AuthMenuComponent implements OnInit {
       this.isLoggingIn = loggingIn;
     });
 
-    this.authSvc.authInfo$.subscribe(info => {
-      console.log('auth info in auth menu', info);
-    });
-    this.authSvc.user$.subscribe(user => {
-      console.log('user from auth menu', user);
-    });
+    // this.authSvc.authInfo$.subscribe(info => {
+    //   console.log('auth info in auth menu', info);
+    // });
+    // this.authSvc.user$.subscribe(user => {
+    //   console.log('user from auth menu', user);
+    // });
   }
 
-  outsideClicked(e) {
-    
-    console.log('outside was clicked', e);
-    this.authSvc.currentlyRegistering$.next(false);
+  outsideRegisterClicked(e) {
+    const mobileBtn = document.getElementById('signup-btn-mobile');
+    const button = document.getElementById('signup-btn');
+    const signupButtonClicked = (e === button || e.parentElement === button || e === mobileBtn || e.parentElement == mobileBtn);
+    // console.log('signupButtonClicked:', signupButtonClicked);
+    if (!signupButtonClicked)
+      this.authSvc.currentlyRegistering$.next(false);
   }
 
   async registerAsync(formVal) {

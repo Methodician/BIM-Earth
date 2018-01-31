@@ -10,11 +10,11 @@ export class ClickOutsideDirective {
   @Output()
   public bimClickOutside = new EventEmitter();
 
-  @HostListener('document:click', ['$event.target'])
+  @HostListener('document:tap', ['$event.target'])
   public onClick(targetElement) {
     const clickedInside = this.elementRef.nativeElement.contains(targetElement);
     if (!clickedInside) {
-      this.bimClickOutside.emit(true);
+      this.bimClickOutside.emit(targetElement);
     }
   }
 }

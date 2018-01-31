@@ -3,23 +3,25 @@
   <div class="login-signup-container">
     <button (click)="openLogin()"
             mat-raised-button>Log In</button>
-    <button (click)="openSignup()"
+    <button id="signup-btn"
+            (click)="openSignup()"
             mat-raised-button>Sign Up</button>
   </div>
 
   <!-- Table to mobile hamburger menu -->
   <div class="tablet-menu"
-          mat-icon-button
-          [matMenuTriggerFor]="tabletMenu">
+       mat-icon-button
+       [matMenuTriggerFor]="tabletMenu">
     <i class="fas fa-bars"></i>
-</div>
+  </div>
   <mat-menu #tabletMenu="matMenu"
             [overlapTrigger]="false">
     <button (click)="openLogin()"
             mat-menu-item>
       <span>Login</span>
     </button>
-    <button (click)="openSignup()"
+    <button id="signup-btn-mobile"
+            (click)="openSignup()"
             mat-menu-item>
       <span>Signup</span>
     </button>
