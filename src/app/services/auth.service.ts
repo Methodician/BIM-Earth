@@ -14,6 +14,8 @@ export class AuthService {
 
   currentlyRegistering$ = new BehaviorSubject<boolean>(false);
   currentlyLoggingIn$ = new BehaviorSubject<boolean>(false);
+  accountShowing: boolean = false;
+  accountShowing$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -109,4 +111,8 @@ export class AuthService {
     return subject.asObservable();
   }
 
+  toggleShowAccount() {
+    this.accountShowing = !this.accountShowing;
+    this.accountShowing$.next(this.accountShowing);
+  }
 }

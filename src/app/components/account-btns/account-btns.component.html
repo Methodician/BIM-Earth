@@ -39,7 +39,8 @@
   <mat-menu class="account-menu"
             #menu="matMenu"
             [overlapTrigger]="false">
-    <button mat-menu-item>
+    <button mat-menu-item
+            (click)="openAccount()">
       <i class="fas fa-user-circle"></i>
       <span>Account</span>
     </button>

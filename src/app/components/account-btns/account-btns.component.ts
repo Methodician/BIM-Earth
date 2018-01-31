@@ -38,8 +38,11 @@ export class AccountBtnsComponent implements OnInit {
     this.authSvc.currentlyLoggingIn$.next(!isOpen);
   }
 
+  openAccount() {
+    if(this.authInfo.isLoggedIn()) this.authSvc.toggleShowAccount();
+  }
+
   signout() {
     this.authSvc.logout();
   }
-
 }
