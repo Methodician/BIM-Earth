@@ -1,7 +1,59 @@
-div {
-    position: fixed;
-    top: 260px;
-    left: 100px;
-    width: 150px;
-    background-color: white;
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+
+.filter-container {
+    transform: translate(-50%, -50%);
+    @include position(fixed, top 50% left 50%);
+    background-color: $light;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 2;
+    @include respond-to($tablet-portrait-up) {
+        padding: 20px;
+    }
+    
+    h2 {
+        font-size: 20px;
+        color: $dark;
+        margin: 10px 0;
+        align-self: flex-start;
+        @include respond-to($tablet-portrait-up) {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        @include respond-to($desktop-up) {
+            font-size: 28px;
+        }
+    }
+
+    form {
+        @include size(250px, 350px);
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        mat-checkbox {
+            margin-bottom: 5px;
+        }
+        @include respond-to($tablet-portrait-up) {
+            @include size(350px, 400px);
+        }
+    }
+
+    button {
+        @include size(80%, 35px);
+		color: $light;
+		background-color: $secondary;
+		border-radius: 5px;
+        transition: ease-in-out all .15s;
+        margin: 10px 0;
+		&:hover {
+			background-color: $primary;
+			border: 1px solid $light;
+		}
+    }
 }

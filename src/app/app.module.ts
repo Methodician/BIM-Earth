@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // test import module to make sure that angular material is working
-import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule } from '@angular/material';
+import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from '@components/map/map.component';
@@ -62,7 +62,8 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    MatInputModule
+    MatInputModule,
+    MatCheckboxModule,
   ],
   providers: [
     MapService,
