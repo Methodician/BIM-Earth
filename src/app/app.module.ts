@@ -31,6 +31,8 @@ import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
 import { LoginComponent } from './components/login/login.component';
 import { ChannelFilterMenuComponent } from './components/channel-filter-menu/channel-filter-menu.component';
 import { AccountComponent } from './components/account/account.component';
+import { UserHistoryComponent } from './components/user-history/user-history.component';
+
 
 
 @NgModule({
@@ -46,7 +48,8 @@ import { AccountComponent } from './components/account/account.component';
     AuthMenuComponent,
     LoginComponent,
     ChannelFilterMenuComponent,
-    AccountComponent
+    AccountComponent,
+    UserHistoryComponent
   ],
   imports: [
     BrowserModule,

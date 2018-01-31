@@ -22,6 +22,15 @@ export class AccountComponent implements OnInit {
       this.authSvc.accountShowing$.subscribe(isShowing => {
         this.accountShowing = isShowing;
       });
+      if(info.$uid) {
+        this.mapSvc.getUserBoundaries(info.$uid).valueChanges().subscribe(boundaries => {
+          console.log('boundaries: ', boundaries)
+        });
+        this.mapSvc.getUserHistory(info.$uid).valueChanges().subscribe(history => {
+          console.log('history: ', history)
+          this.userHistory = history;
+        });
+      }
     })
     
   }
