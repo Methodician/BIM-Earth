@@ -33,6 +33,7 @@ import { ChannelFilterMenuComponent } from './components/channel-filter-menu/cha
 import { AccountComponent } from './components/account/account.component';
 import { UserHistoryComponent } from './components/user-history/user-history.component';
 import { UserBoundariesComponent } from './components/user-boundaries/user-boundaries.component';
+import { ProfilePictureComponent } from './components/profile-picture/profile-picture.component';
 
 
 
@@ -51,7 +52,8 @@ import { UserBoundariesComponent } from './components/user-boundaries/user-bound
     ChannelFilterMenuComponent,
     AccountComponent,
     UserHistoryComponent,
-    UserBoundariesComponent
+    UserBoundariesComponent,
+    ProfilePictureComponent
   ],
   imports: [
     BrowserModule,

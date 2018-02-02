@@ -1,0 +1,5 @@
+@import "../../../sass/mixins.scss";
+img {
+  @include size(40px, 40px);
+  border-radius: 50%;
+}
