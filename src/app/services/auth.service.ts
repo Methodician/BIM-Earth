@@ -24,7 +24,7 @@ export class AuthService {
     this.afAuth.authState.subscribe(info => {
       if (info) {
         this.user$.next(info);
-        const authInfo = new AuthInfo(info.uid, info.emailVerified, info.displayName, info.email);
+        const authInfo = new AuthInfo(info.uid, info.emailVerified, info.displayName, info.email, info.photoURL);
         this.authInfo$.next(authInfo);
       }
     });
@@ -67,9 +67,9 @@ export class AuthService {
     location.reload();
   }
 
-  setDisplayName(alias) {
+  setDisplayName(alias, photoURL: string = null) {
     let userToSet = this.afAuth.auth.currentUser;
-    userToSet.updateProfile({ displayName: alias, photoURL: null });
+    userToSet.updateProfile({ displayName: alias, photoURL: photoURL })
   }
 
   sendVerificationEmail() {
