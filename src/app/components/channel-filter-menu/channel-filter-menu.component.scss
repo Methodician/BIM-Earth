@@ -2,42 +2,42 @@
 @import "../../../sass/mixins.scss";
 
 .filter-container {
-    transform: translate(-50%, -50%);
-    @include position(fixed, top 50% left 50%);
-    background-color: $light;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 2;
-    @include respond-to($tablet-portrait-up) {
-        padding: 20px;
-    }
+    padding: 20px;
+    border-radius: 10px;
+    overflow: hidden;
     
     h2 {
-        font-size: 20px;
+        font-size: 24px;
         color: $dark;
-        margin: 10px 0;
+        margin-bottom: 10px;
+        margin-left: 12px;
         align-self: flex-start;
         @include respond-to($tablet-portrait-up) {
-            font-size: 24px;
-            margin: 20px 0;
+            font-size: 26px;
+            margin-bottom: 20px;
         }
         @include respond-to($desktop-up) {
             font-size: 28px;
         }
     }
-
     form {
-        @include size(250px, 350px);
+        @include size(200px, 360px);
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
+        justify-content: center;
+        overflow-y: scroll;
         mat-checkbox {
             margin-bottom: 5px;
+            margin-left: 12px;
+        }
+        @include respond-to(375) {
+            flex-wrap: wrap;
+            overflow-y: hidden;
+            @include size(260px, 360px);
         }
         @include respond-to($tablet-portrait-up) {
             @include size(350px, 400px);
@@ -45,15 +45,21 @@
     }
 
     button {
-        @include size(80%, 35px);
-		color: $light;
-		background-color: $secondary;
-		border-radius: 5px;
+        @include size(90%, 35px);
+        border-radius: 5px;
         transition: ease-in-out all .15s;
-        margin: 10px 0;
+        margin: 20px 10px;
+        color: $light;
 		&:hover {
-			background-color: $primary;
-			border: 1px solid $light;
-		}
+			background-color: $secondary;
+        }
+
+        @include respond-to(375) {
+            @include size(110px, 35px);
+        }
+        
+        @include respond-to($tablet-portrait-up) {
+            @include size(150px, 35px);
+        }
     }
 }

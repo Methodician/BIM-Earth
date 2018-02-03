@@ -123,3 +123,12 @@ input:focus, textarea:focus {
 		}
 	}
 }
+
+// Override for angular material dialog styles
+mat-dialog-container {
+	padding: 0 !important;
+	border-radius: 5px !important;
+}
+mat-dialog-actions {
+	padding: 0 !important;
+}

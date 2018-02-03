@@ -49,14 +49,14 @@
 
 // styles for logged in user button.
 .user-account-container {
-	@include size(75px, 200px);
+	@include size(200px, 75px);
 	@include position(fixed, top 0 right 0);
 	display: block;
 	.account-btn{
 		height: 100%;
 		width: 100%;
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-around;
 		background-color: rgba(0 , 0, 0, .1);
 		border: none;
 		box-shadow: none;
