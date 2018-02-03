@@ -13,7 +13,7 @@
 		transition: ease-in-out all .15s;
 		&:hover {
 			background-color: $primary;
-			border: 1px solid $light;
+			// border: 1px solid $light;
 		}
 	}
 	@include respond-to($desktop-up) {
@@ -36,7 +36,7 @@
 	&:hover {
 		background-color: $primary;
 		color: $light;
-		border: 2px solid $light;
+		// border: 2px solid $light;
 	}
 	// media queries for tablet menu
 	@include respond-to($tablet-portrait-up) {

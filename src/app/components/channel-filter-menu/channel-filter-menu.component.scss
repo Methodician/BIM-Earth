@@ -35,6 +35,7 @@
             margin-left: 12px;
         }
         @include respond-to(375) {
+            justify-content: unset;
             flex-wrap: wrap;
             overflow-y: hidden;
             @include size(260px, 360px);
