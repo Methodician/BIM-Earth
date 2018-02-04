@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
+import { MatDialog, MatDialogRef } from '@angular/material';
+
+import { AccountComponent } from './../account/account.component';
 
 @Component({
   selector: 'bim-account-btns',
@@ -12,9 +15,11 @@ export class AccountBtnsComponent implements OnInit {
   public tabletNavDropdownVisable = false;
 
   authInfo: AuthInfo;
+  accountDialogRef: MatDialogRef<AccountComponent>;
 
   constructor(
-    private authSvc: AuthService
+    private authSvc: AuthService,
+    private dialog: MatDialog,
   ) {
     this.authSvc.authInfo$.subscribe(info => {
       this.authInfo = info;
@@ -39,7 +44,8 @@ export class AccountBtnsComponent implements OnInit {
   }
 
   openAccount() {
-    if(this.authInfo.isLoggedIn()) this.authSvc.toggleShowAccount();
+    // if(this.authInfo.isLoggedIn()) this.authSvc.toggleShowAccount();
+    this.accountDialogRef = this.dialog.open(AccountComponent);
   }
 
   signout() {

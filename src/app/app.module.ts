@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // test import module to make sure that angular material is working
-import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule } from '@angular/material';
+import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatDialogModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from '@components/map/map.component';
@@ -69,7 +69,11 @@ import { ProfilePictureComponent } from './components/profile-picture/profile-pi
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule
+  ],
+  entryComponents: [
+    AccountComponent,
   ],
   providers: [
     MapService,

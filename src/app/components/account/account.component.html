@@ -1,6 +1,8 @@
-<div id="account" *ngIf="accountShowing">
-    <bim-profile-picture [userKey]="authInfo.uid"></bim-profile-picture>
-    <p>{{ authInfo.displayName }}</p>
-    <bim-user-history [history]="userHistory"></bim-user-history>
-    <bim-user-boundaries [boundaries]="userBoundaries"></bim-user-boundaries>
-</div>
+<mat-dialog-content>
+    <div id="account">
+        <bim-profile-picture [userKey]="authInfo.uid"></bim-profile-picture>
+        <p>{{ authInfo.displayName }}</p>
+        <bim-user-history [history]="userHistory"></bim-user-history>
+        <bim-user-boundaries [boundaries]="userBoundaries"></bim-user-boundaries>
+    </div>
+</mat-dialog-content>

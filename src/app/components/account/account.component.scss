@@ -1,8 +1,9 @@
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+
 #account {
     background-color: white;
-    position: fixed;
-    top: 50px;
-    right: 0px;
+    border: $tb-red;
 }
 
 bim-user-boundaries, bim-user-history {

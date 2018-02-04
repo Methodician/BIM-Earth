@@ -1,5 +1,9 @@
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+
 #boundary-container {
     width: 250px;
     height: 350px;
     overflow-y: scroll;
+    border: $tb-cyan;
 }
