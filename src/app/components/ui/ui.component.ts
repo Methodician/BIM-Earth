@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MapService } from '@services/map.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
-import { ChannelFilterMenuComponent } from './../channel-filter-menu/channel-filter-menu.component';
+import { ChannelFilterMenuComponent } from '@components/channel-filter-menu/channel-filter-menu.component';
 
 @Component({
   selector: 'bim-ui',
@@ -13,7 +13,7 @@ export class UiComponent implements OnInit {
   isDeleting: boolean = false;
   // filterHidden: boolean = true;
 
-  channelFilterDialogRef : MatDialogRef<ChannelFilterMenuComponent>;
+  channelFilterDialogRef: MatDialogRef<ChannelFilterMenuComponent>;
 
   constructor(private mapSvc: MapService, private ref: ChangeDetectorRef, private dialog: MatDialog) { }
 

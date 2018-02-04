@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // test import module to make sure that angular material is working
-import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule } from '@angular/material';
+import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule, MatDialogRef } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from '@components/map/map.component';
@@ -27,7 +27,6 @@ import { BoundaryDetailsMenuComponent } from '@components/boundary-details-menu/
 import { BoundaryFormComponent } from '@components/boundary-form/boundary-form.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from '@services/auth.service';
-import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
 import { LoginComponent } from './components/login/login.component';
 import { ChannelFilterMenuComponent } from './components/channel-filter-menu/channel-filter-menu.component';
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
@@ -43,7 +42,6 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     BoundaryDetailsMenuComponent,
     BoundaryFormComponent,
     RegisterComponent,
-    AuthMenuComponent,
     LoginComponent,
     ChannelFilterMenuComponent,
     ClickOutsideDirective
@@ -68,10 +66,12 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
   ],
   providers: [
     MapService,
-    AuthService
+    AuthService,
   ],
   entryComponents: [
-    ChannelFilterMenuComponent
+    ChannelFilterMenuComponent,
+    RegisterComponent,
+    LoginComponent,
   ],
   bootstrap: [AppComponent]
 })

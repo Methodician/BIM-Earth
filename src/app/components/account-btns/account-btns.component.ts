@@ -1,6 +1,14 @@
+
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
+
+import { MatDialog, MatDialogRef } from '@angular/material';
+
+import { RegisterComponent } from '@components/register/register.component';
+import { LoginComponent } from '@components/login/login.component';
+
+
 
 @Component({
   selector: 'bim-account-btns',
@@ -12,9 +20,11 @@ export class AccountBtnsComponent implements OnInit {
   public tabletNavDropdownVisable = false;
 
   authInfo: AuthInfo;
-
+  registerDialogRef: MatDialogRef<RegisterComponent>;
+  loginDialogRef: MatDialogRef<LoginComponent>;
   constructor(
-    private authSvc: AuthService
+    private authSvc: AuthService,
+    private dialog: MatDialog,
   ) {
     this.authSvc.authInfo$.subscribe(info => {
       this.authInfo = info;
@@ -25,17 +35,19 @@ export class AccountBtnsComponent implements OnInit {
   }
 
   openSignup() {
-    const isOpen = this.authSvc.currentlyRegistering$.value;
-    if (!isOpen)
-      this.authSvc.currentlyLoggingIn$.next(false);
-    this.authSvc.currentlyRegistering$.next(!isOpen);
+    // const isOpen = this.authSvc.currentlyRegistering$.value;
+    // if (!isOpen)
+      // this.authSvc.currentlyLoggingIn$.next(false);
+
+      this.registerDialogRef = this.dialog.open(RegisterComponent);
   }
 
   openLogin() {
-    const isOpen = this.authSvc.currentlyLoggingIn$.value;
-    if (!isOpen)
-      this.authSvc.currentlyRegistering$.next(false);
-    this.authSvc.currentlyLoggingIn$.next(!isOpen);
+    // const isOpen = this.authSvc.currentlyLoggingIn$.value;
+    // if (!isOpen) 
+    //   this.authSvc.currentlyRegistering$.next(false);
+    //   this.authSvc.currentlyLoggingIn$.next(!isOpen);
+    this.loginDialogRef = this.dialog.open(LoginComponent);
   }
 
   signout() {

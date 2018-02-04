@@ -1,12 +1,22 @@
-<form autocomplete="off" [formGroup]="form" class="loginForm">
-  <div class="formWrapper">
-    <fieldset>
-      <mat-form-field color="accent">
-        <input matInput placeholder="*Email:" name="email" formControlName="email" type="email">
-      </mat-form-field>
-      <mat-form-field color="accent">
-        <input matInput placeholder="*Password:" name="password" formControlName="password" type="password">
-      </mat-form-field>
-    </fieldset>
-  </div>
-</form>
+<div class="login-wrapper">
+  <img src="../../../assets/bim-icon.png" alt="BIM Earth Icon"/>
+  <h3>Log In</h3>
+  <form autocomplete="off" [formGroup]="form" class="loginForm">
+    <div class="formWrapper">
+      <fieldset>
+        <mat-form-field color="accent">
+          <input matInput placeholder="*Email:" name="email" formControlName="email" type="email">
+        </mat-form-field>
+        <mat-form-field color="accent">
+          <input matInput placeholder="*Password:" name="password" formControlName="password" type="password">
+        </mat-form-field>
+      </fieldset>
+    </div>
+   </form>
+  <button color="primary" mat-raised-button [mat-dialog-close]="true" (click)="login(form.value);">
+    Log In
+  </button>
+  <button color="primary" mat-raised-button [mat-dialog-close]="true">
+    Cancel  
+  </button>
+</div>

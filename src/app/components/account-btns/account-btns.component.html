@@ -1,26 +1,19 @@
 <div *ngIf="!authInfo.$uid">
   <!-- login and signup button container that two buttons in it -->
   <div class="login-signup-container">
-    <button (click)="openLogin()"
-            mat-raised-button>Log In</button>
-    <button (click)="openSignup()"
-            mat-raised-button>Sign Up</button>
+    <button (click)="openLogin()" mat-raised-button>Log In</button>
+    <button (click)="openSignup()" mat-raised-button>Sign Up</button>
   </div>
 
   <!-- Table to mobile hamburger menu -->
-  <div class="tablet-menu"
-          mat-icon-button
-          [matMenuTriggerFor]="tabletMenu">
+  <div class="tablet-menu" mat-icon-button [matMenuTriggerFor]="tabletMenu">
     <i class="fas fa-bars"></i>
-</div>
-  <mat-menu #tabletMenu="matMenu"
-            [overlapTrigger]="false">
-    <button (click)="openLogin()"
-            mat-menu-item>
+  </div>
+  <mat-menu #tabletMenu="matMenu" [overlapTrigger]="false">
+    <button (click)="openLogin()" mat-menu-item>
       <span>Login</span>
     </button>
-    <button (click)="openSignup()"
-            mat-menu-item>
+    <button (click)="openSignup()" mat-menu-item>
       <span>Signup</span>
     </button>
   </mat-menu>
@@ -28,17 +21,12 @@
 
 
 <!-- account container for when the user is signed in, right now it is display none in the scss folder -->
-<div *ngIf="authInfo.$uid"
-     class="user-account-container">
-  <button class="account-btn"
-          [matMenuTriggerFor]="menu">
-    <img src="http://fillmurray.com/300/300"
-         alt="Phill Murray">
+<div *ngIf="authInfo.$uid" class="user-account-container">
+  <button class="account-btn" [matMenuTriggerFor]="menu">
+    <img src="http://fillmurray.com/300/300" alt="Phill Murray">
     <p>Hello, {{authInfo.displayName || authInfo.email}}</p>
   </button>
-  <mat-menu class="account-menu"
-            #menu="matMenu"
-            [overlapTrigger]="false">
+  <mat-menu class="account-menu" #menu="matMenu" [overlapTrigger]="false">
     <button mat-menu-item>
       <i class="fas fa-user-circle"></i>
       <span>Account</span>
