@@ -2,9 +2,17 @@
 @import "../../../sass/mixins.scss";
 
 
-div {
-    width: 250px;
-    height: 350px;
-    overflow-y: scroll;
-    border: $tb-lime;
+.pill {
+    padding: 10px 15px;
+    background-color: $medium;
+    color: $dark;
+    border-radius: 20px;
+    margin: 10px 0;
+    width: 200px;
+    text-align: left;
+    font-size: 10px;
+
+    @include respond-to($tablet-portrait-up) {
+        width: 300px;
+    }
 }

@@ -1,8 +1,75 @@
-<mat-dialog-content>
-    <div id="account">
+
+<div id="account">
+    <div class="spacer"></div>
+    <h2>Account Page</h2>
+    <div class="user-profile-picture">
         <bim-profile-picture [userKey]="authInfo.uid"></bim-profile-picture>
-        <p>{{ authInfo.displayName }}</p>
-        <bim-user-history [history]="userHistory"></bim-user-history>
-        <bim-user-boundaries [boundaries]="userBoundaries"></bim-user-boundaries>
+        <div class="profile-options">
+            <mat-form-field color="accent">
+                <input matInput disabled placeholder="{{ authInfo.displayName }}" type="text"/>
+            </mat-form-field>
+            
+            <mat-form-field color="accent">
+                <input matInput disabled placeholder="Portland, OR" type="text"/>
+            </mat-form-field>
+            <button mat-raised-button color="primary">Password Reset</button>
+        </div>
     </div>
-</mat-dialog-content>
+    
+    <div class="spacer"></div>
+
+    <h2>Edit History</h2>
+
+    <div class="user-edit-container">
+        <div class="user-history-container">
+            <h3>User History</h3>
+            <bim-user-history [history]="userHistory"></bim-user-history>
+        </div>
+        <div class="user-boundary-container">
+            <h3>User Boundaries</h3>
+            <bim-user-boundaries [boundaries]="userBoundaries"></bim-user-boundaries>
+        </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="bookmark-container">
+        boundary bookmark placeholder
+    </div>
+
+</div>
+
+
+
+
+
+<!-- <div class="container-fluid" id="account">
+    <div class="row">
+        <div class="col-12 user-profile-picture">
+            <bim-profile-picture [userKey]="authInfo.uid"></bim-profile-picture>
+            <mat-form-field color="accent">
+                <input matInput placeholder="{{ authInfo.displayName }}" type="text"/>
+            </mat-form-field>
+            
+            <mat-form-field color="accent">
+                    <input matInput placeholder="Portland, OR" type="text"/>
+            </mat-form-field>
+            <button mat-raised-button color="primary">Password Reset</button>
+        </div>
+        <div class="col-12 user-edit-container">
+            <div class="row">
+                <div class="col-12 col-sm-6 user-history-container">
+                    <bim-user-history [history]="userHistory"></bim-user-history>
+                </div>
+                <div class="col-12 col-sm-6 user-boundary-container">
+                    <bim-user-boundaries [boundaries]="userBoundaries"></bim-user-boundaries>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 bookmark-container">
+            boundary bookmark placeholder
+        </div>
+    </div>
+</div> -->

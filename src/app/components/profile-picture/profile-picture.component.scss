@@ -1,5 +1,10 @@
+@import "../../../sass/vars.scss";
 @import "../../../sass/mixins.scss";
+
 img {
-  @include size(40px, 40px);
+  @include size(95px);
   border-radius: 50%;
+  @include respond-to($tablet-portrait-up) {
+    @include size(150px);
+  }
 }

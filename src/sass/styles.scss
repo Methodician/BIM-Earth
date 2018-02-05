@@ -125,3 +125,14 @@ input:focus, textarea:focus {
 		}
 	}
 }
+mat-dialog-container {
+	padding: 0 !important;
+	border-radius: 10px !important;
+}
+mat-dialog-contemt {
+	padding: 0 !important;
+	border-radius: 10px !important;
+}
+mat-dialog-actions {
+	padding: 0 !important;
+}

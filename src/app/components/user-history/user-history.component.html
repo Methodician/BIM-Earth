@@ -1,5 +1,3 @@
-<div>
-  <p *ngFor="let event of history">
+<div class="pill" *ngFor="let event of history">
     {{ event.action }} {{ event.zapId }} on {{ event.timestamp ? friendlyData(event.timestamp) : 'UNKNOWN' }}
-  </p>
 </div>

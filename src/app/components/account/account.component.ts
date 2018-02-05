@@ -12,7 +12,7 @@ export class AccountComponent implements OnInit {
   userBoundaries: {}[];
   userHistory: {}[];
   authInfo: AuthInfo = null;
-  // accountShowing: boolean = false;
+  accountShowing: boolean = false;
 
   constructor(private authSvc: AuthService, private mapSvc: MapService) { }
 

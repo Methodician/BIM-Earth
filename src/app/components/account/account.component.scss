@@ -2,8 +2,121 @@
 @import "../../../sass/mixins.scss";
 
 #account {
-    background-color: white;
-    border: $tb-red;
+    // border: $tb-red;
+    border-radius: 10px;
+    text-align: center;
+    @include size(300px, 550px);
+    // overflow: hidden;
+
+    h2 {
+        font-size: 28px;
+        color: $dark;
+        margin: 20px;
+    }
+    h3 {
+        font-size: 18px;
+        color: $dark;
+        margin: 20px;
+
+        @include respond-to($tablet-portrait-up) {
+            font-size: 24px;
+        }
+    }
+
+    @include respond-to($tablet-portrait-up) {
+        @include size(500px, 800px);
+    }
+    @include respond-to($tablet-landscape-up) {
+        @include size(600px);
+    }
+    @include respond-to($desktop-up) {
+        @include size(800px, 600px);
+    }
+
+    .user-profile-picture {
+        // border: $tb-red;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px;
+
+        @include respond-to($tablet-portrait-up) {
+            flex-direction: row;
+        }
+
+        .profile-options {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 260px;
+
+            @include respond-to($tablet-portrait-up) {
+                width: 400px;
+            }
+            
+            mat-form-field {
+                width: 100%;
+                input {
+                    margin: 10px 0;
+                }
+            }
+            
+            button {
+                margin: 10px 0;
+                color: $light;
+            }
+        }
+    }
+
+    .spacer {
+        @include size(95%, 10px);
+        border-radius: 20px;
+        background-color: $primary;
+        margin: 10px auto;
+    }
+
+    .user-edit-container {
+        padding: 10px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: column;
+
+        @include respond-to($tablet-portrait-up) {
+            flex-direction: row;
+        }
+
+        .user-history-container {
+            @include size(300px);
+            display: inline-block;   
+            overflow-y: scroll;
+
+            @include respond-to($tablet-portrait-up) {
+                width: 400px;
+            }
+        }
+
+        .user-boundary-container {
+            @include size(300px);
+            // border: $tb-red;    
+            display: inline-block;
+            overflow-y: scroll;
+
+            @include respond-to($tablet-portrait-up) {
+                width: 400px;
+            }
+        }
+    }
+
+    .bookmark-container {
+        height: 500px;
+        // border: $tb-red;
+    }
+
+
+
 }
 
 bim-user-boundaries, bim-user-history {
