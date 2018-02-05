@@ -4,14 +4,16 @@
 form {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
+	width: 225px;
 	label {
 		margin-top: 20px;
-		text-align: left;
+		text-align: center;
 		color: $dark;
 	}
 	.input-styles {
-		@include size(35px, 100%);
+		@include size(100%, 35px);
 		text-decoration: none;
 		background-color: $light;
 		font-size: 18px;
@@ -19,11 +21,7 @@ form {
 		border: none;
 		box-shadow: 1px 1px 2px 0 rgba(0,0,0,0.50);
 		padding: 0;
-		align-self: center;
 		color: $dark;
 		margin-top: 10px;
-		&:focus {
-			border: none;
-		}
 	}
 }

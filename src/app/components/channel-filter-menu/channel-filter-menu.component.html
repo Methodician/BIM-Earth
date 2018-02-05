@@ -1,8 +1,12 @@
-<div>
-  <form [formGroup]="form">
-    <label *ngFor="let channel of form.get('channels').controls; let i = index">
-      <input type="checkbox" [formControl]="channel"/>{{ channels[i].name }}
-    </label>    
-  </form>
-  <button (click)="resetFilter()">reset</button>
+<div class="filter-container">
+  <h2 mat-dialog-title>Filter</h2>
+  <mat-dialog-content>
+    <form [formGroup]="form">
+      <mat-checkbox [formControl]="channel" *ngFor="let channel of form.get('channels').controls; let i = index">{{ channels[i].name }}</mat-checkbox>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="resetFilter()">Reset Filter</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true">Close</button>
+  </mat-dialog-actions>
 </div>

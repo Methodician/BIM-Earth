@@ -1,21 +1,31 @@
-<form autocomplete="off" [formGroup]="form" class="registerForm">
-  <div class="formWrapper">
-    <fieldset>
-      <mat-form-field>
-        <input matInput placeholder="*Email:" name="email" formControlName="email" type="email">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="*Password:" name="password" formControlName="password" type="password">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="*Confirm Password:" name="confirmPass" formControlName="confirmPass"type="password">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Alias (optional):" name="alias" formControlName="alias" type="text">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Zip Code (optional):" name="zipCode" formControlName="zipCode" type="text">
-      </mat-form-field>
-    </fieldset>
-  </div>
-</form>
+<div class="register-wrapper">
+  <img src="../../../assets/bim-icon.png" alt="BIM Earth Icon"/>
+  <h3>Register</h3>
+  <form autocomplete="off" [formGroup]="form" class="registerForm">
+    <div class="formWrapper">
+      <fieldset>
+        <mat-form-field color="accent">
+          <input matInput placeholder="*Email:" name="email" formControlName="email" type="email">
+        </mat-form-field>
+        <mat-form-field color="accent">
+          <input matInput placeholder="*Password:" name="password" formControlName="password" type="password">
+        </mat-form-field>
+        <mat-form-field color="accent">
+          <input matInput placeholder="*Confirm Password:" name="confirmPass" formControlName="confirmPass"type="password">
+        </mat-form-field>
+        <mat-form-field color="accent">
+          <input matInput placeholder="Alias (optional):" name="alias" formControlName="alias" type="text">
+        </mat-form-field>
+        <mat-form-field color="accent">
+          <input matInput placeholder="Zip Code (optional):" name="zipCode" formControlName="zipCode" type="text">
+        </mat-form-field>
+      </fieldset>
+    </div>
+  </form>
+  <button mat-raised-button [mat-dialog-close]="true" (click)="register(form.value);">
+    Register
+  </button>
+  <button mat-raised-button [mat-dialog-close]="true">
+      Cancel
+  </button>
+</div>
