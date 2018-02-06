@@ -2,11 +2,16 @@
   <h2 mat-dialog-title>Filter</h2>
   <mat-dialog-content>
     <form [formGroup]="form">
-      <mat-checkbox [formControl]="channel" *ngFor="let channel of form.get('channels').controls; let i = index">{{ channels[i].name }}</mat-checkbox>
+      <mat-checkbox [formControl]="channel"
+                    *ngFor="let channel of getChannelsControls(); let i = index">{{ channels[i].name }}</mat-checkbox>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="resetFilter()">Reset Filter</button>
-    <button mat-raised-button color="primary" [mat-dialog-close]="true">Close</button>
+    <button mat-raised-button
+            color="primary"
+            (click)="resetFilter()">Reset Filter</button>
+    <button mat-raised-button
+            color="primary"
+            [mat-dialog-close]="true">Close</button>
   </mat-dialog-actions>
 </div>

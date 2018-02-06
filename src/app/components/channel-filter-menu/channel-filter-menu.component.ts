@@ -12,7 +12,7 @@ export class ChannelFilterMenuComponent implements OnInit {
   form: FormGroup;
   channels;
 
-  constructor(private fb: FormBuilder, private mapSvc: MapService) {}
+  constructor(private fb: FormBuilder, private mapSvc: MapService) { }
 
   ngOnInit() {
     this.buildChannels();
@@ -24,26 +24,26 @@ export class ChannelFilterMenuComponent implements OnInit {
     this.form.get('channels').valueChanges
       .subscribe(selectionStates => this.updateFilter(selectionStates))
   }
-  
+
   buildChannels() {
     let keys = Object.keys(Channels);
     keys = keys.slice(0, keys.length / 2);
     this.channels = keys.map(channel => {
-      return {name: Channels[channel], id: channel}
+      return { name: Channels[channel], id: channel }
     });
   }
 
   buildChannelControls() {
     let controls = [];
-    for(let i = 0; i < this.channels.length; i++) {
+    for (let i = 0; i < this.channels.length; i++) {
       controls[i] = this.fb.control(false)
-    } 
+    }
     return this.fb.array(controls)
   }
 
   updateFilter(selectionStates: string[]) {
     let selected = selectionStates.reduce((selected, isSelected, i) => {
-      if(isSelected) {
+      if (isSelected) {
         //parseInt only necessary while channels are numerical
         return selected.concat(parseInt(this.channels[i].id, 10), true)
       } else return selected
@@ -55,5 +55,9 @@ export class ChannelFilterMenuComponent implements OnInit {
     this.form.reset({
       channels: this.buildChannelControls()
     })
+  }
+
+  getChannelsControls() {
+    return this.form.get('channels')['controls'];
   }
 }
