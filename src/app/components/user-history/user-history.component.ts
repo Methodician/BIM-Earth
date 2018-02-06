@@ -7,13 +7,19 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class UserHistoryComponent implements OnInit {
   @Input() history;
+
+  pastTense = {
+    create: "Created",
+    edit: "Edited",
+    delete: "Deleted"
+  }
   
   constructor() { }
 
   ngOnInit() {}
 
   friendlyData(timestamp) {
-    return `${timestamp.getMonth()+1}/${timestamp.getDay()}/${timestamp.getYear()} at ${timestamp.getHours()}:${timestamp.getMinutes()}`;
+    return `${timestamp.getMonth()+1}/${timestamp.getDay()}/${timestamp.getYear() - 100} at ${timestamp.getHours()}:${timestamp.getMinutes()}`;
   }
 
 }
