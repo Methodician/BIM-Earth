@@ -1,6 +1,4 @@
-// import for themeing through angular material, using a default one until I make a custom one for the sites colors
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-
+@import './custom-theme';
 @import "./vars";
 @import "./mixins";
 
@@ -75,7 +73,7 @@ input:focus, textarea:focus {
 			box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.50);
 			border: none;
 			&:hover {
-				border: 3px solid #fafafa;
+				// border: 3px solid #fafafa;
 				background-color: $secondary;
 			}
 			// media queries for the bottomr right zoom-in/zoom-out and directional buttons
@@ -109,7 +107,7 @@ input:focus, textarea:focus {
 			box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.50);
 			border: none;
 			&:hover {
-				border: 3px solid #fafafa;
+				// border: 3px solid #fafafa;
 				background-color: $secondary;
 			}
 		}
@@ -124,4 +122,18 @@ input:focus, textarea:focus {
 			background-position: center;
 		}
 	}
+}
+
+mat-dialog-content {
+	padding: 0 !important;
+	border-radius: 10px !important;
+}
+
+mat-dialog-container {
+	padding: 0 !important;
+	border-radius: 5px !important;
+}
+
+mat-dialog-actions {
+	padding: 0 !important;
 }

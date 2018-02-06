@@ -1,0 +1,5 @@
+<div id="history-pill-container">
+  <div class="pill" *ngFor="let event of history">
+    {{ pastTense[event.action] }} {{ event.zapId }} on {{ event.timestamp ? friendlyData(event.timestamp) : 'UNKNOWN' }}
+  </div>
+</div>

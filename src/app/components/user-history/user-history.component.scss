@@ -1,0 +1,18 @@
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+
+
+.pill {
+    padding: 10px 15px;
+    background-color: $medium;
+    color: $dark;
+    border-radius: 20px;
+    margin: 10px 0;
+    width: 200px;
+    text-align: left;
+    font-size: 10px;
+
+    @include respond-to($tablet-portrait-up) {
+        width: 300px;
+    }
+}

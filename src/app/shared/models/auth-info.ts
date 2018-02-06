@@ -3,7 +3,8 @@ export class AuthInfo {
         public $uid: string,
         public emailVerified = false,
         public displayName = 'Username',
-        public email = 'filler@full.yodle'
+        public email = 'filler@full.yodle',
+        public photoURL = "http://fillmurray.com/300/300"
     ) { }
 
     isLoggedIn() {

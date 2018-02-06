@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { AuthInfo } from '@models/auth-info';
 import { Router } from '@angular/router';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @Injectable()
 export class AuthService {
@@ -14,15 +15,22 @@ export class AuthService {
 
   currentlyRegistering$ = new BehaviorSubject<boolean>(false);
   currentlyLoggingIn$ = new BehaviorSubject<boolean>(false);
+  accountShowing: boolean = false;
+  accountShowing$ = new BehaviorSubject<boolean>(false);
+
+  private get uid() {
+    return this.afAuth.auth.currentUser.uid;
+  }
 
   constructor(
     public afAuth: AngularFireAuth,
-    public router: Router
+    public router: Router,
+    private db: AngularFirestore
   ) {
     this.afAuth.authState.subscribe(info => {
       if (info) {
         this.user$.next(info);
-        const authInfo = new AuthInfo(info.uid, info.emailVerified, info.displayName, info.email);
+        const authInfo = new AuthInfo(info.uid, info.emailVerified, info.displayName, info.email, info.photoURL);
         this.authInfo$.next(authInfo);
       }
     });
@@ -65,9 +73,9 @@ export class AuthService {
     location.reload();
   }
 
-  setDisplayName(alias) {
+  setDisplayName(alias, photoURL: string = null) {
     let userToSet = this.afAuth.auth.currentUser;
-    userToSet.updateProfile({ displayName: alias, photoURL: null });
+    userToSet.updateProfile({ displayName: alias, photoURL: photoURL })
   }
 
   sendVerificationEmail() {
@@ -96,6 +104,7 @@ export class AuthService {
 
     promise
       .then(res => {
+        console.log('res: ', res)
         const authInfo = new AuthInfo(this.afAuth.auth.currentUser.uid, res.emailVerified);
         this.authInfo$.next(authInfo);
         subject.next(res);
@@ -109,4 +118,21 @@ export class AuthService {
     return subject.asObservable();
   }
 
+  toggleShowAccount() {
+    this.accountShowing = !this.accountShowing;
+    this.accountShowing$.next(this.accountShowing);
+  }
+
+  saveUser(userData) {
+    this.db.doc(`users/${this.uid}`).set(userData);
+  }
+
+  updateUser(userData) {
+    this.setDisplayName(userData.name);
+    this.db.doc(`users/${this.uid}`).update(userData);
+  }
+
+  getCurrentUserData() {
+    return this.db.doc(`users/${this.uid}`);
+  }
 }

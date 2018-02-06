@@ -1,0 +1,6 @@
+<div id="boundary-container">
+    <div class="pill" *ngFor="let boundary of boundaries">
+      <p>Author: {{ authorName(boundary.author) }}</p>
+      <span *ngIf="boundary.deleted">DELETED</span>
+    </div>
+  </div>

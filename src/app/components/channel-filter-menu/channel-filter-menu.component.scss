@@ -1,7 +1,66 @@
-div {
-    position: fixed;
-    top: 260px;
-    left: 100px;
-    width: 150px;
-    background-color: white;
+@import "../../../sass/vars.scss";
+@import "../../../sass/mixins.scss";
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    
+    h2 {
+        font-size: 24px;
+        color: $dark;
+        margin-bottom: 10px;
+        margin-left: 12px;
+        align-self: flex-start;
+        @include respond-to($tablet-portrait-up) {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+        @include respond-to($desktop-up) {
+            font-size: 28px;
+        }
+    }
+    form {
+        @include size(200px, 360px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow-y: scroll;
+        mat-checkbox {
+            margin-bottom: 5px;
+            margin-left: 12px;
+        }
+        @include respond-to(375) {
+            justify-content: unset;
+            flex-wrap: wrap;
+            overflow-y: hidden;
+            @include size(260px, 360px);
+        }
+        @include respond-to($tablet-portrait-up) {
+            @include size(350px, 400px);
+        }
+    }
+
+    button {
+        @include size(90%, 35px);
+        border-radius: 5px;
+        transition: ease-in-out all .15s;
+        margin: 20px 10px;
+        color: $light;
+		&:hover {
+			background-color: $secondary;
+        }
+
+        @include respond-to(375) {
+            @include size(110px, 35px);
+        }
+        
+        @include respond-to($tablet-portrait-up) {
+            @include size(150px, 35px);
+        }
+    }
 }

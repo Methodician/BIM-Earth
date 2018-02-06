@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
-
+import { Router } from '@angular/router';
+import { AuthInfo } from '@models/auth-info';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'bim-register',
@@ -12,20 +14,51 @@ import { Validators } from '@angular/forms';
 export class RegisterComponent implements OnInit {
 
   form: FormGroup;
+  authInfo: AuthInfo;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authSvc: AuthService,
+    private router: Router,
   ) {
     this.form = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
       confirmPass: ['', Validators.required],
-      alias: '',
-      zipCode: ''
+      name: '',
+      location: ''
     });
   }
 
   ngOnInit() {
+  }
+
+  async registerAsync(formVal) {
+    try {
+      const registerResult = await this.authSvc.register(formVal.email, formVal.password);
+      console.log('async registration successful, result:', registerResult);
+      //  Currently afAuth.auth.currentUser is null at this point, but not in subscription version...
+      this.authSvc.setDisplayName(formVal.alias);
+    }
+    catch (err) { console.log('Registration failed', err); }
+  }
+
+  register(formVal) {
+    this.authSvc.register(formVal.email, formVal.password).subscribe(
+      res => {
+        console.log('registration successful, result:', res);
+        this.authSvc.setDisplayName(formVal.alias);
+        this.authSvc.sendVerificationEmail();
+        console.log('form', this.form.value)
+        this.authSvc.saveUser({
+          name: this.form.value.name,
+          location: this.form.value.location
+        });
+        // this.authSvc.saveUser()
+        // this.router.navigateByUrl('/account');
+      },
+      err => alert(err)
+      );
   }
 
 

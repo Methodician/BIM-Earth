@@ -1,0 +1,76 @@
+
+<div id="account">
+    <div class="spacer"></div>
+    <h2>Account</h2>
+    <div class="user-profile-picture">
+        <bim-profile-picture [userKey]="authInfo.uid"></bim-profile-picture>
+      <div class="profile-options">
+        <form [formGroup]="form" autocomplete="off">
+          <mat-form-field color="accent">
+            <input formControlName="name" name="name" matInput placeholder="Name" type="text"/>
+          </mat-form-field>
+          <mat-form-field color="accent">
+            <input formControlName="location" name="location" matInput placeholder="Location" type="text"/>
+          </mat-form-field>
+        </form>
+        <button [disabled]="form.pristine" (click)="updateProfile()" mat-raised-button color="primary">{{form.pristine ? 'Saved' : 'Save'}}</button>
+      </div>
+    </div>
+    
+    <div class="spacer"></div>
+
+    <!-- <h2>Edit History</h2> -->
+
+    <div class="user-edit-container">
+        <div class="user-history-container">
+            <h3>History</h3>
+            <bim-user-history [history]="userHistory"></bim-user-history>
+        </div>
+        <div class="user-boundary-container">
+            <h3>Boundaries</h3>
+            <bim-user-boundaries [boundaries]="userBoundaries"></bim-user-boundaries>
+        </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <!-- <div class="bookmark-container">
+        boundary bookmark placeholder
+    </div> -->
+
+</div>
+
+
+
+
+
+<!-- <div class="container-fluid" id="account">
+    <div class="row">
+        <div class="col-12 user-profile-picture">
+            <bim-profile-picture [userKey]="authInfo.uid"></bim-profile-picture>
+            <mat-form-field color="accent">
+                <input matInput placeholder="{{ authInfo.displayName }}" type="text"/>
+            </mat-form-field>
+            
+            <mat-form-field color="accent">
+                    <input matInput placeholder="Portland, OR" type="text"/>
+            </mat-form-field>
+            <button mat-raised-button color="primary">Password Reset</button>
+        </div>
+        <div class="col-12 user-edit-container">
+            <div class="row">
+                <div class="col-12 col-sm-6 user-history-container">
+                    <bim-user-history [history]="userHistory"></bim-user-history>
+                </div>
+                <div class="col-12 col-sm-6 user-boundary-container">
+                    <bim-user-boundaries [boundaries]="userBoundaries"></bim-user-boundaries>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 bookmark-container">
+            boundary bookmark placeholder
+        </div>
+    </div>
+</div> -->

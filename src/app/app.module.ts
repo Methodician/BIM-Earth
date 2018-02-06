@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // test import module to make sure that angular material is working
-import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule } from '@angular/material';
+import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule, MatDialogRef } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from '@components/map/map.component';
@@ -27,9 +27,14 @@ import { BoundaryDetailsMenuComponent } from '@components/boundary-details-menu/
 import { BoundaryFormComponent } from '@components/boundary-form/boundary-form.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthService } from '@services/auth.service';
-import { AuthMenuComponent } from './components/auth-menu/auth-menu.component';
 import { LoginComponent } from './components/login/login.component';
 import { ChannelFilterMenuComponent } from './components/channel-filter-menu/channel-filter-menu.component';
+import { AccountComponent } from './components/account/account.component';
+import { UserHistoryComponent } from './components/user-history/user-history.component';
+import { UserBoundariesComponent } from './components/user-boundaries/user-boundaries.component';
+import { ProfilePictureComponent } from './components/profile-picture/profile-picture.component';
+
+import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 
 
 @NgModule({
@@ -42,9 +47,13 @@ import { ChannelFilterMenuComponent } from './components/channel-filter-menu/cha
     BoundaryDetailsMenuComponent,
     BoundaryFormComponent,
     RegisterComponent,
-    AuthMenuComponent,
     LoginComponent,
-    ChannelFilterMenuComponent
+    ChannelFilterMenuComponent,
+    AccountComponent,
+    UserHistoryComponent,
+    UserBoundariesComponent,
+    ProfilePictureComponent,
+    ClickOutsideDirective
   ],
   imports: [
     BrowserModule,
@@ -60,11 +69,19 @@ import { ChannelFilterMenuComponent } from './components/channel-filter-menu/cha
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule,
+    MatCheckboxModule,
   ],
   providers: [
     MapService,
-    AuthService
+    AuthService,
+  ],
+  entryComponents: [
+    ChannelFilterMenuComponent,
+    RegisterComponent,
+    LoginComponent,
+    AccountComponent
   ],
   bootstrap: [AppComponent]
 })
