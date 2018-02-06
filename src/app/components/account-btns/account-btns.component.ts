@@ -55,7 +55,9 @@ export class AccountBtnsComponent implements OnInit {
 
   openAccount() {
     // if(this.authInfo.isLoggedIn()) this.authSvc.toggleShowAccount();
-    this.accountDialogRef = this.dialog.open(AccountComponent);
+    this.accountDialogRef = this.dialog.open(AccountComponent, {
+      autoFocus: false
+    });
   }
 
   signout() {

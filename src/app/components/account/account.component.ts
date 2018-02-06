@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
 import { MapService } from '@services/map.service';
+import { FormGroup } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'bim-account',
@@ -13,13 +15,23 @@ export class AccountComponent implements OnInit {
   userHistory: {}[];
   authInfo: AuthInfo = null;
   accountShowing: boolean = false;
+  form: FormGroup;
 
-  constructor(private authSvc: AuthService, private mapSvc: MapService) { }
+  constructor(private authSvc: AuthService, private mapSvc: MapService, private fb: FormBuilder) { }
 
   ngOnInit() {
-    
+    this.authSvc.getCurrentUserData().valueChanges().subscribe(data => {
+      if(this.form) this.form.patchValue(data);
+    })
+
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      location: ''
+    })
+
     this.authSvc.authInfo$.subscribe(info => {
       this.authInfo = info;
+      this.form.patchValue({ name: info.displayName })
       this.authSvc.accountShowing$.subscribe(isShowing => {
         this.accountShowing = isShowing;
       });
@@ -31,8 +43,11 @@ export class AccountComponent implements OnInit {
           this.userHistory = history;
         });
       }
-    })
-    
+    }) 
   }
 
+  updateProfile() {
+    this.form.reset(this.form.value)
+    this.authSvc.updateUser(this.form.value);
+  }
 }

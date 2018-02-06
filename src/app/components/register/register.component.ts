@@ -25,8 +25,8 @@ export class RegisterComponent implements OnInit {
       email: ['', Validators.required],
       password: ['', Validators.required],
       confirmPass: ['', Validators.required],
-      alias: '',
-      zipCode: ''
+      name: '',
+      location: ''
     });
   }
 
@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
   async registerAsync(formVal) {
     try {
       const registerResult = await this.authSvc.register(formVal.email, formVal.password);
-      console.log('registration successful, result:', registerResult);
+      console.log('async registration successful, result:', registerResult);
       //  Currently afAuth.auth.currentUser is null at this point, but not in subscription version...
       this.authSvc.setDisplayName(formVal.alias);
     }
@@ -49,6 +49,12 @@ export class RegisterComponent implements OnInit {
         console.log('registration successful, result:', res);
         this.authSvc.setDisplayName(formVal.alias);
         this.authSvc.sendVerificationEmail();
+        console.log('form', this.form.value)
+        this.authSvc.saveUser({
+          name: this.form.value.name,
+          location: this.form.value.location
+        });
+        // this.authSvc.saveUser()
         // this.router.navigateByUrl('/account');
       },
       err => alert(err)
