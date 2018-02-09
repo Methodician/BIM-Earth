@@ -33,9 +33,10 @@ import { AccountComponent } from './components/account/account.component';
 import { UserHistoryComponent } from './components/user-history/user-history.component';
 import { UserBoundariesComponent } from './components/user-boundaries/user-boundaries.component';
 import { ProfilePictureComponent } from './components/profile-picture/profile-picture.component';
+import { BoundaryUploadComponent } from './components/boundary-upload/boundary-upload.component';
+
 
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
-
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     UserHistoryComponent,
     UserBoundariesComponent,
     ProfilePictureComponent,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    BoundaryUploadComponent
   ],
   imports: [
     BrowserModule,
