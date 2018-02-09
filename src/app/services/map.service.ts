@@ -46,6 +46,17 @@ export class MapService {
     this.updateUserHistory(feature.properties.id, feature.properties.zapId, "delete");
   }
 
+  createStaticFeature(feature: GeoJson) {
+    feature.properties.id = this.db.createId();
+    feature.properties.channel = Number(feature.properties.channel);
+    this.rtdb.list(`/staticFeatures`).set(`${feature.properties.id}`, {
+      id: feature.properties.id,
+      type: feature.type,
+      geometry: feature.geometry,
+      properties: feature.properties
+    });
+  }
+
   createFeature(feature: GeoJson) {
     feature.properties.id = this.db.createId();
     feature.properties.channel = Number(feature.properties.channel);
