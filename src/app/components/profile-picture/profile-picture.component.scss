@@ -2,9 +2,12 @@
 @import "../../../sass/mixins.scss";
 
 img {
-  @include size(95px);
+  @include size(115px);
   border-radius: 50%;
   @include respond-to($tablet-portrait-up) {
-    @include size(150px);
+    @include size(175px);
+  }
+  @include respond-to($desktop-up) {
+    @include size(225px);
   }
 }

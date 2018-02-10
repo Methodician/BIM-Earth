@@ -16,6 +16,9 @@ export class AccountComponent implements OnInit {
   authInfo: AuthInfo = null;
   accountShowing: boolean = false;
   form: FormGroup;
+  editHistoryIsVisable: SelectedEdit = SelectedEdit.history;
+
+
 
   constructor(private authSvc: AuthService, private mapSvc: MapService, private fb: FormBuilder) { }
 
@@ -50,4 +53,17 @@ export class AccountComponent implements OnInit {
     this.form.reset(this.form.value)
     this.authSvc.updateUser(this.form.value);
   }
+
+  showHistoryEdits() {
+    this.editHistoryIsVisable = SelectedEdit.history;
+  }
+
+  showBoundaryEdits() {
+    this.editHistoryIsVisable = SelectedEdit.boundaries;
+  }
+}
+
+export enum SelectedEdit {
+  'history' = 1,
+  'boundaries'
 }

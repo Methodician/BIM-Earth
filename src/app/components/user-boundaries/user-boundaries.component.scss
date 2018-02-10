@@ -8,12 +8,14 @@
         color: $dark;
         border-radius: 20px;
         margin: 10px 0;
-        width: 200px;
+        width: 250px;
         text-align: left;
         font-size: 10px;
-
         @include respond-to($tablet-portrait-up) {
-            width: 280px;
+            width: 400px;
+        }
+        @include respond-to($desktop-up) {
+            width: 650px;
         }
     }
 }
