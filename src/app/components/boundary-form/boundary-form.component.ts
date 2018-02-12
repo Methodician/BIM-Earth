@@ -9,26 +9,39 @@ import { Channels } from '@enums/channels.enum';
 })
 export class BoundaryFormComponent implements OnInit {
   @Input() initialValue;
+  @Input() prefix;
   form: FormGroup;
   channels: string[];
+  defaultChannel: string = "00-";
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() {
     this.form = this.fb.group({
-      zapId: ['US-OR-MLT-00-' + this.randomString(), Validators.required],
+      zapId: ["", Validators.required],
       channel: [0, Validators.required]
+    })
+    this.initializeChannels();
+    if(this.prefix) this.setPrefix();
+    if(this.initialValue) this.setInitialValue();
+    // this.setInitialValue()
+  }
+
+  setPrefix() { 
+    this.form.patchValue({
+      zapId: this.prefix + this.defaultChannel + this.randomString(),
     })
   }
 
-  ngOnInit() {
-    this.setInitialValue()
+  initializeChannels() {
+    this.channels = Object.keys(Channels);
+    this.channels = this.channels.slice(0, this.channels.length / 2);
   }
 
   setInitialValue() {
     if (this.initialValue) {
       this.form.patchValue(this.initialValue)
     }
-    this.channels = Object.keys(Channels);
-    this.channels = this.channels.slice(0, this.channels.length / 2);
   }
 
   channelSelect(channelKey: string) {

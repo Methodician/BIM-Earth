@@ -20,6 +20,7 @@ export class MapComponent implements OnInit {
   center = [-122.6781, 45.4928];
   bounds: any;
   source: any;
+  countySource: any;
   newFeatureId: string = "";
   selectedFeature: GeoJson = null;
   isDeleting: boolean = false;
@@ -51,24 +52,58 @@ export class MapComponent implements OnInit {
         type: 'FeatureCollection',
         features: []
       }
-    })
+    });
+
+    this.map.addSource('countySource', {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: []
+      }
+    });
 
     this.source = this.map.getSource('firebase');
+    this.countySource = this.map.getSource('countySource');
 
-    this.mapSvc.getFeatures().valueChanges().subscribe(features => {
-      const collection = new FeatureCollection((features as GeoJson[]));
-      this.source.setData(collection);
-    });
+    // unsure if this could ever emit null, if so the observable would need more processing
+    // county features are static, and only need to be accessed once
+    this.mapSvc.getCountyFeatures().valueChanges().take(1).subscribe(features => {
+      const counties = new FeatureCollection((features as GeoJson[]));
+      this.countySource.setData(counties);
+      
+      this.mapSvc.getFeatures().valueChanges().subscribe(features => {
+        const collection = new FeatureCollection((features as GeoJson[]));
+        this.source.setData(collection);
+      });
+    })
 
-    this.map.addLayer({
-      id: 'boundaries',
-      source: 'firebase',
-      type: 'fill',
-      paint: this.layerPaint
-    });
+
+
+    this.map
+      .addLayer({
+        id: 'boundaries',
+        source: 'firebase',
+        type: 'fill',
+        paint: this.layerPaint
+      })
+      .addLayer({
+        id: 'countyLines',
+        source: 'countySource',
+        type: 'line',
+        paint: {'line-color': 'rgba(186, 35, 57, 0.5)'}
+      })
+      .addLayer({
+        id: 'countyFills',
+        source: 'countySource',
+        type: 'fill',
+        paint: {
+          'fill-opacity': 0
+        }
+      });
 
   }
 
+  // TODO: move to separate file
   layerPaint = {
     'fill-color': [
       'match',

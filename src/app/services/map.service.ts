@@ -30,6 +30,10 @@ export class MapService {
     })
   }
 
+  getCountyFeatures() {
+    return this.rtdb.list('/staticFeatures');
+  }
+
   getFeatures() {
     return this.rtdb.list('/features');
   }

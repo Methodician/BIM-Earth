@@ -1,6 +1,6 @@
 <div class="boundary-details" *ngIf="newFeatureId" >
   <h3>Create Boundary</h3>
-  <bim-boundary-form #form></bim-boundary-form>
+  <bim-boundary-form #form [prefix]="getPrefix()"></bim-boundary-form>
   <button mat-raised-button (click)="saveFeature(form.value); form.clear()">Save Boundary</button>
 </div>
 <div (bimClickOutside)="clickedOutside()" class="boundary-details" *ngIf="!editingFeature && selectedFeature">

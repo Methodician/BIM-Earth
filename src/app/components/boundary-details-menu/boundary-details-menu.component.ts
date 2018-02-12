@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
 import { MapService } from '@services/map.service';
 import { GeoJson } from '@models/map';
+import * as Mapbox from 'mapbox-gl';
 
 @Component({
   selector: 'bim-boundary-details-menu',
@@ -30,6 +31,18 @@ export class BoundaryDetailsMenuComponent implements OnInit {
     this.mapSvc.createFeature(feature);
     this.draw.delete(this.newFeatureId);
     this.requestHideMenu();
+  }
+
+  getPrefix() {
+    let coords = this.draw.getAll().features[0].geometry.coordinates[0][0]
+    let lngLat = new Mapbox.LngLat(coords[0], coords[1]);
+    let point = this.map.project(lngLat);
+    let features = this.map.queryRenderedFeatures(point, {
+      layers: ['countyFills']
+    });
+    if(features.length > 0) {
+      return features[0].properties.zapId.slice(0, 10);
+    } else return "US-OR-MLT-"
   }
 
   clickedOutside() {
