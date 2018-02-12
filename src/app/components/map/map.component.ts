@@ -24,6 +24,7 @@ export class MapComponent implements OnInit {
   newFeatureId: string = "";
   selectedFeature: GeoJson = null;
   isDeleting: boolean = false;
+  hoveredCounty: string = "";
 
   constructor(private mapSvc: MapService, private ref: ChangeDetectorRef) { }
 
@@ -190,6 +191,19 @@ export class MapComponent implements OnInit {
         this.mapSvc.toggleDelete();
         this.ref.detectChanges();
       }
+    })
+
+    // TODO: add name and state property to staticFeatures
+    this.map.on("mousemove", "countyFills", e => {
+      if(this.hoveredCounty != e.features[0].properties.zapId) {
+        this.hoveredCounty = e.features[0].properties.zapId;
+        this.ref.detectChanges();
+      }
+    })
+
+    this.map.on("mouseleave", "countyFills", e => {
+      this.hoveredCounty = "";
+      this.ref.detectChanges();
     })
   }
 
