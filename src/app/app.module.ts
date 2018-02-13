@@ -12,7 +12,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // test import module to make sure that angular material is working
-import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule, MatDialogRef } from '@angular/material';
+import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule, MatDialogRef, MatExpansionModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from '@components/map/map.component';
@@ -35,6 +35,7 @@ import { UserBoundariesComponent } from './components/user-boundaries/user-bound
 import { ProfilePictureComponent } from './components/profile-picture/profile-picture.component';
 
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
+import { BoundaryPostComponent } from './components/boundary-post/boundary-post.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     UserHistoryComponent,
     UserBoundariesComponent,
     ProfilePictureComponent,
-    ClickOutsideDirective
+    ClickOutsideDirective,
+    BoundaryPostComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +74,7 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     MatInputModule,
     MatDialogModule,
     MatCheckboxModule,
+    MatExpansionModule,
   ],
   providers: [
     MapService,

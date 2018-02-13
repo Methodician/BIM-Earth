@@ -1,0 +1,67 @@
+<!-- Alright Aubrey! Here it is!!! So like I've said previously, this component is pretty big, and might need to be broken up into smaller pieces. Keeping that in mind, I tried to make everything as modular as possible so you can copy paste anything you have to in order to make hooking this up to the logic a little easier. So basically the way this component is working now is that when you click the toggle button, it adds a class to the boundary-post-container div, that changes the opacity from 0, to 1, causing the div to become visable and and animate. I was going to add the create post page, but in the process found that it will probably be easier for you to set up the logic to render the create a post with what I'm currently passing to you, then I'll go back and fix anything that needs fixing. If you have any further questions on how anything is set up please don't hesitate to shoot me a message on slack! Going forward in the future, let me know if this was an easy piece to pick up from me or if there is any way that I could structure it differently to make your job easier!-->
+
+
+<!-- This is the toggle button that is placed crudely underneath the filter button -->
+<button class="toggle-btn" mat-raised-button color="primary" (click)="isBoundaryPostOpen = !isBoundaryPostOpen" >Toggle Post</button>
+
+<!-- This is the main container that holds everything and makes up the off-white background around all of the content. This is also the the div that the class gets added to, to make it visable and animate -->
+<div [ngClass]="{clicked: isBoundaryPostOpen}" class="boundary-post-container">
+	<!-- This container is for the name of the boundary and a button that when clicked removes the class that makes the content visable  -->
+	<div class="boundary-name-close-btn">
+		<h2>US-OR-MLT-25-12345</h2>
+		<div (click)="isBoundaryPostOpen = !isBoundaryPostOpen">
+			<i class="far fa-times-circle fa-3x close-btn"></i>
+		</div>
+	</div>
+		<!-- The mat-accordion tag is the main container holding all of the expansion panels -->
+		<mat-accordion>
+			<!-- The mat-expansion-panel is the main container for each individual post, this is likeley were you will throw your ngIf statement-->
+			<mat-expansion-panel>
+				<!-- The mat-expansion-panel Header container holds the name of the post and the date when it was created -->
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						Post Title
+					</mat-panel-title>
+					<mat-panel-description>
+						02-01-18
+					</mat-panel-description>
+				</mat-expansion-panel-header>
+				<!-- So the rest if this content is what makes up the body of each post once the mat-expansion-panel is expanded. -->
+				<!-- This is the H4 Tag for who submited the post -->
+				<h4 class="author">Posted By dummyjoe94</h4>
+				<!-- The images-container holds one big image and another div called picture box that can be popluated with other pictures from the DB. I would limit the amount of photo's that get rendered, maybe have it render the first 5 or 6 images if there are more than that. -->
+				<div class="images-container">
+					<img class="main-image" src="../../../assets/asset1.jpg" alt="image">
+					<div class="picture-box">
+							<a class="img-thumbnail">
+								<img src="../../../assets/asset2.jpg" alt="image">
+							</a>
+						<a class="img-thumbnail">
+							<img src="../../../assets/asset3.jpg" alt="image">
+						</a>
+						<a class="img-thumbnail">
+							<img src="../../../assets/asset3.jpg" alt="image">
+						</a>
+						<a class="img-thumbnail">
+							<img src="../../../assets/asset3.jpg" alt="image">
+						</a>
+					</div>
+				</div>
+				<!-- This div is for any body texts belonging to posts -->
+				<div class="post-body-text">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				</div>
+				<!-- this div is for individual download links. You should be able to throw as few or many buttons in here as you wouldf like.  -->
+				<div class="download-btns">
+					<h4>Files Avaiable for Download</h4>
+					<button mat-raised-button color="primary">somefile.pdf</button>
+					<button mat-raised-button color="primary">longerfilename.pdf</button>
+					<button mat-raised-button color="primary">blahblah.excel.xsx</button>
+				</div>
+			</mat-expansion-panel>
+		</mat-accordion>
+		<!-- This is the button that users are going to click to add a new post. It's positioned with absolute positioning so as long is it sits outside of the mat-accordion tag it should be fine. -->
+		<button class="post-btn" mat-fab color="accent" (click)="showBoundaryPost()">
+			<i class="fas fa-plus fa-2x"></i>
+		</button>
+</div>
