@@ -11,6 +11,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFireStorageModule } from 'angularfire2/storage'
 // test import module to make sure that angular material is working
 import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule, MatDialogRef, MatExpansionModule } from '@angular/material';
 
@@ -33,6 +34,7 @@ import { AccountComponent } from './components/account/account.component';
 import { UserHistoryComponent } from './components/user-history/user-history.component';
 import { UserBoundariesComponent } from './components/user-boundaries/user-boundaries.component';
 import { ProfilePictureComponent } from './components/profile-picture/profile-picture.component';
+import { UploadComponent } from './components/upload/upload.component'
 
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 import { BoundaryPostComponent } from './components/boundary-post/boundary-post.component';
@@ -57,7 +59,8 @@ import { PostComponent } from './components/post/post.component';
     ProfilePictureComponent,
     ClickOutsideDirective,
     BoundaryPostComponent,
-    PostComponent
+    PostComponent,
+    UploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +72,7 @@ import { PostComponent } from './components/post/post.component';
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireDatabaseModule,
+    AngularFireStorageModule,
     BrowserAnimationsModule,
     MatIconModule,
     MatButtonModule,
