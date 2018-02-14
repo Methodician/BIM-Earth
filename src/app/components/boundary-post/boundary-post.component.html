@@ -11,7 +11,8 @@
 		<!-- The mat-accordion tag is the main container holding all of the expansion panels -->
 		<mat-accordion *ngIf="!creatingPost">
       <!-- The mat-expansion-panel is the main container for each individual post, this is likeley were you will throw your ngIf statement-->
-			<bim-post *ngFor="let post of posts" [post]="post"></bim-post>
+      <bim-post *ngFor="let post of posts" [post]="post"></bim-post>
+      <mat-card *ngIf="posts.length == 0">No Posts Yet</mat-card>
 		</mat-accordion>
     <!-- This is the button that users are going to click to add a new post. It's positioned with absolute positioning so as long is it sits outside of the mat-accordion tag it should be fine. -->
     <form *ngIf="creatingPost" [formGroup]="postForm">

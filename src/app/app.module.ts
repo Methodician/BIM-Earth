@@ -13,7 +13,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireStorageModule } from 'angularfire2/storage'
 // test import module to make sure that angular material is working
-import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule, MatDialogRef, MatExpansionModule } from '@angular/material';
+import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule, MatDialogRef, MatExpansionModule, MatCardModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from '@components/map/map.component';
@@ -81,6 +81,7 @@ import { PostComponent } from './components/post/post.component';
     MatDialogModule,
     MatCheckboxModule,
     MatExpansionModule,
+    MatCardModule,
   ],
   providers: [
     MapService,
