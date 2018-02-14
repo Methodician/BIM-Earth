@@ -1,0 +1,39 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      {{ title }}
+    </mat-panel-title>
+    <mat-panel-description>
+      {{ postDate }}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <h4 class="author">Posted By {{ author }}</h4>
+  <!-- The images-container holds one big image and another div called picture box that can be popluated with other pictures from the DB. I would limit the amount of photo's that get rendered, maybe have it render the first 5 or 6 images if there are more than that. -->
+  <!-- <div class="images-container">
+    <img class="main-image" src="../../../assets/asset1.jpg" alt="image">
+    <div class="picture-box">
+        <a class="img-thumbnail">
+          <img src="../../../assets/asset2.jpg" alt="image">
+        </a>
+      <a class="img-thumbnail">
+        <img src="../../../assets/asset3.jpg" alt="image">
+      </a>
+      <a class="img-thumbnail">
+        <img src="../../../assets/asset3.jpg" alt="image">
+      </a>
+      <a class="img-thumbnail">
+        <img src="../../../assets/asset3.jpg" alt="image">
+      </a>
+    </div>
+  </div> -->
+  <div class="post-body-text">
+    {{ postBody }}
+  </div>
+  <!-- this div is for individual download links. You should be able to throw as few or many buttons in here as you wouldf like.  -->
+  <div class="download-btns">
+    <h4>Files Avaiable for Download</h4>
+    <button mat-raised-button color="primary">somefile.pdf</button>
+    <button mat-raised-button color="primary">longerfilename.pdf</button>
+    <button mat-raised-button color="primary">blahblah.excel.xsx</button>
+  </div>
+</mat-expansion-panel>

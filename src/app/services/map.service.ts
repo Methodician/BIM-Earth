@@ -102,6 +102,19 @@ export class MapService {
     this.db.doc(`features/${featureId}`).update(editors);
   }
 
+  getBoundaryPosts(featureId: string) {
+    return this.db.collection(`features/${featureId}/posts`);
+  }
+
+  savePost(data) {
+    this.db.doc(`features/${data.featureId}/posts/${this.db.createId()}`).set({
+      title: data.title,
+      description: data.description,
+      author: data.author,
+      timestamp: fb.firestore.FieldValue.serverTimestamp()
+    })
+  }
+
   getFirestoreFeatures() {
     return this.db.collection('geoPolygons').stateChanges().map(actions => {
       return actions.map(action => {

@@ -36,6 +36,7 @@ import { ProfilePictureComponent } from './components/profile-picture/profile-pi
 
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 import { BoundaryPostComponent } from './components/boundary-post/boundary-post.component';
+import { PostComponent } from './components/post/post.component';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { BoundaryPostComponent } from './components/boundary-post/boundary-post.
     UserBoundariesComponent,
     ProfilePictureComponent,
     ClickOutsideDirective,
-    BoundaryPostComponent
+    BoundaryPostComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,

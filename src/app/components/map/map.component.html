@@ -1,12 +1,19 @@
-<mgl-map [style]="style"
-         [zoom]="[9]"
-         [center]="center"
-         (load)="mapLoaded($event)"
-         [fitBounds]="bounds">
-</mgl-map>
-<bim-boundary-details-menu [draw]="draw"
-                           [newFeatureId]="newFeatureId"
-                           [map]="map"
-                           [selectedFeature]="selectedFeature"
-                           (editFeatureRequest)="editFeature($event)"
-                           (hideMenuRequest)="hideMenu()"></bim-boundary-details-menu>
+<mgl-map
+  [style]="style"
+  [zoom]="[9]"
+  [center]="center"
+  (load)="mapLoaded($event)"
+  [fitBounds]="bounds"
+></mgl-map>
+<bim-boundary-details-menu
+  [draw]="draw"
+  [newFeatureId]="newFeatureId"
+  [map]="map"
+  [selectedFeature]="selectedFeature"
+  (editFeatureRequest)="editFeature($event)"
+  (hideMenuRequest)="hideMenu()"
+></bim-boundary-details-menu>
+<bim-boundary-post
+  [feature]="selectedFeature"
+  (closeMenuRequest)="hideMenu()"
+></bim-boundary-post>

@@ -58,69 +58,10 @@ mat-accordion {
 	width: 100%;
 	margin: 20px 0;
 	overflow-y: auto;
-	mat-expansion-panel {
-		margin: 10px 0;
-		background-color: $light;
-		mat-expansion-panel-header {
-			background-color: $medium;
-		}
-	}
 }
 
-.author {
-	color: $dark;
-	font-size: 14px; 
-	margin: 10px 0;
-}
-
-.images-container {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
-	.main-image {
-		@include size(250px, 150px);
-		box-shadow: 0 2px 4px 0 rgba(0,0,0,0.50);
-		border-radius: 10px;
-		margin: 0 0 10px 0;
-		align-self: center;
-		@include respond-to($desktop-up) {
-			@include size(325px, 175px);
-		}
-	}
-
-	.picture-box {
-		width: 100%;
-		.img-thumbnail {
-			margin: 10px 10px 10px 0;
-			img {
-				@include size(65px, 45px);
-				border-radius: 5px;
-				box-shadow: 0 2px 4px 0 rgba(0,0,0,0.50);
-			}
-		}
-	}
-}
-
-.post-body-text {
-	text-align: left;
-	color: $dark;
-	font-size: 12px;
-	margin: 10px 0;
-}
-
-.download-btns {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
-	button {
-		color: $light;
-		font-size: 14px;
-		margin: 5px 0;
-		width: 175px;
-	}
+mat-form-field {
+  width: 100%;
 }
 
 .post-btn {
