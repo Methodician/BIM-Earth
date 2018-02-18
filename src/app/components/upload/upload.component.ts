@@ -16,8 +16,6 @@ export class UploadComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
   queue = {};
   queueArray = [];
-  tasks: AngularFireUploadTask[] = [];
-  imageTasks: AngularFireUploadTask[] = [];
   imageTypes = {
     "image/jpeg": true,
     "image/png": true,
@@ -32,6 +30,11 @@ export class UploadComponent implements OnInit {
   ) { }
 
   ngOnInit() {}
+
+  clearFiles() {
+    this.queue = {};
+    this.updateQueueArray();
+  }
   
   addToQueue(files: FileList) {
     for(let i = 0, length = files.length; i < length; i++) {
@@ -61,27 +64,33 @@ export class UploadComponent implements OnInit {
   }
 
   startUpload(featureId: string, postId: string) {
-    let filePaths = [];
-    let imagePaths = [];
+    let files = [];
+    let fileURLs = [];
+    let images = [];
+    let imageURLs = [];
     for(let file in this.queue) {
       let path = `/tests/${this.queue[file].blob.name}`;
       let task = this.storage.upload(path, this.queue[file].blob, { customMetadata: {id: this.firestore.createId(), postId: postId, featureId: featureId }});
       if(this.imageTypes[this.queue[file].blob.type]) {
-        task.downloadURL()
-        imagePaths.push(path);
-        this.imageTasks.push(task);
+        images.push({
+          path: path,
+          task: task
+        })
       } else {
-        filePaths.push(path);
-        this.tasks.push(task);
+        files.push({
+          path: path,
+          task: task
+        })
       }
     }
 
-    let taskURLs = this.tasks.map(task => task.downloadURL());
-    let imageURLs = this.imageTasks.map(task => task.downloadURL());
-    Observable.forkJoin(taskURLs).subscribe(urls => {
-      let obsArr = filePaths.map(path => this.storage.ref(path).getMetadata())
+    fileURLs = files.map(file => file.task.downloadURL());
+    imageURLs = images.map(image => image.task.downloadURL());
+    // once all urls have been returned, getMetadata() can be called without erroring
+    Observable.forkJoin(fileURLs).subscribe(urls => {
+      let obsArr = files.map(file => this.storage.ref(file.path).getMetadata())
       Observable.forkJoin(obsArr).subscribe(metadatas => {
-        let files = {};
+        let filesData = {};
         metadatas.forEach(data => {
           files[data.customMetadata.id] = {
             url: data.downloadURLs[0],
@@ -89,14 +98,14 @@ export class UploadComponent implements OnInit {
             size: data.size
           }
         })
-        this.mapSvc.updatePostFiles(featureId, postId, "files", files);
+        this.mapSvc.updatePostFiles(featureId, postId, "files", filesData);
       });
     }, error => console.log('task error: ', error));
-    
+    // once all urls have been returned, getMetadata() can be called without erroring
     Observable.forkJoin(imageURLs).subscribe(urls => {
-      let obsArr = imagePaths.map(path => this.storage.ref(path).getMetadata())
+      let obsArr = images.map(image => this.storage.ref(image.path).getMetadata())
       Observable.forkJoin(obsArr).subscribe(metadatas => {
-        let images = {};
+        let imagesData = {};
         metadatas.forEach(data => {
           images[data.customMetadata.id] = {
             url: data.downloadURLs[0],
@@ -104,7 +113,7 @@ export class UploadComponent implements OnInit {
             size: data.size
           }
         })
-        this.mapSvc.updatePostFiles(featureId, postId, "images", images);
+        this.mapSvc.updatePostFiles(featureId, postId, "images", imagesData);
       });
     }, error => console.log('image error: ', error))
   }
