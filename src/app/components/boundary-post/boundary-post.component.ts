@@ -75,11 +75,18 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     this.creatingPost = !this.creatingPost;
   }
 
+  cancelPost() {
+    this.togglePostForm();
+    this.postForm.reset();
+    this.uploadComponent.clearFiles();
+  }
+
   postUnauthorized() {
     return this.postForm.invalid || !this.authInfo.$uid; 
   }
 
   closeMenu() {
-    this.closeMenuRequest.emit()
+    this.cancelPost();
+    this.closeMenuRequest.emit();
   }
 }

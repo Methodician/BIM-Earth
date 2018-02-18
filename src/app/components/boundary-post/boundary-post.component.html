@@ -1,5 +1,5 @@
 <!-- This is the main container that holds everything and makes up the off-white background around all of the content. This is also the the div that the class gets added to, to make it visable and animate -->
-<div [ngClass]="{clicked: !!feature}" class="boundary-post-container">
+<div [ngClass]="{clicked: !!feature, unclicked: !feature}" class="boundary-post-container">
 	<!-- This container is for the name of the boundary and a button that when clicked removes the class that makes the content visable  -->
 	<div class="boundary-name-close-btn">
 		<h2>{{ zapId }}</h2>
@@ -7,27 +7,29 @@
 			<i class="far fa-times-circle fa-3x close-btn"></i>
 		</div>
 	</div>
-		<!-- The mat-accordion tag is the main container holding all of the expansion panels -->
-		<mat-accordion *ngIf="!creatingPost">
-      <!-- The mat-expansion-panel is the main container for each individual post, this is likeley were you will throw your ngIf statement-->
-      <bim-post *ngFor="let post of posts" [post]="post"></bim-post>
-      <mat-card *ngIf="posts.length == 0">No Posts Yet</mat-card>
-		</mat-accordion>
-    <!-- This is the button that users are going to click to add a new post. It's positioned with absolute positioning so as long is it sits outside of the mat-accordion tag it should be fine. -->
-    <div class="postForm" *ngIf="creatingPost">
-      <form *ngIf="creatingPost" [formGroup]="postForm">
-        <mat-form-field color="accent">
-          <input formControlName="title" matInput placeholder="Title" type="text"/>
-        </mat-form-field>
-        <mat-form-field color="accent">
-          <textarea cols="12" formControlName="description" matInput placeholder="Post"></textarea>
-        </mat-form-field>
-        <!-- <bim-upload #upload></bim-upload> -->
-      </form>
-      <bim-upload #upload></bim-upload>
-      <button *ngIf="creatingPost" [disabled]="postUnauthorized()" mat-raised-button color="primary" (click)="savePost(upload)">Save</button>
+  
+  <mat-accordion *ngIf="!creatingPost">
+    <!-- The mat-expansion-panel is the main container for each individual post, this is likeley were you will throw your ngIf statement-->
+    <bim-post *ngFor="let post of posts" [post]="post"></bim-post>
+    <mat-card *ngIf="posts.length == 0">No Posts Yet</mat-card>
+  </mat-accordion>
+  
+  <div class="postForm" *ngIf="creatingPost">
+    <form [formGroup]="postForm">
+      <mat-form-field color="accent">
+        <input formControlName="title" matInput placeholder="Title" type="text"/>
+      </mat-form-field>
+      <mat-form-field color="accent">
+        <textarea cols="12" formControlName="description" matInput placeholder="Post"></textarea>
+      </mat-form-field>
+    </form>
+    <bim-upload #upload></bim-upload>
+    <div id="post-btns">
+      <button mat-raised-button (click)="cancelPost()">Cancel</button>
+      <button [disabled]="postUnauthorized()" mat-raised-button color="accent" (click)="savePost(upload)">Save</button>
     </div>
-		<button class="post-btn" mat-fab color="accent" (click)="togglePostForm()">
-			<i class="fas fa-plus fa-2x"></i>
-		</button>
+    <button class="post-btn" mat-fab color="accent" (click)="togglePostForm()">
+      <i class="fas fa-plus fa-2x"></i>
+    </button>
+  </div>
 </div>
