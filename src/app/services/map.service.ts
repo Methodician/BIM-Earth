@@ -110,13 +110,22 @@ export class MapService {
     return this.db.collection(`features/${featureId}/posts`);
   }
 
+  //TODO: add exception to handle no files/images somewhere
   savePost(data) {
-    this.db.doc(`features/${data.featureId}/posts/${this.db.createId()}`).set({
+    this.db.doc(`features/${data.featureId}/posts/${data.id}`).set({
       title: data.title,
       description: data.description,
       author: data.author,
-      timestamp: fb.firestore.FieldValue.serverTimestamp()
+      timestamp: fb.firestore.FieldValue.serverTimestamp(),
+      files: data.files,
+      images: data.images
     })
+  }
+
+  updatePostFiles(featureId: string, postId: string, fileType: "images" | "files", files) {
+    let data = {};
+    data[fileType] = files;
+    this.db.doc(`features/${featureId}/posts/${postId}`).update(data);
   }
 
   getFirestoreFeatures() {

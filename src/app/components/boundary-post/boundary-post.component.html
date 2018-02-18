@@ -1,4 +1,3 @@
-<!-- Alright Aubrey! Here it is!!! So like I've said previously, this component is pretty big, and might need to be broken up into smaller pieces. Keeping that in mind, I tried to make everything as modular as possible so you can copy paste anything you have to in order to make hooking this up to the logic a little easier. So basically the way this component is working now is that when you click the toggle button, it adds a class to the boundary-post-container div, that changes the opacity from 0, to 1, causing the div to become visable and and animate. I was going to add the create post page, but in the process found that it will probably be easier for you to set up the logic to render the create a post with what I'm currently passing to you, then I'll go back and fix anything that needs fixing. If you have any further questions on how anything is set up please don't hesitate to shoot me a message on slack! Going forward in the future, let me know if this was an easy piece to pick up from me or if there is any way that I could structure it differently to make your job easier!-->
 <!-- This is the main container that holds everything and makes up the off-white background around all of the content. This is also the the div that the class gets added to, to make it visable and animate -->
 <div [ngClass]="{clicked: !!feature}" class="boundary-post-container">
 	<!-- This container is for the name of the boundary and a button that when clicked removes the class that makes the content visable  -->
@@ -15,16 +14,19 @@
       <mat-card *ngIf="posts.length == 0">No Posts Yet</mat-card>
 		</mat-accordion>
     <!-- This is the button that users are going to click to add a new post. It's positioned with absolute positioning so as long is it sits outside of the mat-accordion tag it should be fine. -->
-    <form *ngIf="creatingPost" [formGroup]="postForm">
-      <mat-form-field color="accent">
-        <input formControlName="title" matInput placeholder="Title" type="text"/>
-      </mat-form-field>
-      <mat-form-field color="accent">
-        <textarea cols="12" formControlName="description" matInput placeholder="Post"></textarea>
-      </mat-form-field>
-      <!-- <bim-upload #upload></bim-upload> -->
-    </form>
-    <button *ngIf="creatingPost" [disabled]="postUnauthorized()" mat-raised-button color="primary" (click)="savePost()">Save</button>
+    <div class="postForm" *ngIf="creatingPost">
+      <form *ngIf="creatingPost" [formGroup]="postForm">
+        <mat-form-field color="accent">
+          <input formControlName="title" matInput placeholder="Title" type="text"/>
+        </mat-form-field>
+        <mat-form-field color="accent">
+          <textarea cols="12" formControlName="description" matInput placeholder="Post"></textarea>
+        </mat-form-field>
+        <!-- <bim-upload #upload></bim-upload> -->
+      </form>
+      <bim-upload #upload></bim-upload>
+      <button *ngIf="creatingPost" [disabled]="postUnauthorized()" mat-raised-button color="primary" (click)="savePost(upload)">Save</button>
+    </div>
 		<button class="post-btn" mat-fab color="accent" (click)="togglePostForm()">
 			<i class="fas fa-plus fa-2x"></i>
 		</button>

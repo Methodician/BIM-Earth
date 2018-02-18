@@ -1,3 +1,19 @@
 <div id="wrapper">
-  <input type="file" (change)="uploadFile($event)"/>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Files</span>
+      <span class="spacer"></span>
+      <button mat-raised-button (click)="fileInput.click()">Add Files</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-list dense *ngIf="queueArray.length > 0">
+    <mat-list-item *ngFor="let file of queueArray">
+      <mat-divider></mat-divider>
+      <p matLine>{{file.name}}</p>
+      <button mat-icon-button matTooltip="Remove File" (click)="removeFromQueue(file.uid)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-list>
+  <input #fileInput type="file" multiple (change)="addToQueue($event.target.files)"/>
 </div>

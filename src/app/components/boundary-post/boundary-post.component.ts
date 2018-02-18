@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ElementRef, ViewChild } from '@angular/core';
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs/Subscription';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @Component({
   selector: 'bim-boundary-post',
@@ -13,6 +14,7 @@ import { AuthInfo } from '@models/auth-info';
 export class BoundaryPostComponent implements OnInit, OnChanges {
   @Input() feature;
   @Output() closeMenuRequest = new EventEmitter<null>();
+  @ViewChild('upload') uploadComponent;
   panelOpenState: boolean = false; // unused variable?
   isBoundaryPostOpen = false;
   posts: {}[] = [];
@@ -29,7 +31,8 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   constructor(
     private mapSvc: MapService,
     private fb: FormBuilder,
-    private authSvc: AuthService
+    private authSvc: AuthService,
+    private firestore: AngularFirestore
   ) { }
 
   ngOnInit() {
@@ -52,15 +55,19 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     }
   }
 
-  savePost() {
+  savePost(uploadData) {
     let formData = this.postForm.value; 
     let post = {
       title: formData.title,
       description: formData.description,
       author: this.authInfo.$uid,
-      featureId: this.feature.properties.id
+      featureId: this.feature.properties.id,
+      id: this.firestore.createId(),
+      images: ["processing"],
+      files: ["processing"]
     }
     this.mapSvc.savePost(post);
+    this.uploadComponent.startUpload(this.feature.properties.id, post.id);
     this.togglePostForm();
   }
 
