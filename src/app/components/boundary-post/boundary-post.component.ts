@@ -20,6 +20,7 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   posts: {}[] = [];
   featureSub: Subscription;
   creatingPost: boolean = false;
+  editingBoundary: boolean = false;
   postForm: FormGroup;
   fileURLs: string[];
   authInfo: AuthInfo = AuthService.UNKNOWN_USER;
@@ -79,6 +80,18 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     this.togglePostForm();
     this.postForm.reset();
     this.uploadComponent.clearFiles();
+  }
+
+  toggleEditBoundary() {
+    this.editingBoundary = !this.editingBoundary;
+  }
+
+  saveEdit() {
+    this.toggleEditBoundary();
+  }
+
+  cancelEdit() {
+    this.toggleEditBoundary();
   }
 
   postUnauthorized() {

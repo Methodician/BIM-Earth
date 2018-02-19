@@ -23,13 +23,12 @@
 	&.clicked {
 		opacity: 1;
     min-height: 300px;
+    max-height: 700px;
     @include respond-to($tablet-portrait-up) {
       width: 300px;
-      max-height: 700px;
 		}
 		@include respond-to($desktop-up) {
       width: 375px;
-      max-height: 750px;
 		}
 	}
 }
@@ -61,13 +60,8 @@
 mat-accordion {
 	width: 100%;
 	margin: 20px 0 60px 0;
+  max-height: 555px; 
   overflow-y: auto;
-  @include respond-to($tablet-portrait-up) {
-    max-height: 555px;
-  }
-  @include respond-to($desktop-up) {
-    max-height: 605px;
-  }
 }
 
 mat-form-field {
