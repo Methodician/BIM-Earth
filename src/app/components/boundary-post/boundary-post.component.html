@@ -14,7 +14,7 @@
     <mat-card *ngIf="posts.length == 0">No Posts Yet</mat-card>
   </mat-accordion>
   
-  <div class="postForm" *ngIf="creatingPost">
+  <div class="postForm" [hidden]="!creatingPost">
     <form [formGroup]="postForm">
       <mat-form-field color="accent">
         <input formControlName="title" matInput placeholder="Title" type="text"/>

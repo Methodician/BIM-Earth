@@ -92,13 +92,11 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   editBoundary() {
     this.editFeatureRequest.emit();
     this.toggleEditBoundary();
-    // maybe ref detect changes?
   }
 
   saveEdit() {
     this.saveEditRequest.emit();
     this.toggleEditBoundary();
-    // let feature = this.draw.getAll().features[0];
   }
 
   cancelEdit() {
@@ -111,7 +109,13 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   }
 
   closeMenu() {
-    this.cancelPost();
+    if(this.editingBoundary) {
+      this.cancelEdit()
+    } else if(this.creatingPost) {
+      this.creatingPost = false;
+      this.postForm.reset();
+      this.uploadComponent.clearFiles();
+    }
     this.closeMenuRequest.emit();
   }
 }
