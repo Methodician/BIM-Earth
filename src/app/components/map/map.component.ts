@@ -207,11 +207,26 @@ export class MapComponent implements OnInit {
     })
   }
 
-  editFeature(feature) {
+  editFeature() {
+    let feature = this.selectedFeature as any;
     feature.id = feature.properties.id;
     this.draw.add(feature);
     this.draw.changeMode('direct_select', { featureId: feature.id });
     this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]]);
+  }
+
+  saveEdit() {
+    let feature = this.draw.getAll().features[0];
+    this.mapSvc.saveFeature(feature);
+    this.draw.delete(this.selectedFeature.properties.id);
+    this.map.setFilter('boundaries', null);
+    this.hideMenu();
+  }
+
+  cancelEdit() {
+    this.draw.delete(this.selectedFeature.properties.id);
+    this.map.setFilter('boundaries', null);
+    this.hideMenu();
   }
 
   saveDrawBuffer() {

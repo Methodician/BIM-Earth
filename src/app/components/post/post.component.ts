@@ -10,7 +10,7 @@ export class PostComponent implements OnInit {
 
   get postDate() {
     if (this.post.timestamp) return `${this.post.timestamp.getMonth()+1}/${this.post.timestamp.getDay()}/${this.post.timestamp.getYear() - 100} at ${this.post.timestamp.getHours()}:${this.post.timestamp.getMinutes()}`;
-    else return "UNKNOWN"
+    else return "Pending"
   }
 
   get title() {
@@ -27,8 +27,6 @@ export class PostComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log('post: ', this.post)
-  }
+  ngOnInit() {}
 
 }

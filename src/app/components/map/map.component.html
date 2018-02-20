@@ -10,11 +10,12 @@
   [newFeatureId]="newFeatureId"
   [map]="map"
   [selectedFeature]="selectedFeature"
-  (editFeatureRequest)="editFeature($event)"
   (hideMenuRequest)="hideMenu()"
 ></bim-boundary-details-menu>
 <bim-boundary-post
   [feature]="selectedFeature"
-  (closeMenuRequest)="hideMenu()"
+  (saveEditRequest)="saveEdit()"
+  (cancelEditRequest)="cancelEdit()"
+  (editFeatureRequest)="editFeature()"
 ></bim-boundary-post>
 <div id="county">{{ hoveredCounty }}</div>

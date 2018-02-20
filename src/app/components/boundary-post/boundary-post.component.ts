@@ -14,6 +14,9 @@ import { AngularFirestore } from 'angularfire2/firestore';
 export class BoundaryPostComponent implements OnInit, OnChanges {
   @Input() feature;
   @Output() closeMenuRequest = new EventEmitter<null>();
+  @Output() saveEditRequest = new EventEmitter<null>();
+  @Output() editFeatureRequest = new EventEmitter<null>();
+  @Output() cancelEditRequest = new EventEmitter<null>();
   @ViewChild('upload') uploadComponent;
   panelOpenState: boolean = false; // unused variable?
   isBoundaryPostOpen = false;
@@ -86,11 +89,20 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     this.editingBoundary = !this.editingBoundary;
   }
 
-  saveEdit() {
+  editBoundary() {
+    this.editFeatureRequest.emit();
     this.toggleEditBoundary();
+    // maybe ref detect changes?
+  }
+
+  saveEdit() {
+    this.saveEditRequest.emit();
+    this.toggleEditBoundary();
+    // let feature = this.draw.getAll().features[0];
   }
 
   cancelEdit() {
+    this.cancelEditRequest.emit();
     this.toggleEditBoundary();
   }
 
