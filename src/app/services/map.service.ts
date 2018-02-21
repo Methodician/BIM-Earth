@@ -74,7 +74,7 @@ export class MapService {
     if(!newFeature) this.updateUserHistory(feature.properties.id, feature.properties.zapId, "edit");
     this.updateEditors(feature.properties.id);
     this.updateHistory(feature);
-    // this.updateSearchTree(feature.properties.id, feature.properties.zapId);
+    this.updateSearchData(feature);
   }
 
   updateUserHistory(featureId: string, zapId: string, action: string) {
@@ -193,19 +193,31 @@ export class MapService {
     return this.db.collection(`users/${userKey}/history`, ref => ref.limit(20));
   }
 
-  getSearchTree() {
-    return this.rtdb.list('/searchTree');
+  getSearchData() {
+    return this.rtdb.list('/search');
   }
 
-  updateSearchTree(featureID: string, zapID: string) {
-    const country = zapID.slice(0,2),
-           state = zapID.slice(3,5),
-           county = zapID.slice(6,9),
-           channel = zapID.slice(10,12),
-           uid = zapID.slice(13,18);
-    this.rtdb.object(`/searchTree/${country}/${state}/${county}/${channel}/${uid}`).set(featureID);
+  updateSearchData(feature) {
+    const zapID = feature.properties.zapId,
+          country = zapID.slice(0,2),
+          state = zapID.slice(3,5),
+          county = zapID.slice(6,9),
+          channel = zapID.slice(10,12),
+          uid = zapID.slice(13,18),
+          path = `${country}/${state}/${county}/${uid}`;
+    this.rtdb.object(`/search/idTree/${path}`).set(feature.properties.id);
+    this.rtdb.object(`/search/cameraTree/${path}`).set({
+      lat: 45.539207970839755,
+      lng: -122.68110107302624,
+      zoom: 10
+    });
   }
-  // setCamera(cameraSettings) {
-  //   this.cameraSettings$.next(cameraSettings);
-  // }
+
+  setCamera(cameraSettings) {
+    this.cameraSettings$.next(cameraSettings);
+  }
+
+  getCameraTree() {
+    return this.rtdb.object('/search/cameraTree')
+  }
 }

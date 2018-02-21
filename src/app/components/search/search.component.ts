@@ -14,13 +14,19 @@ export class SearchComponent implements OnInit {
   searchControl: FormControl = new FormControl();
   options = ["US"];
   filteredOptions: Observable<string[]>
-  searchTree;
+  search;
+  validStates = {
+    2: true,
+    5: true,
+    9: true,
+    12: true
+  };
 
   constructor(private mapSvc: MapService) { }
 
   ngOnInit() {
-    this.mapSvc.getSearchTree().valueChanges().subscribe(searchTree => {
-      this.searchTree = searchTree;
+    this.mapSvc.getSearchData().valueChanges().subscribe(searchData => {
+      this.search = searchData;
       this.searchControl.valueChanges.subscribe(currentInput => {
         this.setOptions(currentInput); 
       })
@@ -42,60 +48,39 @@ export class SearchComponent implements OnInit {
     let clumps = currentValue.toUpperCase().split('-');
       switch(currentValue.length){
         case 2:
-          return this.searchTree[0];
+          return this.search.idTree[0];
         case 5:
-          // this.updateMap(clumps[1]); 
-          return this.searchTree[0][clumps[1]];
+          this.updateMap(clumps[1]); 
+          return this.search.idTree[0][clumps[1]];
         case 9:
-          // this.updateMap(clumps[1], clumps[2]);
-          return this.searchTree[0][clumps[1]][clumps[2]];
+          this.updateMap(clumps[1], clumps[2]);
+          return this.search.idTree[0][clumps[1]][clumps[2]];
         case 12:
-          return this.searchTree[0][clumps[1]][clumps[2]][clumps[3]];
+          return this.search.idTree[0][clumps[1]][clumps[2]][clumps[3]];
         default: return {};
       }
     return {};
   }
 
   setOptions(currentValue) {
-    let length = currentValue.length;
-    let validStates = {
-      2: true,
-      5: true,
-      9: true,
-      12: true
-    }
-
-    if(validStates[length]){
+    if(this.validStates[currentValue.length]){
       let optionList = this.getOptionsList(currentValue);
-      this.options = Object.keys(optionList).map(option => {
-        return `${currentValue.toUpperCase()}-${option}`;
-      });
-      this.searchControl.setValue(currentValue + "-");
+      if(optionList) {
+        this.options = Object.keys(optionList).map(option => {
+          return `${currentValue.toUpperCase()}-${option}`;
+        });
+        this.searchControl.setValue(currentValue + "-");
+      }
     }
   }
 
-  // cameraSettings = {
-  //     OR: {
-  //       camera: {center: new LngLat(-121.37276361713657, 44.43370163217466), zoom: 6.305288565354978},
-  //       MLT: {center: new LngLat(-122.68110107302624, 45.539207970839755), zoom: 10.65217539816664},
-  //     },
-  //     CA: {
-  //       camera: {center: new LngLat(-123.91465762818035, 40.05286649872119), zoom: 5.077663297653513},
-  //       MLT: {center: new LngLat(-122.45030345462033, 37.736104372770384), zoom: 10.863798833636547}
-  //     },
-  //     WA: {
-  //       camera: {center: new LngLat(-121.21793237952636, 47.110869900049266), zoom: 6.811589097399386},
-  //       MLT: {center: new LngLat(-122.40006330897717, 47.20801667363452), zoom: 10.572201366683393}
-  //     }
-  // }
-
-  // updateMap(state, county?) {
-  //   let camera;
-  //   if(!county) {
-  //     let camera = this.cameraSettings[state].camera
-  //   } else {
-  //     let camera = this.cameraSettings[state][county]
-  //   }
-  //   this.mapSvc.setCamera(camera);
-  // }
+  updateMap(state: string, county?: string) {
+    let camera = county ? this.search.cameraTree['US'][state].counties[county] : this.search.cameraTree['US'][state];
+    if(camera){
+      this.mapSvc.setCamera({
+        center: new LngLat(camera.lng, camera.lat),
+        zoom: camera.zoom
+      });
+    }
+  }
 }

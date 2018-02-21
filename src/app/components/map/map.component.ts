@@ -44,6 +44,11 @@ export class MapComponent implements OnInit {
     this.initializeDrawing();
     this.addEventHandlers()
     this.flyToMe();
+    this.mapSvc.cameraSettings$.subscribe(settings => {
+      if(settings) {
+        this.map.easeTo(settings);
+      }
+    })
   }
 
   initializeMap() {
