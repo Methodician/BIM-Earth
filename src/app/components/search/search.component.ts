@@ -46,20 +46,20 @@ export class SearchComponent implements OnInit {
 
   getOptionsList(currentValue) {
     let clumps = currentValue.toUpperCase().split('-');
-      switch(currentValue.length){
-        case 2:
-          return this.search.idTree[clumps[0]];
-        case 5:
-          this.updateMap(clumps[1]); 
-          return this.search.idTree[clumps[0]][clumps[1]];
-        case 9:
-          this.updateMap(clumps[1], clumps[2]);
-          return this.search.idTree[clumps[0]][clumps[1]][clumps[2]];
-        case 12:
-          return this.search.idTree[clumps[0]][clumps[1]][clumps[2]][clumps[3]];
-        default: return {};
-      }
-    return {};
+    switch(currentValue.length){
+      case 2:
+        return this.search.idTree[clumps[0]];
+      case 5:
+        this.updateMap(clumps[1]); 
+        return this.search.idTree[clumps[0]][clumps[1]];
+      case 9:
+        this.updateMap(clumps[1], clumps[2]);
+        return this.search.idTree[clumps[0]][clumps[1]][clumps[2]];
+      case 12:
+        return this.search.idTree[clumps[0]][clumps[1]][clumps[2]][clumps[3]];
+      default: return {};
+    }
+    // return {};
   }
 
   setOptions(currentValue) {

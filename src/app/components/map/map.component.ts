@@ -16,7 +16,7 @@ import { Channels } from '@enums/channels.enum';
 export class MapComponent implements OnInit {
   map: Map;
   draw: Draw;
-  style = 'mapbox://styles/mapbox/satellite-v9';
+  style = 'mapbox://styles/mapbox/light-v9';
   center = [-122.6781, 45.4928];
   bounds: any;
   source: any;
