@@ -35,10 +35,11 @@ import { UserHistoryComponent } from './components/user-history/user-history.com
 import { UserBoundariesComponent } from './components/user-boundaries/user-boundaries.component';
 import { ProfilePictureComponent } from './components/profile-picture/profile-picture.component';
 import { UploadComponent } from './components/upload/upload.component'
-
-import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 import { BoundaryPostComponent } from './components/boundary-post/boundary-post.component';
 import { PostComponent } from './components/post/post.component';
+import { SearchComponent } from './components/search/search.component';
+
+import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { PostComponent } from './components/post/post.component';
     BoundaryPostComponent,
     PostComponent,
     UploadComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,

@@ -18,6 +18,7 @@ export class MapService {
   channelFilterSelection: any[] = [];
   channelFilterSelection$: BehaviorSubject<any[]> = new BehaviorSubject([]);
   authInfo: AuthInfo = AuthService.UNKNOWN_USER;
+  cameraSettings$ = new BehaviorSubject(null);
 
   constructor(
     private db: AngularFirestore,
@@ -73,6 +74,7 @@ export class MapService {
     if(!newFeature) this.updateUserHistory(feature.properties.id, feature.properties.zapId, "edit");
     this.updateEditors(feature.properties.id);
     this.updateHistory(feature);
+    // this.updateSearchTree(feature.properties.id, feature.properties.zapId);
   }
 
   updateUserHistory(featureId: string, zapId: string, action: string) {
@@ -190,4 +192,20 @@ export class MapService {
   getUserHistory(userKey: string) {
     return this.db.collection(`users/${userKey}/history`, ref => ref.limit(20));
   }
+
+  getSearchTree() {
+    return this.rtdb.list('/searchTree');
+  }
+
+  updateSearchTree(featureID: string, zapID: string) {
+    const country = zapID.slice(0,2),
+           state = zapID.slice(3,5),
+           county = zapID.slice(6,9),
+           channel = zapID.slice(10,12),
+           uid = zapID.slice(13,18);
+    this.rtdb.object(`/searchTree/${country}/${state}/${county}/${channel}/${uid}`).set(featureID);
+  }
+  // setCamera(cameraSettings) {
+  //   this.cameraSettings$.next(cameraSettings);
+  // }
 }
