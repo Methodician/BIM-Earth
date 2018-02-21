@@ -70,6 +70,7 @@ export class SearchComponent implements OnInit {
       this.options = Object.keys(optionList).map(option => {
         return `${currentValue.toUpperCase()}-${option}`;
       });
+      this.searchControl.setValue(currentValue + "-");
     }
   }
 
