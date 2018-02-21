@@ -1,4 +1,5 @@
-//counties data available internally;
+//counties data available from http://eric.clst.org/tech/usgeojson/;
 export const counties = {
-  features: []
+  "type": "FeatureCollection",
+  "features": []
 }
