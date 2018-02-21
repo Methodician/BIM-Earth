@@ -174,4 +174,20 @@ export class MapService {
   getUserHistory(userKey: string) {
     return this.db.collection(`users/${userKey}/history`, ref => ref.limit(20));
   }
+
+  getStaticFeatures() {
+    return this.rtdb.list('/staticFeatures');
+  }
+
+  saveStateBounds(state, bounds) {
+    this.rtdb.object(`search/cameraTree/US/${state}`).update({
+      bounds: bounds
+    });
+  }
+
+  saveCountyBounds(state, county, bounds) {
+    this.rtdb.object(`search/cameraTree/US/${state}/${county}`).update({
+      bounds: bounds
+    });
+  }
 }
