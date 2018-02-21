@@ -44,10 +44,8 @@ export class MapComponent implements OnInit {
     this.initializeDrawing();
     this.addEventHandlers()
     this.flyToMe();
-    this.mapSvc.cameraSettings$.subscribe(settings => {
-      if(settings) {
-        this.map.easeTo(settings);
-      }
+    this.mapSvc.cameraBounds$.subscribe(bounds => {
+      if(bounds) this.map.fitBounds(bounds);
     })
   }
 
@@ -200,8 +198,8 @@ export class MapComponent implements OnInit {
 
     // TODO: add name and state property to staticFeatures
     this.map.on("mousemove", "countyFills", e => {
-      if(this.hoveredCounty != e.features[0].properties.zapId) {
-        this.hoveredCounty = e.features[0].properties.zapId;
+      if(this.hoveredCounty != `${e.features[0].properties.countyNameLong}, ${e.features[0].properties.stateCode}`) {
+        this.hoveredCounty = `${e.features[0].properties.countyNameLong}, ${e.features[0].properties.stateCode}`;
         this.ref.detectChanges();
       }
     })

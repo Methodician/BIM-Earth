@@ -8,6 +8,7 @@ import { GeoJson } from '@models/map';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
+import BBox from "@turf/bbox";
 
 @Injectable()
 export class MapService {
@@ -18,7 +19,7 @@ export class MapService {
   channelFilterSelection: any[] = [];
   channelFilterSelection$: BehaviorSubject<any[]> = new BehaviorSubject([]);
   authInfo: AuthInfo = AuthService.UNKNOWN_USER;
-  cameraSettings$ = new BehaviorSubject(null);
+  cameraBounds$ = new BehaviorSubject(null);
 
   constructor(
     private db: AngularFirestore,
@@ -200,17 +201,19 @@ export class MapService {
   updateSearchData(feature) {
     const zapID = feature.properties.zapId,
           path = `${zapID.slice(0,2)}/${zapID.slice(3,5)}/${zapID.slice(6,9)}/${zapID.slice(10,12)}/${zapID.slice(13,18)}`,
-          coordinates = feature.geometry.coordinates[0][0]
+          coordinates = feature.geometry.coordinates[0][0],
+          bounds = this.getCameraBounds(feature)
     this.rtdb.object(`/search/idTree/${path}`).set(feature.properties.id);
-    this.rtdb.object(`/search/cameraTree/${path}`).set({
-      lat: coordinates[1],
-      lng: coordinates[0],
-      zoom: 10
-    });
+    this.rtdb.object(`/search/cameraTree/${path}`).set({ bounds: bounds });
   }
 
-  setCamera(cameraSettings) {
-    this.cameraSettings$.next(cameraSettings);
+  getCameraBounds(feature) {
+    let bbox = BBox(feature);
+    return [[bbox[0], bbox[1]], [bbox[2], bbox[3]]];
+  }
+
+  setCameraBounds(cameraBounds) {
+    this.cameraBounds$.next(cameraBounds);
   }
 
   getCameraTree() {

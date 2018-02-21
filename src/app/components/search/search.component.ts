@@ -46,20 +46,23 @@ export class SearchComponent implements OnInit {
 
   getOptionsList(currentValue) {
     let clumps = currentValue.toUpperCase().split('-');
-    switch(currentValue.length){
-      case 2:
-        return this.search.idTree[clumps[0]];
-      case 5:
-        this.updateMap(clumps[1]); 
-        return this.search.idTree[clumps[0]][clumps[1]];
-      case 9:
-        this.updateMap(clumps[1], clumps[2]);
-        return this.search.idTree[clumps[0]][clumps[1]][clumps[2]];
-      case 12:
-        return this.search.idTree[clumps[0]][clumps[1]][clumps[2]][clumps[3]];
-      default: return {};
+    try {
+      switch(currentValue.length){
+        case 2:
+          return this.search.idTree[clumps[0]];
+        case 5:
+          this.updateMap(clumps[1]); 
+          return this.search.idTree[clumps[0]][clumps[1]];
+        case 9:
+          this.updateMap(clumps[1], clumps[2]);
+          return this.search.idTree[clumps[0]][clumps[1]][clumps[2]];
+        case 12:
+          return this.search.idTree[clumps[0]][clumps[1]][clumps[2]][clumps[3]];
+        default: return {};
+      }
+    } catch (error) {
+      console.warn('[Input error] Please enter a valid Zap ID. (example US-CA-SFS-22-MAA2S)');
     }
-    // return {};
   }
 
   setOptions(currentValue) {
@@ -72,15 +75,26 @@ export class SearchComponent implements OnInit {
       }
       this.searchControl.setValue(currentValue + "-");
     }
+    if(currentValue.length === 18) this.selectFoundFeature(currentValue);
+  }
+
+  selectFoundFeature(zapId) {
+    let clumps = zapId.toUpperCase().split('-');
+    let current = this.search.cameraTree['US'];
+    for(let i = 1; i < 5; i++) {
+      current = current[clumps[i]];
+      if(!current) {
+        current = {};
+        return;
+      };
+    }
+    if(current) this.mapSvc.setCameraBounds(current.bounds);
   }
 
   updateMap(state: string, county?: string) {
     let camera = county ? this.search.cameraTree['US'][state][county] : this.search.cameraTree['US'][state];
-    if(camera.lat){
-      this.mapSvc.setCamera({
-        center: new LngLat(camera.lng, camera.lat),
-        zoom: camera.zoom
-      });
+    if(camera && camera.bounds){ //validation no longer necessary
+      this.mapSvc.setCameraBounds(camera.bounds);
     }
   }
 }
