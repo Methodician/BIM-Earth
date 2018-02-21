@@ -48,15 +48,15 @@ export class SearchComponent implements OnInit {
     let clumps = currentValue.toUpperCase().split('-');
       switch(currentValue.length){
         case 2:
-          return this.search.idTree[0];
+          return this.search.idTree[clumps[0]];
         case 5:
           this.updateMap(clumps[1]); 
-          return this.search.idTree[0][clumps[1]];
+          return this.search.idTree[clumps[0]][clumps[1]];
         case 9:
           this.updateMap(clumps[1], clumps[2]);
-          return this.search.idTree[0][clumps[1]][clumps[2]];
+          return this.search.idTree[clumps[0]][clumps[1]][clumps[2]];
         case 12:
-          return this.search.idTree[0][clumps[1]][clumps[2]][clumps[3]];
+          return this.search.idTree[clumps[0]][clumps[1]][clumps[2]][clumps[3]];
         default: return {};
       }
     return {};
@@ -69,14 +69,14 @@ export class SearchComponent implements OnInit {
         this.options = Object.keys(optionList).map(option => {
           return `${currentValue.toUpperCase()}-${option}`;
         });
-        this.searchControl.setValue(currentValue + "-");
       }
+      this.searchControl.setValue(currentValue + "-");
     }
   }
 
   updateMap(state: string, county?: string) {
-    let camera = county ? this.search.cameraTree['US'][state].counties[county] : this.search.cameraTree['US'][state];
-    if(camera){
+    let camera = county ? this.search.cameraTree['US'][state][county] : this.search.cameraTree['US'][state];
+    if(camera.lat){
       this.mapSvc.setCamera({
         center: new LngLat(camera.lng, camera.lat),
         zoom: camera.zoom

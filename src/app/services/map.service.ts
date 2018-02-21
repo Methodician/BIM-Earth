@@ -194,21 +194,17 @@ export class MapService {
   }
 
   getSearchData() {
-    return this.rtdb.list('/search');
+    return this.rtdb.object('search');
   }
 
   updateSearchData(feature) {
     const zapID = feature.properties.zapId,
-          country = zapID.slice(0,2),
-          state = zapID.slice(3,5),
-          county = zapID.slice(6,9),
-          channel = zapID.slice(10,12),
-          uid = zapID.slice(13,18),
-          path = `${country}/${state}/${county}/${uid}`;
+          path = `${zapID.slice(0,2)}/${zapID.slice(3,5)}/${zapID.slice(6,9)}/${zapID.slice(10,12)}/${zapID.slice(13,18)}`,
+          coordinates = feature.geometry.coordinates[0][0]
     this.rtdb.object(`/search/idTree/${path}`).set(feature.properties.id);
     this.rtdb.object(`/search/cameraTree/${path}`).set({
-      lat: 45.539207970839755,
-      lng: -122.68110107302624,
+      lat: coordinates[1],
+      lng: coordinates[0],
       zoom: 10
     });
   }
