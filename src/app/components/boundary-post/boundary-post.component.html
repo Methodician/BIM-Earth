@@ -25,13 +25,13 @@
     </form>
     <bim-upload #upload></bim-upload>
     <div id="post-btns">
-      <button mat-raised-button (click)="cancelPost()">Cancel</button>
+      <button mat-raised-button (click)="resetPostForm()">Cancel</button>
       <button [disabled]="postUnauthorized()" mat-raised-button color="accent" (click)="savePost(upload)">Save</button>
     </div>
   </div>
 
   <div class="controls" *ngIf="!creatingPost && !editingBoundary">
-    <button mat-raised-button (click)="togglePostForm()" color="accent">Add Post</button>
+    <button mat-raised-button (click)="showPostForm()" color="accent">Add Post</button>
     <button mat-raised-button (click)="editBoundary()">Edit Boundary</button>
   </div>
   

@@ -77,15 +77,15 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     }
     this.mapSvc.savePost(post);
     this.uploadComponent.startUpload(this.feature.properties.id, post.id);
-    this.togglePostForm();
+    this.resetPostForm();
   }
 
-  togglePostForm() {
-    this.creatingPost = !this.creatingPost;
+  showPostForm() {
+    this.creatingPost = true;
   }
 
-  cancelPost() {
-    this.togglePostForm();
+  resetPostForm() {
+    this.creatingPost = false;
     this.postForm.reset();
     this.uploadComponent.clearFiles();
   }
