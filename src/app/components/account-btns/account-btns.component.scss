@@ -35,7 +35,8 @@
 	border-radius: 50%;
 	&:hover {
 		background-color: $primary;
-		color: $light;
+    color: $light;
+    cursor: pointer;
 		// border: 2px solid $light;
 	}
 	// media queries for tablet menu
