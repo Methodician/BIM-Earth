@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
       const registerResult = await this.authSvc.register(formVal.email, formVal.password);
       console.log('async registration successful, result:', registerResult);
       //  Currently afAuth.auth.currentUser is null at this point, but not in subscription version...
-      this.authSvc.setDisplayName(formVal.alias);
+      this.authSvc.setDisplayName(formVal.name);
     }
     catch (err) { console.log('Registration failed', err); }
   }
@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit {
     this.authSvc.register(formVal.email, formVal.password).subscribe(
       res => {
         console.log('registration successful, result:', res);
-        this.authSvc.setDisplayName(formVal.alias);
+        this.authSvc.setDisplayName(formVal.name);
         this.authSvc.sendVerificationEmail();
         console.log('form', this.form.value)
         this.authSvc.saveUser({

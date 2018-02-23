@@ -6,6 +6,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { AuthInfo } from '@models/auth-info';
 import { Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,8 @@ export class AuthService {
   constructor(
     public afAuth: AngularFireAuth,
     public router: Router,
-    private db: AngularFirestore
+    private db: AngularFirestore,
+    private rtdb: AngularFireDatabase
   ) {
     this.afAuth.authState.subscribe(info => {
       if (info) {
@@ -75,7 +77,8 @@ export class AuthService {
 
   setDisplayName(alias, photoURL: string = null) {
     let userToSet = this.afAuth.auth.currentUser;
-    userToSet.updateProfile({ displayName: alias, photoURL: photoURL })
+    userToSet.updateProfile({ displayName: alias, photoURL: photoURL });
+    this.rtdb.object(`userInfo/${userToSet.uid}`).set({ alias: alias, photoURL: photoURL });
   }
 
   sendVerificationEmail() {
