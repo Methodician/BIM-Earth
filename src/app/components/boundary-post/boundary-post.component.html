@@ -30,14 +30,10 @@
     </div>
   </div>
 
-  <mat-menu #postMenu="matMenu">
-    <button mat-menu-item (click)="togglePostForm()">Add Post</button>
-    <button mat-menu-item (click)="editBoundary()">Edit Boundary</button>
-  </mat-menu>
-
-  <button *ngIf="!creatingPost && !editingBoundary" class="post-btn" mat-fab color="accent" [matMenuTriggerFor]="postMenu">
-    <i class="fas fa-plus fa-2x"></i>
-  </button>
+  <div class="controls" *ngIf="!creatingPost && !editingBoundary">
+    <button mat-raised-button (click)="togglePostForm()" color="accent">Add Post</button>
+    <button mat-raised-button (click)="editBoundary()">Edit Boundary</button>
+  </div>
   
   <div *ngIf="editingBoundary">
     <h3>Editing Boundary</h3>
