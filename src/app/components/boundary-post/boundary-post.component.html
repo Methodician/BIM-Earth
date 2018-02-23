@@ -3,7 +3,7 @@
 	<!-- This container is for the name of the boundary and a button that when clicked removes the class that makes the content visable  -->
 	<div class="boundary-name-close-btn">
 		<h2>{{ zapId }}</h2>
-		<div (click)="closeMenu()">
+		<div (click)="closeBoundaryMenu()">
 			<i class="far fa-times-circle fa-3x close-btn"></i>
 		</div>
 	</div>
@@ -25,13 +25,13 @@
     </form>
     <bim-upload #upload></bim-upload>
     <div id="post-btns">
-      <button mat-raised-button (click)="cancelPost()">Cancel</button>
+      <button mat-raised-button (click)="resetPostForm()">Cancel</button>
       <button [disabled]="postUnauthorized()" mat-raised-button color="accent" (click)="savePost(upload)">Save</button>
     </div>
   </div>
 
   <div class="controls" *ngIf="!creatingPost && !editingBoundary">
-    <button mat-raised-button (click)="togglePostForm()" color="accent">Add Post</button>
+    <button mat-raised-button (click)="showPostForm()" color="accent">Add Post</button>
     <button mat-raised-button (click)="editBoundary()">Edit Boundary</button>
   </div>
   

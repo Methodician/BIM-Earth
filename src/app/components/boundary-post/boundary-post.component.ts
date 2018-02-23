@@ -64,6 +64,20 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     }
   }
 
+  // closes component, handles cleanup based on component state
+  closeBoundaryMenu() {
+    if(this.editingBoundary) {
+      this.cancelEdit()
+    } else if(this.creatingPost) {
+      this.resetPostForm();
+    }
+    this.closeMenuRequest.emit();
+  }
+
+  showPostForm() {
+    this.creatingPost = true;
+  }
+
   savePost(uploadData) {
     let formData = this.postForm.value; 
     let post = {
@@ -77,23 +91,20 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     }
     this.mapSvc.savePost(post);
     this.uploadComponent.startUpload(this.feature.properties.id, post.id);
-    this.togglePostForm();
+    this.resetPostForm();
   }
 
-  togglePostForm() {
-    this.creatingPost = !this.creatingPost;
-  }
-
-  cancelPost() {
-    this.togglePostForm();
+  resetPostForm() {
+    this.creatingPost = false;
     this.postForm.reset();
     this.uploadComponent.clearFiles();
   }
 
-  toggleEditBoundary() {
-    this.editingBoundary = !this.editingBoundary;
+  postUnauthorized() {
+    return this.postForm.invalid || !this.authInfo.$uid; 
   }
 
+  // boundary edit methods
   editBoundary() {
     this.editFeatureRequest.emit();
     this.toggleEditBoundary();
@@ -108,22 +119,12 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     this.cancelEditRequest.emit();
     this.toggleEditBoundary();
   }
-
-  postUnauthorized() {
-    return this.postForm.invalid || !this.authInfo.$uid; 
+  
+  toggleEditBoundary() {
+    this.editingBoundary = !this.editingBoundary;
   }
 
-  closeMenu() {
-    if(this.editingBoundary) {
-      this.cancelEdit()
-    } else if(this.creatingPost) {
-      this.creatingPost = false;
-      this.postForm.reset();
-      this.uploadComponent.clearFiles();
-    }
-    this.closeMenuRequest.emit();
-  }
-
+  // image lightbox
   openLightbox(photoURL) {
     const dialogRef = this.lightbox.open(LightboxDialogComponent, {
       data: { photoURL: photoURL },
