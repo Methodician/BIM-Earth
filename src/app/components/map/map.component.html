@@ -19,6 +19,6 @@
   (editFeatureRequest)="editFeature()"
   (closeMenuRequest)="hideMenu()"
 ></bim-boundary-post>
-<mat-card id="county" color="primary">
+<mat-card *ngIf="hoveredCounty" id="county" color="primary">
   <mat-card-title>{{ hoveredCounty }}</mat-card-title>
 </mat-card>
