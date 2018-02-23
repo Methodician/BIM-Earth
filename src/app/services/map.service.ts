@@ -8,6 +8,7 @@ import { GeoJson } from '@models/map';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
+import BBox from "@turf/bbox";
 
 @Injectable()
 export class MapService {
@@ -18,6 +19,7 @@ export class MapService {
   channelFilterSelection: any[] = [];
   channelFilterSelection$: BehaviorSubject<any[]> = new BehaviorSubject([]);
   authInfo: AuthInfo = AuthService.UNKNOWN_USER;
+  cameraBounds$ = new BehaviorSubject(null);
 
   constructor(
     private db: AngularFirestore,
@@ -73,6 +75,7 @@ export class MapService {
     if(!newFeature) this.updateUserHistory(feature.properties.id, feature.properties.zapId, "edit");
     this.updateEditors(feature.properties.id);
     this.updateHistory(feature);
+    this.updateSearchData(feature);
   }
 
   updateUserHistory(featureId: string, zapId: string, action: string) {
@@ -189,5 +192,31 @@ export class MapService {
 
   getUserHistory(userKey: string) {
     return this.db.collection(`users/${userKey}/history`, ref => ref.limit(20));
+  }
+
+  getSearchData() {
+    return this.rtdb.object('search');
+  }
+
+  updateSearchData(feature) {
+    const zapID = feature.properties.zapId,
+          path = `${zapID.slice(0,2)}/${zapID.slice(3,5)}/${zapID.slice(6,9)}/${zapID.slice(10,12)}/${zapID.slice(13,18)}`,
+          coordinates = feature.geometry.coordinates[0][0],
+          bounds = this.getCameraBounds(feature)
+    this.rtdb.object(`/search/idTree/${path}`).set(feature.properties.id);
+    this.rtdb.object(`/search/cameraTree/${path}`).set({ bounds: bounds });
+  }
+
+  getCameraBounds(feature) {
+    let bbox = BBox(feature);
+    return [[bbox[0], bbox[1]], [bbox[2], bbox[3]]];
+  }
+
+  setCameraBounds(cameraBounds) {
+    this.cameraBounds$.next(cameraBounds);
+  }
+
+  getCameraTree() {
+    return this.rtdb.object('/search/cameraTree')
   }
 }

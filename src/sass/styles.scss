@@ -131,9 +131,16 @@ mat-dialog-content {
 
 mat-dialog-container {
 	padding: 0 !important;
-	border-radius: 5px !important;
+  border-radius: 5px !important;
 }
 
 mat-dialog-actions {
 	padding: 0 !important;
+}
+
+.lightbox {
+  mat-dialog-container {
+    height: auto;
+    overflow-y: hidden;
+  }
 }

@@ -1,0 +1,7 @@
+<img [src]="data.photoURL">
+<mat-dialog-actions>
+  <a [href]="data.photoURL" download>
+    <button mat-raised-button (click)="markDownload()">Download</button>
+  </a>
+  <button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

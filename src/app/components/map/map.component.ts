@@ -16,7 +16,7 @@ import { Channels } from '@enums/channels.enum';
 export class MapComponent implements OnInit {
   map: Map;
   draw: Draw;
-  style = 'mapbox://styles/mapbox/satellite-v9';
+  style = 'mapbox://styles/mapbox/light-v9';
   center = [-122.6781, 45.4928];
   bounds: any;
   source: any;
@@ -44,6 +44,9 @@ export class MapComponent implements OnInit {
     this.initializeDrawing();
     this.addEventHandlers()
     this.flyToMe();
+    this.mapSvc.cameraBounds$.subscribe(bounds => {
+      if(bounds) this.map.fitBounds(bounds);
+    })
   }
 
   initializeMap() {
@@ -195,8 +198,8 @@ export class MapComponent implements OnInit {
 
     // TODO: add name and state property to staticFeatures
     this.map.on("mousemove", "countyFills", e => {
-      if(this.hoveredCounty != e.features[0].properties.zapId) {
-        this.hoveredCounty = e.features[0].properties.zapId;
+      if(this.hoveredCounty != `${e.features[0].properties.countyNameLong}, ${e.features[0].properties.stateCode}`) {
+        this.hoveredCounty = `${e.features[0].properties.countyNameLong}, ${e.features[0].properties.stateCode}`;
         this.ref.detectChanges();
       }
     })
@@ -207,11 +210,26 @@ export class MapComponent implements OnInit {
     })
   }
 
-  editFeature(feature) {
+  editFeature() {
+    let feature = this.selectedFeature as any;
     feature.id = feature.properties.id;
     this.draw.add(feature);
     this.draw.changeMode('direct_select', { featureId: feature.id });
     this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]]);
+  }
+
+  saveEdit() {
+    let feature = this.draw.getAll().features[0];
+    this.mapSvc.saveFeature(feature);
+    this.draw.delete(this.selectedFeature.properties.id);
+    this.map.setFilter('boundaries', null);
+    this.hideMenu();
+  }
+
+  cancelEdit() {
+    this.draw.delete(this.selectedFeature.properties.id);
+    this.map.setFilter('boundaries', null);
+    this.hideMenu();
   }
 
   saveDrawBuffer() {

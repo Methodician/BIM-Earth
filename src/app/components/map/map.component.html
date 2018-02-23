@@ -10,11 +10,13 @@
   [newFeatureId]="newFeatureId"
   [map]="map"
   [selectedFeature]="selectedFeature"
-  (editFeatureRequest)="editFeature($event)"
   (hideMenuRequest)="hideMenu()"
 ></bim-boundary-details-menu>
 <bim-boundary-post
   [feature]="selectedFeature"
+  (saveEditRequest)="saveEdit()"
+  (cancelEditRequest)="cancelEdit()"
+  (editFeatureRequest)="editFeature()"
   (closeMenuRequest)="hideMenu()"
 ></bim-boundary-post>
-<div id="county">{{ hoveredCounty }}</div>
+<mat-card *ngIf="hoveredCounty" id="county" color="primary">{{ hoveredCounty }}</mat-card>

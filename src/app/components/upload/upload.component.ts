@@ -92,7 +92,7 @@ export class UploadComponent implements OnInit {
       Observable.forkJoin(obsArr).subscribe(metadatas => {
         let filesData = {};
         metadatas.forEach(data => {
-          files[data.customMetadata.id] = {
+          filesData[data.customMetadata.id] = {
             url: data.downloadURLs[0],
             name: data.name,
             size: data.size
@@ -107,7 +107,7 @@ export class UploadComponent implements OnInit {
       Observable.forkJoin(obsArr).subscribe(metadatas => {
         let imagesData = {};
         metadatas.forEach(data => {
-          images[data.customMetadata.id] = {
+          imagesData[data.customMetadata.id] = {
             url: data.downloadURLs[0],
             name: data.name,
             size: data.size

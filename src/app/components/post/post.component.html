@@ -7,33 +7,22 @@
       {{ postDate }}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <h4 class="author">Posted By {{ author }}</h4>
-  <!-- The images-container holds one big image and another div called picture box that can be popluated with other pictures from the DB. I would limit the amount of photo's that get rendered, maybe have it render the first 5 or 6 images if there are more than that. -->
-  <!-- <div class="images-container">
-    <img class="main-image" src="../../../assets/asset1.jpg" alt="image">
+  <h4 class="author">Posted By {{ authorName }}</h4>
+  <div *ngIf="imagesLoaded" class="images-container">
+    <img *ngIf="headerImage" class="main-image" (click)="openLightbox(headerImage.url)" [src]="headerImage.url" alt="image">
     <div class="picture-box">
-        <a class="img-thumbnail">
-          <img src="../../../assets/asset2.jpg" alt="image">
+        <a *ngFor="let image of images" (click)="openLightbox(image.url)" class="img-thumbnail">
+          <img [src]="image.url" alt="image">
         </a>
-      <a class="img-thumbnail">
-        <img src="../../../assets/asset3.jpg" alt="image">
-      </a>
-      <a class="img-thumbnail">
-        <img src="../../../assets/asset3.jpg" alt="image">
-      </a>
-      <a class="img-thumbnail">
-        <img src="../../../assets/asset3.jpg" alt="image">
-      </a>
     </div>
-  </div> -->
+  </div>
   <div class="post-body-text">
     {{ postBody }}
   </div>
-  <!-- this div is for individual download links. You should be able to throw as few or many buttons in here as you wouldf like.  -->
-  <div class="download-btns">
+  <div *ngIf="filesLoaded" class="download-btns">
     <h4>Files Avaiable for Download</h4>
-    <button mat-raised-button color="primary">somefile.pdf</button>
-    <button mat-raised-button color="primary">longerfilename.pdf</button>
-    <button mat-raised-button color="primary">blahblah.excel.xsx</button>
+    <a *ngFor="let file of files" [href]="file.url">
+      <button mat-raised-button color="primary">{{ file.name }}</button>
+    </a>
   </div>
 </mat-expansion-panel>

@@ -10,11 +10,11 @@
   
   <mat-accordion *ngIf="!creatingPost && !editingBoundary">
     <!-- The mat-expansion-panel is the main container for each individual post, this is likeley were you will throw your ngIf statement-->
-    <bim-post *ngFor="let post of posts" [post]="post"></bim-post>
+    <bim-post *ngFor="let post of posts" (openLightboxRequest)="openLightbox($event)" [post]="post" [userInfo]="userInfo"></bim-post>
     <mat-card *ngIf="posts.length == 0">No Posts Yet</mat-card>
   </mat-accordion>
   
-  <div class="postForm" *ngIf="creatingPost">
+  <div class="postForm" [hidden]="!creatingPost">
     <form [formGroup]="postForm">
       <mat-form-field color="accent">
         <input formControlName="title" matInput placeholder="Title" type="text"/>
@@ -30,17 +30,13 @@
     </div>
   </div>
 
-  <mat-menu #postMenu="matMenu">
-    <button mat-menu-item (click)="togglePostForm()">Add Post</button>
-    <button mat-menu-item (click)="toggleEditBoundary()">Edit Boundary</button>
-  </mat-menu>
-
-  <button *ngIf="!creatingPost && !editingBoundary" class="post-btn" mat-fab color="accent" [matMenuTriggerFor]="postMenu">
-    <i class="fas fa-plus fa-2x"></i>
-  </button>
+  <div class="controls" *ngIf="!creatingPost && !editingBoundary">
+    <button mat-raised-button (click)="togglePostForm()" color="accent">Add Post</button>
+    <button mat-raised-button (click)="editBoundary()">Edit Boundary</button>
+  </div>
   
   <div *ngIf="editingBoundary">
-    EDITING BOUNDARY
+    <h3>Editing Boundary</h3>
     <div id="post-btns">
       <button mat-raised-button (click)="cancelEdit()">Cancel</button>
       <button mat-raised-button color="accent" (click)="saveEdit()">Save</button>
