@@ -40,6 +40,7 @@ import { PostComponent } from './components/post/post.component';
 import { SearchComponent } from './components/search/search.component';
 
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
+import { LightboxDialogComponent } from './components/lightbox-dialog/lightbox-dialog.component';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     PostComponent,
     UploadComponent,
     SearchComponent,
+    LightboxDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -98,7 +100,8 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     ChannelFilterMenuComponent,
     RegisterComponent,
     LoginComponent,
-    AccountComponent
+    AccountComponent,
+    LightboxDialogComponent,
   ],
   bootstrap: [AppComponent]
 })

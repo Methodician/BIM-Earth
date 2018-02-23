@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { OnChanges, SimpleChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
@@ -9,6 +9,7 @@ import { OnChanges, SimpleChanges } from '@angular/core/src/metadata/lifecycle_h
 export class PostComponent implements OnInit, OnChanges {
   @Input() post;
   @Input() userInfo;
+  @Output() openLightboxRequest = new EventEmitter<string>();
   authorName: string = "Guest User";
   images = [];
   imagesLoaded = false;
@@ -56,4 +57,7 @@ export class PostComponent implements OnInit, OnChanges {
     return fileArray;
   }
 
+  openLightbox(photoURL: string) {
+    this.openLightboxRequest.emit(photoURL);
+  }
 }
