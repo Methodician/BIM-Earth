@@ -138,4 +138,8 @@ export class AuthService {
   getCurrentUserData() {
     return this.db.doc(`users/${this.uid}`);
   }
+
+  getUserInfo() {
+    return this.rtdb.object('userInfo');
+  }
 }

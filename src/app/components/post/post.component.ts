@@ -1,12 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { OnChanges, SimpleChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
   selector: 'bim-post',
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnChanges {
   @Input() post;
+  @Input() userInfo;
+  authorName: string = "Guest User";
   images = [];
   imagesLoaded = false;
   files = [];
@@ -26,13 +29,11 @@ export class PostComponent implements OnInit {
     return this.post.description;
   }
 
-  get author() {
-    return this.post.author;
-  }
-
   constructor() {}
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  ngOnChanges(changes: SimpleChanges) {
     if(!this.post.images.length) {
       this.images = this.getArrayfromObject("images");
       this.headerImage = this.images.shift();
@@ -41,6 +42,9 @@ export class PostComponent implements OnInit {
     if(!this.post.files.length) {
       this.files = this.getArrayfromObject("files");
       this.filesLoaded = true;
+    }
+    if(changes.userInfo.currentValue) {
+      this.authorName = this.userInfo[this.post.author].alias;
     }
   }
 

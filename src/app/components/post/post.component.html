@@ -7,7 +7,7 @@
       {{ postDate }}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <h4 class="author">Posted By {{ author }}</h4>
+  <h4 class="author">Posted By {{ authorName }}</h4>
   <div *ngIf="imagesLoaded" class="images-container">
     <img *ngIf="headerImage" class="main-image" [src]="headerImage.url" alt="image">
     <div class="picture-box">

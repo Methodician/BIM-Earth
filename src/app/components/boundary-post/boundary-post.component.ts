@@ -27,6 +27,7 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   postForm: FormGroup;
   fileURLs: string[];
   authInfo: AuthInfo = AuthService.UNKNOWN_USER;
+  userInfo = null;
 
   get zapId() {
     return this.feature ? this.feature.properties.zapId : ""
@@ -41,6 +42,7 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.authSvc.authInfo$.subscribe(info => this.authInfo = info);
+    this.authSvc.getUserInfo().valueChanges().subscribe(info => { this.userInfo = info });
     this.postForm = this.fb.group({
       title: ["", Validators.required],
       description: ""
