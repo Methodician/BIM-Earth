@@ -1,45 +1,67 @@
 <!-- This is the main container that holds everything and makes up the off-white background around all of the content. This is also the the div that the class gets added to, to make it visable and animate -->
-<div [ngClass]="{clicked: !!feature, unclicked: !feature}" class="boundary-post-container">
-	<!-- This container is for the name of the boundary and a button that when clicked removes the class that makes the content visable  -->
-	<div class="boundary-name-close-btn">
-		<h2>{{ zapId }}</h2>
-		<div (click)="closeBoundaryMenu()">
-			<i class="far fa-times-circle fa-3x close-btn"></i>
-		</div>
-	</div>
-  
+<div [ngClass]="{clicked: !!feature, unclicked: !feature}"
+     class="boundary-post-container">
+  <!-- This container is for the name of the boundary and a button that when clicked removes the class that makes the content visable  -->
+  <div class="boundary-name-close-btn">
+    <h2>{{ zapId }}</h2>
+    <div (click)="closeBoundaryMenu()">
+      <i class="far fa-times-circle fa-3x close-btn"></i>
+    </div>
+  </div>
+
   <mat-accordion *ngIf="!creatingPost && !editingBoundary">
     <!-- The mat-expansion-panel is the main container for each individual post, this is likeley were you will throw your ngIf statement-->
-    <bim-post *ngFor="let post of posts" [post]="post" [userInfo]="userInfo"></bim-post>
+    <bim-post *ngFor="let post of posts"
+              (openLightboxRequest)="openLightbox($event)"
+              [post]="post"
+              [userInfo]="userInfo"></bim-post>
     <mat-card *ngIf="posts.length == 0">No Posts Yet</mat-card>
   </mat-accordion>
-  
-  <div class="postForm" [hidden]="!creatingPost">
+
+  <div class="postForm"
+       [hidden]="!creatingPost">
     <form [formGroup]="postForm">
       <mat-form-field color="accent">
-        <input formControlName="title" matInput placeholder="Title" type="text"/>
+        <input formControlName="title"
+               matInput
+               placeholder="Title"
+               type="text" />
       </mat-form-field>
       <mat-form-field color="accent">
-        <textarea cols="12" formControlName="description" matInput placeholder="Post"></textarea>
+        <textarea cols="12"
+                  formControlName="description"
+                  matInput
+                  placeholder="Post"></textarea>
       </mat-form-field>
     </form>
     <bim-upload #upload></bim-upload>
     <div id="post-btns">
-      <button mat-raised-button (click)="resetPostForm()">Cancel</button>
-      <button [disabled]="postUnauthorized()" mat-raised-button color="accent" (click)="savePost(upload)">Save</button>
+      <button mat-raised-button
+              (click)="resetPostForm()">Cancel</button>
+      <button [disabled]="postUnauthorized()"
+              mat-raised-button
+              color="accent"
+              (click)="savePost(upload)">Save</button>
     </div>
   </div>
 
-  <div class="controls" *ngIf="!creatingPost && !editingBoundary">
-    <button mat-raised-button (click)="showPostForm()" color="accent">Add Post</button>
-    <button mat-raised-button (click)="editBoundary()">Edit Boundary</button>
+  <div class="controls"
+       *ngIf="!creatingPost && !editingBoundary">
+    <button mat-raised-button
+            (click)="showPostForm()"
+            color="accent">Add Post</button>
+    <button mat-raised-button
+            (click)="editBoundary()">Edit Boundary</button>
   </div>
-  
+
   <div *ngIf="editingBoundary">
     <h3>Editing Boundary</h3>
     <div id="post-btns">
-      <button mat-raised-button (click)="cancelEdit()">Cancel</button>
-      <button mat-raised-button color="accent" (click)="saveEdit()">Save</button>
+      <button mat-raised-button
+              (click)="cancelEdit()">Cancel</button>
+      <button mat-raised-button
+              color="accent"
+              (click)="saveEdit()">Save</button>
     </div>
   </div>
 </div>

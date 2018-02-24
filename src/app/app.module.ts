@@ -39,6 +39,7 @@ import { BoundaryPostComponent } from './components/boundary-post/boundary-post.
 import { PostComponent } from './components/post/post.component';
 import { SearchComponent } from './components/search/search.component';
 import { MainRouteContainerComponent } from './components/main-route-container/main-route-container.component';
+import { LightboxDialogComponent } from './components/lightbox-dialog/lightbox-dialog.component';
 
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 
@@ -66,6 +67,7 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     UploadComponent,
     SearchComponent,
     MainRouteContainerComponent,
+    LightboxDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -102,6 +104,7 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     RegisterComponent,
     LoginComponent,
     AccountComponent,
+    LightboxDialogComponent
   ],
   bootstrap: [AppComponent]
 })

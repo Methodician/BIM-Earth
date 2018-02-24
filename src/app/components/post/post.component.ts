@@ -9,6 +9,7 @@ import { OnChanges, SimpleChanges } from '@angular/core/src/metadata/lifecycle_h
 export class PostComponent implements OnInit, OnChanges {
   @Input() post;
   @Input() userInfo;
+  @Output() openLightboxRequest = new EventEmitter<string>();
   authorName: string = "Guest User";
   images = [];
   imagesLoaded = false;
@@ -17,7 +18,7 @@ export class PostComponent implements OnInit, OnChanges {
   headerImage;
   friendlyDate: string = "";
 
-  constructor(private ref: ChangeDetectorRef) {}
+  constructor(private ref: ChangeDetectorRef) { }
 
   ngOnInit() { }
 
@@ -31,10 +32,10 @@ export class PostComponent implements OnInit, OnChanges {
       this.files = this.getArrayfromObject("files");
       this.filesLoaded = true;
     }
-    if(!this.friendlyDate && this.post.timestamp) {
+    if (!this.friendlyDate && this.post.timestamp) {
       this.friendlyDate = this.postDate;
     }
-    if(changes.userInfo.currentValue) {
+    if (changes.userInfo.currentValue) {
       this.authorName = this.userInfo[this.post.author].alias;
     }
   }
@@ -44,7 +45,7 @@ export class PostComponent implements OnInit, OnChanges {
     let hours = this.post.timestamp.getHours() == 0 ? "00" : this.post.timestamp.getHours();
     return `${this.post.timestamp.toLocaleDateString()} at ${hours}:${minutes}`;
   }
-  
+
   setHeaderImage(index) {
     this.headerImage = this.images[index];
   }
@@ -55,6 +56,10 @@ export class PostComponent implements OnInit, OnChanges {
       fileArray.push(this.post[fileType][key]);
     }
     return fileArray;
+  }
+
+  openLightbox(photoURL: string) {
+    this.openLightboxRequest.emit(photoURL);
   }
 
   checkView() {

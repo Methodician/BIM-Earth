@@ -5,6 +5,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { MatDialog } from '@angular/material';
+import { LightboxDialogComponent } from '@components/lightbox-dialog/lightbox-dialog.component';
 
 @Component({
   selector: 'bim-boundary-post',
@@ -38,6 +40,7 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     private authSvc: AuthService,
     private firestore: AngularFirestore,
+    private lightbox: MatDialog
   ) { }
 
   ngOnInit() {
@@ -50,8 +53,8 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes) {
-    if(changes.feature.currentValue){
-      if(this.featureSub) this.featureSub.unsubscribe();
+    if (changes.feature.currentValue) {
+      if (this.featureSub) this.featureSub.unsubscribe();
       this.featureSub = this.mapSvc
         .getBoundaryPosts(this.feature.properties.id)
         .valueChanges()
@@ -63,9 +66,9 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
 
   // closes component, handles cleanup based on component state
   closeBoundaryMenu() {
-    if(this.editingBoundary) {
+    if (this.editingBoundary) {
       this.cancelEdit()
-    } else if(this.creatingPost) {
+    } else if (this.creatingPost) {
       this.resetPostForm();
     }
     this.closeMenuRequest.emit();
@@ -76,7 +79,7 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   }
 
   savePost(uploadData) {
-    let formData = this.postForm.value; 
+    let formData = this.postForm.value;
     let post = {
       title: formData.title,
       description: formData.description,
@@ -98,7 +101,7 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   }
 
   postUnauthorized() {
-    return this.postForm.invalid || !this.authInfo.$uid; 
+    return this.postForm.invalid || !this.authInfo.$uid;
   }
 
   // boundary edit methods
@@ -116,8 +119,25 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     this.cancelEditRequest.emit();
     this.toggleEditBoundary();
   }
-  
+
   toggleEditBoundary() {
     this.editingBoundary = !this.editingBoundary;
+  }
+
+  // image lightbox		
+  openLightbox(photoURL) {
+    const dialogRef = this.lightbox.open(LightboxDialogComponent, {
+      data: { photoURL: photoURL },
+      autoFocus: false,
+      panelClass: "lightbox"
+    });
+
+    dialogRef
+      .beforeClose()
+      .subscribe(_ => {
+        if (dialogRef.componentInstance.downloaded) {
+          // this block is executed if the file was downloaded in the lightbox		
+        }
+      });
   }
 }
