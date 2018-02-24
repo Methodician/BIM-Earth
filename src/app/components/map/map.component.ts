@@ -7,6 +7,7 @@ import { FeatureCollection, LayerClass } from '@models/map';
 import { Map } from 'mapbox-gl/dist/mapbox-gl';
 import { GeoJson } from '@models/map';
 import { Channels } from '@enums/channels.enum';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'bim-map',
@@ -16,7 +17,7 @@ import { Channels } from '@enums/channels.enum';
 export class MapComponent implements OnInit {
   map: Map;
   draw: Draw;
-  style = 'mapbox://styles/mapbox/satellite-v9';
+  style = 'mapbox://styles/mapbox/light-v9';
   center = [-122.6781, 45.4928];
   bounds: any;
   source: any;
@@ -26,16 +27,17 @@ export class MapComponent implements OnInit {
   isDeleting: boolean = false;
   hoveredCounty: string = "";
 
-  constructor(private mapSvc: MapService, private ref: ChangeDetectorRef) { }
+  constructor(private mapSvc: MapService, private ref: ChangeDetectorRef, private router: Router, private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.mapSvc.isDeleting$.subscribe(value => {
       this.isDeleting = value;
     });
-    
+
     this.mapSvc.channelFilterSelection$.subscribe(selection => {
-      if(this.map && !this.selectedFeature) this.setChannelFilter(selection);
-    })
+      if (this.map && !this.selectedFeature) this.setChannelFilter(selection);
+    });
+
   }
 
   mapLoaded(map) {
@@ -44,6 +46,10 @@ export class MapComponent implements OnInit {
     this.initializeDrawing();
     this.addEventHandlers()
     this.flyToMe();
+    this.mapSvc.cameraBounds$.subscribe(bounds => {
+      if (bounds) this.map.fitBounds(bounds);
+    });
+
   }
 
   initializeMap() {
@@ -71,12 +77,12 @@ export class MapComponent implements OnInit {
     this.mapSvc.getCountyFeatures().valueChanges().take(1).subscribe(features => {
       const counties = new FeatureCollection((features as GeoJson[]));
       this.countySource.setData(counties);
-      
+
       this.mapSvc.getFeatures().valueChanges().subscribe(features => {
         const collection = new FeatureCollection((features as GeoJson[]));
         this.source.setData(collection);
       });
-    })
+    });
 
 
 
@@ -91,7 +97,7 @@ export class MapComponent implements OnInit {
         id: 'countyLines',
         source: 'countySource',
         type: 'line',
-        paint: {'line-color': 'rgba(186, 35, 57, 0.5)'}
+        paint: { 'line-color': 'rgba(186, 35, 57, 0.5)' }
       })
       .addLayer({
         id: 'countyFills',
@@ -102,6 +108,20 @@ export class MapComponent implements OnInit {
         }
       });
 
+    this.activeRoute.params.subscribe(params => {
+      if (!this.selectedFeature && params && params.zapId) {
+        this.mapSvc.getFeatureIdFromSearchTree(params.zapId).valueChanges().subscribe(featureId => {
+          this.mapSvc.getFeatureById(featureId).valueChanges().subscribe(feature => {
+            if (feature) {
+              this.setSelectedFeature(feature);
+              this.mapSvc.getBoundsFromCameraTree(params.zapId).valueChanges().subscribe(bounds => {
+                this.mapSvc.setCameraBounds(bounds);
+              });
+            }
+          });
+        });
+      }
+    });
   }
 
   // TODO: move to separate file
@@ -177,17 +197,15 @@ export class MapComponent implements OnInit {
 
     this.map.on('touchend', 'boundaries', e => {
       if (!this.newFeatureId) {
-        this.selectedFeature = e.features[0];
-        this.ref.detectChanges();
+        this.setSelectedFeature(e.features[0]);
       }
     })
 
     this.map.on('click', 'boundaries', e => {
       if (!this.newFeatureId && !this.isDeleting) {
-        this.selectedFeature = e.features[0];
-        this.ref.detectChanges();
-      } else if(!this.newFeatureId && this.isDeleting) {
-        this.mapSvc.deleteFeature(e.features[0])
+        this.setSelectedFeature(e.features[0]);
+      } else if (!this.newFeatureId && this.isDeleting) {
+        this.mapSvc.deleteFeature(e.features[0]);
         this.mapSvc.toggleDelete();
         this.ref.detectChanges();
       }
@@ -195,8 +213,8 @@ export class MapComponent implements OnInit {
 
     // TODO: add name and state property to staticFeatures
     this.map.on("mousemove", "countyFills", e => {
-      if(this.hoveredCounty != e.features[0].properties.zapId) {
-        this.hoveredCounty = e.features[0].properties.zapId;
+      if (this.hoveredCounty != `${e.features[0].properties.countyNameLong}, ${e.features[0].properties.stateCode}`) {
+        this.hoveredCounty = `${e.features[0].properties.countyNameLong}, ${e.features[0].properties.stateCode}`;
         this.ref.detectChanges();
       }
     })
@@ -207,11 +225,32 @@ export class MapComponent implements OnInit {
     })
   }
 
-  editFeature(feature) {
+  setSelectedFeature(feature) {
+    this.selectedFeature = feature;
+    this.ref.detectChanges();
+    this.router.navigate([`/${feature.properties.zapId}`]);
+  }
+
+  editFeature() {
+    let feature = this.selectedFeature as any;
     feature.id = feature.properties.id;
     this.draw.add(feature);
     this.draw.changeMode('direct_select', { featureId: feature.id });
     this.map.setFilter('boundaries', ["!=", feature.id, ["get", "id"]]);
+  }
+
+  saveEdit() {
+    let feature = this.draw.getAll().features[0];
+    this.mapSvc.saveFeature(feature);
+    this.draw.delete(this.selectedFeature.properties.id);
+    this.map.setFilter('boundaries', null);
+    this.hideMenu();
+  }
+
+  cancelEdit() {
+    this.draw.delete(this.selectedFeature.properties.id);
+    this.map.setFilter('boundaries', null);
+    this.hideMenu();
   }
 
   saveDrawBuffer() {
@@ -236,7 +275,7 @@ export class MapComponent implements OnInit {
   }
 
   setChannelFilter(selectedChannels) {
-    if(selectedChannels.length > 0) {
+    if (selectedChannels.length > 0) {
       let filterExpression = ["match", ["get", "channel"]].concat(selectedChannels, false as any);
       this.map.setFilter('boundaries', filterExpression);
     } else this.map.setFilter('boundaries', null);

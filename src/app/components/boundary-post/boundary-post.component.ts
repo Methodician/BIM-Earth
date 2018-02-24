@@ -1,9 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ElementRef, ViewChild } from '@angular/core';
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs/Subscription';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
+import { AngularFirestore } from 'angularfire2/firestore';
+import { MatDialog } from '@angular/material';
+import { LightboxDialogComponent } from '@components/lightbox-dialog/lightbox-dialog.component';
 
 @Component({
   selector: 'bim-boundary-post',
@@ -13,14 +16,20 @@ import { AuthInfo } from '@models/auth-info';
 export class BoundaryPostComponent implements OnInit, OnChanges {
   @Input() feature;
   @Output() closeMenuRequest = new EventEmitter<null>();
+  @Output() saveEditRequest = new EventEmitter<null>();
+  @Output() editFeatureRequest = new EventEmitter<null>();
+  @Output() cancelEditRequest = new EventEmitter<null>();
+  @ViewChild('upload') uploadComponent;
   panelOpenState: boolean = false; // unused variable?
   isBoundaryPostOpen = false;
   posts: {}[] = [];
   featureSub: Subscription;
   creatingPost: boolean = false;
+  editingBoundary: boolean = false;
   postForm: FormGroup;
   fileURLs: string[];
   authInfo: AuthInfo = AuthService.UNKNOWN_USER;
+  userInfo = null;
 
   get zapId() {
     return this.feature ? this.feature.properties.zapId : ""
@@ -29,11 +38,14 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   constructor(
     private mapSvc: MapService,
     private fb: FormBuilder,
-    private authSvc: AuthService
+    private authSvc: AuthService,
+    private firestore: AngularFirestore,
+    private lightbox: MatDialog
   ) { }
 
   ngOnInit() {
     this.authSvc.authInfo$.subscribe(info => this.authInfo = info);
+    this.authSvc.getUserInfo().valueChanges().subscribe(info => { this.userInfo = info });
     this.postForm = this.fb.group({
       title: ["", Validators.required],
       description: ""
@@ -41,8 +53,8 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes) {
-    if(changes.feature.currentValue){
-      if(this.featureSub) this.featureSub.unsubscribe();
+    if (changes.feature.currentValue) {
+      if (this.featureSub) this.featureSub.unsubscribe();
       this.featureSub = this.mapSvc
         .getBoundaryPosts(this.feature.properties.id)
         .valueChanges()
@@ -52,27 +64,80 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     }
   }
 
-  savePost() {
-    let formData = this.postForm.value; 
+  // closes component, handles cleanup based on component state
+  closeBoundaryMenu() {
+    if (this.editingBoundary) {
+      this.cancelEdit()
+    } else if (this.creatingPost) {
+      this.resetPostForm();
+    }
+    this.closeMenuRequest.emit();
+  }
+
+  showPostForm() {
+    this.creatingPost = true;
+  }
+
+  savePost(uploadData) {
+    let formData = this.postForm.value;
     let post = {
       title: formData.title,
       description: formData.description,
       author: this.authInfo.$uid,
-      featureId: this.feature.properties.id
+      featureId: this.feature.properties.id,
+      id: this.firestore.createId(),
+      images: ["processing"],
+      files: ["processing"]
     }
     this.mapSvc.savePost(post);
-    this.togglePostForm();
+    this.uploadComponent.startUpload(this.feature.properties.id, post.id);
+    this.resetPostForm();
   }
 
-  togglePostForm() {
-    this.creatingPost = !this.creatingPost;
+  resetPostForm() {
+    this.creatingPost = false;
+    this.postForm.reset();
+    this.uploadComponent.clearFiles();
   }
 
   postUnauthorized() {
-    return this.postForm.invalid || !this.authInfo.$uid; 
+    return this.postForm.invalid || !this.authInfo.$uid;
   }
 
-  closeMenu() {
-    this.closeMenuRequest.emit()
+  // boundary edit methods
+  editBoundary() {
+    this.editFeatureRequest.emit();
+    this.toggleEditBoundary();
+  }
+
+  saveEdit() {
+    this.saveEditRequest.emit();
+    this.toggleEditBoundary();
+  }
+
+  cancelEdit() {
+    this.cancelEditRequest.emit();
+    this.toggleEditBoundary();
+  }
+
+  toggleEditBoundary() {
+    this.editingBoundary = !this.editingBoundary;
+  }
+
+  // image lightbox		
+  openLightbox(photoURL) {
+    const dialogRef = this.lightbox.open(LightboxDialogComponent, {
+      data: { photoURL: photoURL },
+      autoFocus: false,
+      panelClass: "lightbox"
+    });
+
+    dialogRef
+      .beforeClose()
+      .subscribe(_ => {
+        if (dialogRef.componentInstance.downloaded) {
+          // this block is executed if the file was downloaded in the lightbox		
+        }
+      });
   }
 }

@@ -8,6 +8,7 @@ import { GeoJson } from '@models/map';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
+import BBox from "@turf/bbox";
 
 @Injectable()
 export class MapService {
@@ -18,6 +19,7 @@ export class MapService {
   channelFilterSelection: any[] = [];
   channelFilterSelection$: BehaviorSubject<any[]> = new BehaviorSubject([]);
   authInfo: AuthInfo = AuthService.UNKNOWN_USER;
+  cameraBounds$ = new BehaviorSubject(null);
 
   constructor(
     private db: AngularFirestore,
@@ -36,6 +38,20 @@ export class MapService {
 
   getFeatures() {
     return this.rtdb.list('/features');
+  }
+
+  getFeatureById(featureId) {
+    return this.rtdb.object(`/features/${featureId}`);
+  }
+
+  getFeatureIdFromSearchTree(zapID: string) {
+    const path = this.idTreePathFromZapId(zapID);
+    return this.rtdb.object(`/search/idTree/${path}`);
+  }
+
+  getBoundsFromCameraTree(zapID: string) {
+    const path = this.idTreePathFromZapId(zapID);
+    return this.rtdb.object(`/search/cameraTree/${path}/bounds`);
   }
 
   deleteFeature(feature: GeoJson) {
@@ -70,13 +86,14 @@ export class MapService {
       geometry: feature.geometry,
       properties: feature.properties
     });
-    if(!newFeature) this.updateUserHistory(feature.properties.id, feature.properties.zapId, "edit");
+    if (!newFeature) this.updateUserHistory(feature.properties.id, feature.properties.zapId, "edit");
     this.updateEditors(feature.properties.id);
     this.updateHistory(feature);
+    this.updateSearchData(feature);
   }
 
   updateUserHistory(featureId: string, zapId: string, action: string) {
-    if(this.authInfo.isLoggedIn()) {
+    if (this.authInfo.isLoggedIn()) {
       this.db.collection(`users/${this.authInfo.$uid}/history`)
         .doc(this.db.createId())
         .set({
@@ -110,13 +127,22 @@ export class MapService {
     return this.db.collection(`features/${featureId}/posts`);
   }
 
+  //TODO: add exception to handle no files/images somewhere
   savePost(data) {
-    this.db.doc(`features/${data.featureId}/posts/${this.db.createId()}`).set({
+    this.db.doc(`features/${data.featureId}/posts/${data.id}`).set({
       title: data.title,
       description: data.description,
       author: data.author,
-      timestamp: fb.firestore.FieldValue.serverTimestamp()
+      timestamp: fb.firestore.FieldValue.serverTimestamp(),
+      files: data.files,
+      images: data.images
     })
+  }
+
+  updatePostFiles(featureId: string, postId: string, fileType: "images" | "files", files) {
+    let data = {};
+    data[fileType] = files;
+    this.db.doc(`features/${featureId}/posts/${postId}`).update(data);
   }
 
   getFirestoreFeatures() {
@@ -168,7 +194,6 @@ export class MapService {
             } else { transaction.update(docRef, {}); }
         });
     }).then(function() {
-        console.log("Features updated.");
     }).catch(function(error) {
         console.log("Transaction failed: ", error);
     });
@@ -180,5 +205,35 @@ export class MapService {
 
   getUserHistory(userKey: string) {
     return this.db.collection(`users/${userKey}/history`, ref => ref.limit(20));
+  }
+
+  getSearchData() {
+    return this.rtdb.object('search');
+  }
+
+  updateSearchData(feature) {
+    const zapID = feature.properties.zapId,
+      path = this.idTreePathFromZapId(zapID),
+      coordinates = feature.geometry.coordinates[0][0],
+      bounds = this.getCameraBounds(feature)
+    this.rtdb.object(`/search/idTree/${path}`).set(feature.properties.id);
+    this.rtdb.object(`/search/cameraTree/${path}`).set({ bounds: bounds });
+  }
+
+  getCameraBounds(feature) {
+    let bbox = BBox(feature);
+    return [[bbox[0], bbox[1]], [bbox[2], bbox[3]]];
+  }
+
+  setCameraBounds(cameraBounds) {
+    this.cameraBounds$.next(cameraBounds);
+  }
+
+  getCameraTree() {
+    return this.rtdb.object('/search/cameraTree')
+  }
+
+  idTreePathFromZapId(zapID: string) {
+    return `${zapID.slice(0, 2)}/${zapID.slice(3, 5)}/${zapID.slice(6, 9)}/${zapID.slice(10, 12)}/${zapID.slice(13, 18)}`;
   }
 }

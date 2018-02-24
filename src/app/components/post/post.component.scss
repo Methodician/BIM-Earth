@@ -2,7 +2,7 @@
 @import "../../../sass/mixins.scss";
 
 mat-expansion-panel {
-  margin: 10px 0;
+  margin: 10px 1px;
   background-color: $light;
   mat-expansion-panel-header {
     background-color: $medium;
@@ -29,6 +29,7 @@ mat-expansion-panel {
 		@include respond-to($desktop-up) {
 			@include size(325px, 175px);
 		}
+		object-fit: contain;
 	}
 
 	.picture-box {

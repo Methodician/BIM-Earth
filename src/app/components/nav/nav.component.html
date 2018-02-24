@@ -1,8 +1,9 @@
 <!-- nav component container that holds a button, unput and cog icon -->
 <div class="nav-container">
-  <div [ngClass]="{clicked: searchBarVisable}" class="searchbar">
-    <input type="text" class="btn-extended" placeholder="search" />
-    <div (click)="searchBarVisable = !searchBarVisable" class="btn-search">
+  <div [ngClass]="{clicked: searchBarVisible}" class="searchbar">
+    <bim-search class="btn-extended"></bim-search>
+    <!-- <input type="text" class="btn-extended" placeholder="search" type="search" maxlength="18" (keyup)="predictive($event.target.value)" title="Entry must be Zap ID. Example: US-OR-MLT-22-MS85A"/> -->
+    <div (click)="searchBarVisible = !searchBarVisible" class="btn-search">
       <i class="fab fa-searchengin search-icon"></i>
     </div>
   </div>

@@ -19,7 +19,9 @@ export class UserHistoryComponent implements OnInit {
   ngOnInit() {}
 
   friendlyData(timestamp) {
-    return `${timestamp.getMonth()+1}/${timestamp.getDay()}/${timestamp.getYear() - 100} at ${timestamp.getHours()}:${timestamp.getMinutes()}`;
+    let minutes = timestamp.getMinutes() > 10 ? timestamp.getMinutes() : `0${timestamp.getMinutes()}`;
+    let hours = timestamp.getHours() == 0 ? "00" : timestamp.getHours();
+    return `${timestamp.toLocaleDateString()} at ${hours}:${minutes}`;
   }
 
 }
