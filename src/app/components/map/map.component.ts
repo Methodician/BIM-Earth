@@ -112,10 +112,12 @@ export class MapComponent implements OnInit {
       if (!this.selectedFeature && params && params.zapId) {
         this.mapSvc.getFeatureIdFromSearchTree(params.zapId).valueChanges().subscribe(featureId => {
           this.mapSvc.getFeatureById(featureId).valueChanges().subscribe(feature => {
-            this.setSelectedFeature(feature);
-            this.mapSvc.getBoundsFromCameraTree(params.zapId).valueChanges().subscribe(bounds => {
-              this.mapSvc.setCameraBounds(bounds);
-            });
+            if (feature) {
+              this.setSelectedFeature(feature);
+              this.mapSvc.getBoundsFromCameraTree(params.zapId).valueChanges().subscribe(bounds => {
+                this.mapSvc.setCameraBounds(bounds);
+              });
+            }
           });
         });
       }
@@ -224,9 +226,9 @@ export class MapComponent implements OnInit {
   }
 
   setSelectedFeature(feature) {
-    this.router.navigate([`/${feature.properties.zapId}`]);
     this.selectedFeature = feature;
     this.ref.detectChanges();
+    this.router.navigate([`/${feature.properties.zapId}`]);
   }
 
   editFeature() {

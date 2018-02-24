@@ -5,8 +5,8 @@ import { MainRouteContainerComponent } from '@components/main-route-container/ma
 
 const routes: Routes = [
   { path: ':zapId', component: MainRouteContainerComponent },
-  { path: '', component: MainRouteContainerComponent },
-  { path: '**', redirectTo: '/' }
+  { path: 'home', component: MainRouteContainerComponent },
+  { path: '**', redirectTo: '/home' }
 ];
 
 @NgModule({
