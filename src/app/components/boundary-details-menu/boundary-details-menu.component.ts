@@ -49,7 +49,6 @@ export class BoundaryDetailsMenuComponent implements OnInit {
   }
 
   clickedOutside() {
-    console.log("woah this was clicked");
     this.editingFeature = false;
   }
 

@@ -180,7 +180,6 @@ export class MapService {
             } else { transaction.update(docRef, {}); }
         });
     }).then(function() {
-        console.log("Features updated.");
     }).catch(function(error) {
         console.log("Transaction failed: ", error);
     });
