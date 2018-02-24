@@ -15,19 +15,7 @@ export class PostComponent implements OnInit, OnChanges {
   files = [];
   filesLoaded = false;
   headerImage;
-
-  get postDate() {
-    if (this.post.timestamp) return `${this.post.timestamp.getMonth()+1}/${this.post.timestamp.getDay()}/${this.post.timestamp.getYear() - 100} at ${this.post.timestamp.getHours()}:${this.post.timestamp.getMinutes()}`;
-    else return "Pending"
-  }
-
-  get title() {
-    return this.post.title;
-  }
-
-  get postBody() {
-    return this.post.description;
-  }
+  friendlyDate: string = "";
 
   constructor(private ref: ChangeDetectorRef) {}
 
@@ -43,9 +31,18 @@ export class PostComponent implements OnInit, OnChanges {
       this.files = this.getArrayfromObject("files");
       this.filesLoaded = true;
     }
+    if(!this.friendlyDate && this.post.timestamp) {
+      this.friendlyDate = this.postDate;
+    }
     if(changes.userInfo.currentValue) {
       this.authorName = this.userInfo[this.post.author].alias;
     }
+  }
+
+  get postDate() {
+    let minutes = this.post.timestamp.getMinutes() > 10 ? this.post.timestamp.getMinutes() : `0${this.post.timestamp.getMinutes()}`;
+    let hours = this.post.timestamp.getHours() == 0 ? "00" : this.post.timestamp.getHours();
+    return `${this.post.timestamp.toLocaleDateString()} at ${hours}:${minutes}`;
   }
 
   getArrayfromObject(fileType: "images" | "files") {

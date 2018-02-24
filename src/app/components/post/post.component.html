@@ -1,10 +1,10 @@
 <mat-expansion-panel (click)="checkView()">
   <mat-expansion-panel-header>
     <mat-panel-title>
-      {{ title }}
+      {{ post.title }}
     </mat-panel-title>
     <mat-panel-description>
-      {{ postDate }}
+      {{ friendlyDate }}
     </mat-panel-description>
   </mat-expansion-panel-header>
   <h4 class="author">Posted By {{ authorName }}</h4>
@@ -17,7 +17,7 @@
     </div>
   </div>
   <div class="post-body-text">
-    {{ postBody }}
+    {{ post.description }}
   </div>
   <div *ngIf="filesLoaded" class="download-btns">
     <h4>Files Avaiable for Download</h4>
