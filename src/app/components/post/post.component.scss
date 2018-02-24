@@ -29,6 +29,7 @@ mat-expansion-panel {
 		@include respond-to($desktop-up) {
 			@include size(325px, 175px);
 		}
+		object-fit: contain;
 	}
 
 	.picture-box {

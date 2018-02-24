@@ -18,7 +18,7 @@ export class PostComponent implements OnInit, OnChanges {
   headerImage;
 
   get postDate() {
-    if (this.post.timestamp) return `${this.post.timestamp.getMonth()+1}/${this.post.timestamp.getDay()}/${this.post.timestamp.getYear() - 100} at ${this.post.timestamp.getHours()}:${this.post.timestamp.getMinutes()}`;
+    if (this.post.timestamp) return `${this.post.timestamp.getMonth() + 1}/${this.post.timestamp.getDay()}/${this.post.timestamp.getYear() - 100} at ${this.post.timestamp.getHours()}:${this.post.timestamp.getMinutes()}`;
     else return "Pending"
   }
 
@@ -30,28 +30,32 @@ export class PostComponent implements OnInit, OnChanges {
     return this.post.description;
   }
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(!this.post.images.length) {
+    if (!this.post.images.length) {
       this.images = this.getArrayfromObject("images");
-      this.headerImage = this.images.shift();
+      this.headerImage = this.images[0];
       this.imagesLoaded = true;
     }
-    if(!this.post.files.length) {
+    if (!this.post.files.length) {
       this.files = this.getArrayfromObject("files");
       this.filesLoaded = true;
     }
-    if(changes.userInfo.currentValue) {
+    if (changes.userInfo.currentValue) {
       this.authorName = this.userInfo[this.post.author].alias;
     }
   }
 
+  setHeaderImage(index) {
+    this.headerImage = this.images[index];
+  }
+
   getArrayfromObject(fileType: "images" | "files") {
     let fileArray = [];
-    for(let key in this.post[fileType]) {
+    for (let key in this.post[fileType]) {
       fileArray.push(this.post[fileType][key]);
     }
     return fileArray;
