@@ -41,6 +41,7 @@ import { SearchComponent } from './components/search/search.component';
 
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 import { LightboxDialogComponent } from './components/lightbox-dialog/lightbox-dialog.component';
+import { MainRouteContainerComponent } from './components/main-route-container/main-route-container.component';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { LightboxDialogComponent } from './components/lightbox-dialog/lightbox-d
     UploadComponent,
     SearchComponent,
     LightboxDialogComponent,
+    MainRouteContainerComponent,
   ],
   imports: [
     BrowserModule,
