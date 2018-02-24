@@ -9,9 +9,9 @@
   </mat-expansion-panel-header>
   <h4 class="author">Posted By {{ authorName }}</h4>
   <div *ngIf="imagesLoaded" class="images-container">
-    <img *ngIf="headerImage" class="main-image" (click)="openLightbox(headerImage.url)" [src]="headerImage.url" alt="image">
+    <img *ngIf="headerImage" class="main-image" [src]="headerImage.url" alt="image">
     <div class="picture-box">
-        <a *ngFor="let image of images" (click)="openLightbox(image.url)" class="img-thumbnail">
+        <a *ngFor="let image of images" class="img-thumbnail">
           <img [src]="image.url" alt="image">
         </a>
     </div>

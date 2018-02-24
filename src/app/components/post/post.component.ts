@@ -9,7 +9,6 @@ import { OnChanges, SimpleChanges } from '@angular/core/src/metadata/lifecycle_h
 export class PostComponent implements OnInit, OnChanges {
   @Input() post;
   @Input() userInfo;
-  @Output() openLightboxRequest = new EventEmitter<string>();
   authorName: string = "Guest User";
   images = [];
   imagesLoaded = false;
@@ -55,9 +54,5 @@ export class PostComponent implements OnInit, OnChanges {
       fileArray.push(this.post[fileType][key]);
     }
     return fileArray;
-  }
-
-  openLightbox(photoURL: string) {
-    this.openLightboxRequest.emit(photoURL);
   }
 }

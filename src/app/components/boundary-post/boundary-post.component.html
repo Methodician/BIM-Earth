@@ -10,7 +10,7 @@
   
   <mat-accordion *ngIf="!creatingPost && !editingBoundary">
     <!-- The mat-expansion-panel is the main container for each individual post, this is likeley were you will throw your ngIf statement-->
-    <bim-post *ngFor="let post of posts" (openLightboxRequest)="openLightbox($event)" [post]="post" [userInfo]="userInfo"></bim-post>
+    <bim-post *ngFor="let post of posts" [post]="post" [userInfo]="userInfo"></bim-post>
     <mat-card *ngIf="posts.length == 0">No Posts Yet</mat-card>
   </mat-accordion>
   

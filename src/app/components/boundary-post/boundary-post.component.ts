@@ -5,8 +5,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 import { AuthInfo } from '@models/auth-info';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { MatDialog } from '@angular/material';
-import { LightboxDialogComponent } from '@components/lightbox-dialog/lightbox-dialog.component';
 
 @Component({
   selector: 'bim-boundary-post',
@@ -40,7 +38,6 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     private authSvc: AuthService,
     private firestore: AngularFirestore,
-    private lightbox: MatDialog
   ) { }
 
   ngOnInit() {
@@ -122,22 +119,5 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
   
   toggleEditBoundary() {
     this.editingBoundary = !this.editingBoundary;
-  }
-
-  // image lightbox
-  openLightbox(photoURL) {
-    const dialogRef = this.lightbox.open(LightboxDialogComponent, {
-      data: { photoURL: photoURL },
-      autoFocus: false,
-      panelClass: "lightbox"
-    });
-
-    dialogRef
-      .beforeClose()
-      .subscribe(_ => {
-        if (dialogRef.componentInstance.downloaded) {
-          // this block is executed if the file was downloaded in the lightbox
-        }
-      });
   }
 }
