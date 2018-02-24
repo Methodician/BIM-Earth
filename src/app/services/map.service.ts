@@ -227,7 +227,6 @@ export class MapService {
   }
 
   setCameraBounds(cameraBounds) {
-    console.log(cameraBounds);
     this.cameraBounds$.next(cameraBounds);
   }
 
