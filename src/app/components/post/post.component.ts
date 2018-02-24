@@ -22,12 +22,12 @@ export class PostComponent implements OnInit, OnChanges {
   ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(!this.post.images.length) {
+    if (!this.post.images.length) {
       this.images = this.getArrayfromObject("images");
-      this.headerImage = this.images.shift();
+      this.headerImage = this.images[0];
       this.imagesLoaded = true;
     }
-    if(!this.post.files.length) {
+    if (!this.post.files.length) {
       this.files = this.getArrayfromObject("files");
       this.filesLoaded = true;
     }
@@ -44,10 +44,14 @@ export class PostComponent implements OnInit, OnChanges {
     let hours = this.post.timestamp.getHours() == 0 ? "00" : this.post.timestamp.getHours();
     return `${this.post.timestamp.toLocaleDateString()} at ${hours}:${minutes}`;
   }
+  
+  setHeaderImage(index) {
+    this.headerImage = this.images[index];
+  }
 
   getArrayfromObject(fileType: "images" | "files") {
     let fileArray = [];
-    for(let key in this.post[fileType]) {
+    for (let key in this.post[fileType]) {
       fileArray.push(this.post[fileType][key]);
     }
     return fileArray;

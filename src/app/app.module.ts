@@ -38,8 +38,10 @@ import { UploadComponent } from './components/upload/upload.component'
 import { BoundaryPostComponent } from './components/boundary-post/boundary-post.component';
 import { PostComponent } from './components/post/post.component';
 import { SearchComponent } from './components/search/search.component';
+import { MainRouteContainerComponent } from './components/main-route-container/main-route-container.component';
 
 import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
+
 
 
 @NgModule({
@@ -63,6 +65,7 @@ import { ClickOutsideDirective } from './shared/directives/click-outside.directi
     PostComponent,
     UploadComponent,
     SearchComponent,
+    MainRouteContainerComponent,
   ],
   imports: [
     BrowserModule,
