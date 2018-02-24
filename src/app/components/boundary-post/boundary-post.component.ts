@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, ElementRef, ViewChild, ChangeDetectorRef, ViewContainerRef } from '@angular/core';
 import { MapService } from '@services/map.service';
 import { Subscription } from 'rxjs/Subscription';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -7,6 +7,7 @@ import { AuthInfo } from '@models/auth-info';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { MatDialog } from '@angular/material';
 import { LightboxDialogComponent } from '@components/lightbox-dialog/lightbox-dialog.component';
+// import {  } from '@angular/core/src/linker/view_container_ref';
 
 @Component({
   selector: 'bim-boundary-post',
@@ -40,7 +41,9 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     private authSvc: AuthService,
     private firestore: AngularFirestore,
-    private lightbox: MatDialog
+    private lightbox: MatDialog,
+    private viewContainerRef: ViewContainerRef,
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -126,18 +129,54 @@ export class BoundaryPostComponent implements OnInit, OnChanges {
 
   // image lightbox
   openLightbox(photoURL) {
+    // let ref = this.viewContainerRef;
+    //if this is the correct reference, follow the material docs example to attach it to the tree then try and find a way to see the whole tree
+    // debugger;
     const dialogRef = this.lightbox.open(LightboxDialogComponent, {
       data: { photoURL: photoURL },
       autoFocus: false,
-      panelClass: "lightbox"
+      panelClass: "lightbox",
+      viewContainerRef: this.viewContainerRef
     });
-
+    //pass in view container ref
+    //trigger change detection request from here I guess, once the component is loaded(opened),
+    // add on change or whatever lifecycle hook shows view checked (probably viewChecked) and see if I can get the component to re-render once it's loaded
+    // on image click in the post component, add timeout to allow to verify the image hasn't loaded then emit request to view check this boundary post
+    // i know that running ref.detectChanges in this component will view check the dialog
+    // i need to manually account for the individual unresponsive behaviors, and call view check on them.
+    
+    // add timeout to image click to verify
+    // if that works add view check to close click, (which needs verification of internal view check functioning)
+    // add view check to dialogRef.backdropClick() 
+    dialogRef
+      .backdropClick()
+      .subscribe(event => {
+        console.log('dialog backdrop clicked: ', event)
+        this.ref.detectChanges();
+        dialogRef.close()
+      })
+    dialogRef
+      .afterOpen()
+      .subscribe(_ => {
+        console.log('dialog afterOpen triggered')
+        window.setTimeout(_ => {
+          console.log('timeout complete (scope check): ', this.authInfo.displayName);
+          this.ref.detectChanges();
+        }, 2500)
+        this.ref.detectChanges()
+      });
     dialogRef
       .beforeClose()
       .subscribe(_ => {
+        console.log('dialog beforeClose requested')
         if (dialogRef.componentInstance.downloaded) {
           // this block is executed if the file was downloaded in the lightbox
         }
       });
+  }
+
+  checkView() {
+    console.log('manual check view called')
+    this.ref.detectChanges();
   }
 }

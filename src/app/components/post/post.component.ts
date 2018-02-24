@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { OnChanges, SimpleChanges } from '@angular/core/src/metadata/lifecycle_hooks';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'bim-post',
@@ -10,6 +11,7 @@ export class PostComponent implements OnInit, OnChanges {
   @Input() post;
   @Input() userInfo;
   @Output() openLightboxRequest = new EventEmitter<string>();
+  @Output() viewUpdateRequest = new EventEmitter<null>();
   authorName: string = "Guest User";
   images = [];
   imagesLoaded = false;
@@ -30,11 +32,12 @@ export class PostComponent implements OnInit, OnChanges {
     return this.post.description;
   }
 
-  constructor() {}
+  constructor(private ref: ChangeDetectorRef) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log('changes: ', changes)
     if(!this.post.images.length) {
       this.images = this.getArrayfromObject("images");
       this.headerImage = this.images.shift();
@@ -57,7 +60,20 @@ export class PostComponent implements OnInit, OnChanges {
     return fileArray;
   }
 
+  panelOpened() {
+    this.ref.detectChanges();
+    console.log('panel opened')
+  }
+
   openLightbox(photoURL: string) {
     this.openLightboxRequest.emit(photoURL);
+  }
+
+  backupViewCheck() {
+    window.setTimeout(_ => {
+      console.log('timeouted view update requested from post');
+      this.viewUpdateRequest.emit();
+    }, 2500);
+    // this.viewUpdateRequest.emit();
   }
 }
