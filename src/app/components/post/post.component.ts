@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { OnChanges, SimpleChanges } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({
@@ -29,7 +29,7 @@ export class PostComponent implements OnInit, OnChanges {
     return this.post.description;
   }
 
-  constructor() {}
+  constructor(private ref: ChangeDetectorRef) {}
 
   ngOnInit() { }
 
@@ -54,5 +54,9 @@ export class PostComponent implements OnInit, OnChanges {
       fileArray.push(this.post[fileType][key]);
     }
     return fileArray;
+  }
+
+  checkView() {
+    this.ref.detectChanges();
   }
 }
