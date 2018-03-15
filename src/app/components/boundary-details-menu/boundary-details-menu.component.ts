@@ -14,7 +14,6 @@ export class BoundaryDetailsMenuComponent implements OnInit {
   @Input() draw;
   @Input() map;
   @Output() hideMenuRequest = new EventEmitter<null>();
-  @Output() editFeatureRequest = new EventEmitter();
   editingFeature: boolean = false;
   prefix: string = "";
 
@@ -37,10 +36,10 @@ export class BoundaryDetailsMenuComponent implements OnInit {
 
   getPrefix() {
     if(this.prefix) return this.prefix;
-    let coords = this.draw.getAll().features[0].geometry.coordinates[0][0]
-    let lngLat = new Mapbox.LngLat(coords[0], coords[1]);
-    let point = this.map.project(lngLat);
-    let features = this.map.queryRenderedFeatures(point, {
+    const coords = this.draw.getAll().features[0].geometry.coordinates[0][0]
+    const lngLat = new Mapbox.LngLat(coords[0], coords[1]);
+    const point = this.map.project(lngLat);
+    const features = this.map.queryRenderedFeatures(point, {
       layers: ['countyFills']
     });
     if(features.length > 0) {
@@ -50,27 +49,7 @@ export class BoundaryDetailsMenuComponent implements OnInit {
   }
 
   clickedOutside() {
-    console.log("woah this was clicked");
     this.editingFeature = false;
-  }
-
-  updateFeature(properties) {
-    this.editingFeature = false;
-    let featureId = this.selectedFeature.properties.id
-    this.draw.setFeatureProperty(featureId, 'channel', properties.channel);
-    this.draw.setFeatureProperty(featureId, 'zapId', properties.zapId)
-    let feature = this.draw.getAll().features[0];
-    this.mapSvc.saveFeature(feature);
-    this.draw.delete(featureId);
-    this.map.setFilter('boundaries', null);
-    this.requestHideMenu();
-  }
-
-  editFeature() {
-    this.editFeatureRequest.emit(this.selectedFeature);
-    this.editingFeature = true;
-    this.ref.detectChanges()
-    // console.log('not yet enabled');
   }
 
   requestHideMenu() {

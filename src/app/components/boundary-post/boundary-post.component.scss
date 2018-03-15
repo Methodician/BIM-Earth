@@ -7,7 +7,6 @@
 
 .boundary-post-container {
 	@include position(fixed, top 75px right 0px);
-	@include size(0px);
 	background-color: $light;
 	z-index: 3;
 	border-radius: 10px;
@@ -17,15 +16,19 @@
 	justify-content: flex-start;
 	align-items: center;
 	opacity: 0;
-	transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
+  &.unclicked {
+    @include size(0px);
+  }
 	&.clicked {
 		opacity: 1;
-		@include size(300px, 500px);
-		@include respond-to($tablet-portrait-up) {
-			@include size(300px, 700px);
+    min-height: 300px;
+    max-height: 700px;
+    @include respond-to($tablet-portrait-up) {
+      width: 300px;
 		}
 		@include respond-to($desktop-up) {
-			@include size(375px, 750px);
+      width: 375px;
 		}
 	}
 }
@@ -56,16 +59,20 @@
 
 mat-accordion {
 	width: 100%;
-	margin: 20px 0;
-	overflow-y: auto;
+	margin: 20px 0 60px 0;
+  max-height: 555px; 
+  overflow-y: auto;
 }
 
 mat-form-field {
   width: 100%;
 }
 
-.post-btn {
-	color: $light;
+.controls {
 	@include position(absolute, bottom 15px right 15px);
 	z-index: 4;
+}
+
+#post-btns {
+  margin-top: 20px;
 }

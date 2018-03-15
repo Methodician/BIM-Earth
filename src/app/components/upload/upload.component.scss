@@ -1,3 +1,33 @@
 #wrapper {
   background-color: white;
+  input {
+    display: none;
+  }
+  .spacer {
+    flex: 1 1 auto;
+  }
+  .mat-toolbar {
+    background-color: #fafafa;
+  }
+  .mat-toolbar-row {
+    height: 50px;
+  }
+  .mat-toolbar-multiple-rows {
+    min-height: 50px;
+  }
+  mat-list {
+    background-color: #fafafa;
+    max-height: 200px;
+    overflow-y: scroll;
+    mat-list-item {
+      mat-divider {
+        left: 10px;
+        width: 90%;
+      }
+      p {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+  }
 }

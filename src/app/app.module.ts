@@ -13,7 +13,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireStorageModule } from 'angularfire2/storage'
 // test import module to make sure that angular material is working
-import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule, MatDialogRef, MatExpansionModule, MatCardModule } from '@angular/material';
+import { MatIconModule, MatButtonModule, MatMenuModule, MatInputModule, MatCheckboxModule, MatDialogModule, MatDialogRef, MatExpansionModule, MatCardModule, MatListModule, MatChipsModule, MatToolbarModule, MatFormFieldModule, MatAutocompleteModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from '@components/map/map.component';
@@ -35,10 +35,13 @@ import { UserHistoryComponent } from './components/user-history/user-history.com
 import { UserBoundariesComponent } from './components/user-boundaries/user-boundaries.component';
 import { ProfilePictureComponent } from './components/profile-picture/profile-picture.component';
 import { UploadComponent } from './components/upload/upload.component'
-
-import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
 import { BoundaryPostComponent } from './components/boundary-post/boundary-post.component';
 import { PostComponent } from './components/post/post.component';
+import { SearchComponent } from './components/search/search.component';
+import { MainRouteContainerComponent } from './components/main-route-container/main-route-container.component';
+
+import { ClickOutsideDirective } from './shared/directives/click-outside.directive';
+
 
 
 @NgModule({
@@ -61,6 +64,8 @@ import { PostComponent } from './components/post/post.component';
     BoundaryPostComponent,
     PostComponent,
     UploadComponent,
+    SearchComponent,
+    MainRouteContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,6 +87,11 @@ import { PostComponent } from './components/post/post.component';
     MatCheckboxModule,
     MatExpansionModule,
     MatCardModule,
+    MatListModule,
+    MatChipsModule,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
   ],
   providers: [
     MapService,
@@ -91,7 +101,7 @@ import { PostComponent } from './components/post/post.component';
     ChannelFilterMenuComponent,
     RegisterComponent,
     LoginComponent,
-    AccountComponent
+    AccountComponent,
   ],
   bootstrap: [AppComponent]
 })

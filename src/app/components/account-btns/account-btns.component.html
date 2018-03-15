@@ -1,50 +1,37 @@
 <div *ngIf="!authInfo.$uid">
-  <!-- login and signup button container that two buttons in it -->
+  <!-- login and signup button container (contains both buttons) -->
   <div class="login-signup-container">
     <button (click)="openLogin()" mat-raised-button>Log In</button>
     <button (click)="openSignup()" mat-raised-button>Sign Up</button>
   </div>
-
-  <!-- Table to mobile hamburger menu -->
+  <!-- tablet to mobile hamburger menu -->
   <div class="tablet-menu" mat-icon-button [matMenuTriggerFor]="tabletMenu">
     <i class="fas fa-bars"></i>
   </div>
-  <mat-menu #tabletMenu="matMenu" [overlapTrigger]="false">
-    <button (click)="openLogin()" mat-menu-item>
-      <span>Login</span>
-    </button>
-    <button (click)="openSignup()" mat-menu-item>
-      <span>Signup</span>
-    </button>
-  </mat-menu>
 </div>
 
-
-<!-- account container for when the user is signed in, right now it is display none in the scss folder -->
-<div *ngIf="authInfo.$uid" class="user-account-container">
-  <button class="account-btn" [matMenuTriggerFor]="menu">
-    <img src="http://fillmurray.com/300/300" alt="Phill Murray">
-    <p>Hello, {{authInfo.displayName || authInfo.email}}</p>
+<mat-menu #tabletMenu="matMenu" [overlapTrigger]="false">
+  <button mat-menu-item (click)="openLogin()">
+    <span>Login</span>
   </button>
-  <mat-menu class="account-menu"
-            #menu="matMenu"
-            [overlapTrigger]="false">
-    <button mat-menu-item
-            (click)="openAccount()">
-      <i class="fas fa-user-circle"></i>
-      <span>Account</span>
-    </button>
-    <!-- <button mat-menu-item>
-      <i class="far fa-map"></i>
-      <span>Boundaries</span>
-    </button>
-    <button mat-menu-item>
-      <i class="far fa-bookmark"></i>
-      <span>Bookmarks</span>
-    </button> -->
-    <button (click)="signout()"
-            mat-menu-item>
-      <span>Sign Out</span>
-    </button>
-  </mat-menu>
+  <button mat-menu-item (click)="openSignup()">
+    <span>Signup</span>
+  </button>
+</mat-menu>
+
+<div *ngIf="authInfo.$uid" class="user-account-container">
+  <button class="account-btn" [matMenuTriggerFor]="loggedInMenu">
+    <img src="http://fillmurray.com/300/300" alt="Phill Murray">
+    <p>{{authInfo.displayName || authInfo.email}}</p>
+  </button>
 </div>
+
+<mat-menu #loggedInMenu="matMenu" class="account-menu" [overlapTrigger]="false">
+  <button mat-menu-item (click)="openAccount()">
+    <i class="fas fa-user-circle"></i>
+    <span>Account</span>
+  </button>
+  <button mat-menu-item (click)="signout()">
+    <span>Sign Out</span>
+  </button>
+</mat-menu>
