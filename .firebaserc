@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "bim-earth-dev"
+    "default": "bim-earth-dev",
+    "production": "bim-earth"
   }
 }
