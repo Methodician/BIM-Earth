@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import * as mapboxgl from 'mapbox-gl';
 import { AngularFirestore } from 'angularfire2/firestore';
-import * as fb from 'firebase';
+import * as firebase from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { GeoJson } from '@models/map';
 import { BehaviorSubject } from 'rxjs/Rx';
@@ -45,12 +45,12 @@ export class MapService {
   }
 
   getFeatureIdFromSearchTree(zapID: string) {
-    const path = this.idTreePathFromZapId(zapID);
+    const path = this.boundarySearchPath(zapID);
     return this.rtdb.object(`/search/idTree/${path}`);
   }
 
   getBoundsFromCameraTree(zapID: string) {
-    const path = this.idTreePathFromZapId(zapID);
+    const path = this.boundarySearchPath(zapID);
     return this.rtdb.object(`/search/cameraTree/${path}/bounds`);
   }
 
@@ -62,7 +62,7 @@ export class MapService {
       properties: feature.properties
     });
     this.rtdb.object(`/features/${feature.properties.id}`).set(null);
-    this.db.doc(`features/${feature.properties.id}`).update({ deleted: fb.firestore.FieldValue.serverTimestamp() });
+    this.db.doc(`features/${feature.properties.id}`).update({ deleted: firebase.firestore.FieldValue.serverTimestamp() });
     this.updateUserHistory(feature.properties.id, feature.properties.zapId, "delete");
   }
 
@@ -70,12 +70,14 @@ export class MapService {
     feature.properties.id = this.db.createId();
     feature.properties.channel = Number(feature.properties.channel);
     feature.properties.author = this.authInfo.isLoggedIn() ? this.authInfo.$uid : "guest_user";
+    feature.properties.timeCreated = firebase.database.ServerValue.TIMESTAMP;
     this.db.doc(`features/${feature.properties.id}`).set({
       author: feature.properties.author,
       deleted: false
     });
     this.updateUserHistory(feature.properties.id, feature.properties.zapId, "create");
     this.saveFeature(feature, true);
+    this.updateCountyCameraTree(feature);
   }
 
   saveFeature(feature: GeoJson, newFeature: boolean = false) {
@@ -100,7 +102,7 @@ export class MapService {
           featureId: featureId,
           zapId: zapId,
           action: action,
-          timestamp: fb.firestore.FieldValue.serverTimestamp()
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
         })
     }
   }
@@ -111,7 +113,7 @@ export class MapService {
       .collection('history')
       .doc(this.db.createId())
       .set({
-        timestamp: fb.firestore.FieldValue.serverTimestamp(),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         geometry: JSON.stringify(feature.geometry)
       })
   }
@@ -133,7 +135,7 @@ export class MapService {
       title: data.title,
       description: data.description,
       author: data.author,
-      timestamp: fb.firestore.FieldValue.serverTimestamp(),
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       files: data.files,
       images: data.images
     })
@@ -213,9 +215,9 @@ export class MapService {
 
   updateSearchData(feature) {
     const zapID = feature.properties.zapId,
-      path = this.idTreePathFromZapId(zapID),
+      path = this.boundarySearchPath(zapID),
       coordinates = feature.geometry.coordinates[0][0],
-      bounds = this.getCameraBounds(feature)
+      bounds = this.getCameraBounds(feature);
     this.rtdb.object(`/search/idTree/${path}`).set(feature.properties.id);
     this.rtdb.object(`/search/cameraTree/${path}`).set({ bounds: bounds });
   }
@@ -230,10 +232,47 @@ export class MapService {
   }
 
   getCameraTree() {
-    return this.rtdb.object('/search/cameraTree')
+    return this.rtdb.object('/search/cameraTree');
   }
 
-  idTreePathFromZapId(zapID: string) {
+  boundarySearchPath(zapID: string) {
     return `${zapID.slice(0, 2)}/${zapID.slice(3, 5)}/${zapID.slice(6, 9)}/${zapID.slice(10, 12)}/${zapID.slice(13, 18)}`;
+  }
+
+  countySearchPath(zapID: string) {
+    return `${zapID.slice(0, 2)}/${zapID.slice(3, 5)}/${zapID.slice(6, 9)}`;
+  }
+
+  updateCountyCameraTree(feature, counties?) {
+    const countyCode = feature.properties.zapId.slice(6, 9);
+    if (counties) {
+      this.updateCountyBounds(countyCode, counties);
+    } else {
+      this.getCountyFeatures().valueChanges().take(1).subscribe(dbCounties => {
+        this.updateCountyBounds(countyCode, dbCounties);
+      });
+    }
+  }
+
+  updateCountyBounds(boundaryCountyCode, counties) {
+    const match = counties.find(county => (county as any).properties.zapId.slice(6, 9) === boundaryCountyCode) as any;
+    const bounds = this.getCameraBounds(match);
+    const path = this.countySearchPath(match.properties.zapId);
+    this.rtdb.object(`/search/cameraTree/${path}`).update({ bounds: bounds });
+  }
+
+  // do not use this method unless the search tree has been damaged in some way and needs to be recovered
+  uploadExistingFeatureCounties() {
+    this.getCountyFeatures().valueChanges().take(1).subscribe(counties => {
+      this.getFeatures().valueChanges().take(1).subscribe(features => {
+        features.forEach(feature => {
+          if ((feature as any).properties.zapId && (feature as any).properties.zapId.slice(0, 2).toLowerCase() === 'us') {
+            this.updateCountyCameraTree(feature, counties);
+          } else  {
+            this.deleteFeature(feature as GeoJson);
+          }
+        });
+      });
+    });
   }
 }
